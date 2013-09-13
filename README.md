@@ -30,7 +30,8 @@ This `master` branch contains just an README file and the actual bootstrap
 projects are in various other branches, each covering some particular use case:
 
 *   `base` -- Base for all projects with only the essential files
-*   `scenegraph` -- Base for applications using scene graph
+*   `scenegraph2D` -- Base for applications using 2D scene graph
+*   `scenegraph3D` -- Base for applications using 3D scene graph
 *   `windowless` -- Windowless application, usable for querying information
     about the renderer, offscreen rendering, image processing etc.
 
