@@ -9,9 +9,12 @@ class MyApplication: public Platform::WindowlessApplication {
         int exec() override;
 };
 
-MyApplication::MyApplication(const Arguments& arguments): Platform::WindowlessApplication(arguments) {}
+MyApplication::MyApplication(const Arguments& arguments): Platform::WindowlessApplication(arguments) {
+    /* TODO: Add your initialization code here */
+}
 
 int MyApplication::exec() {
+    /* TODO: Add your processing code here */
     return 0;
 }
 
