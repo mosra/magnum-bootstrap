@@ -1,4 +1,4 @@
-#include <Platform/GlutApplication.h>
+#include <Platform/Sdl2Application.h>
 #include <DefaultFramebuffer.h>
 #include <SceneGraph/Scene.h>
 #include <SceneGraph/MatrixTransformation2D.h>
