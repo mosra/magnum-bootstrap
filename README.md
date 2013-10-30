@@ -84,7 +84,7 @@ and [`scenegraph3D`](https://github.com/mosra/magnum-bootstrap/tree/scenegraph3D
 branches contain application prepared for using 2D/3D `SceneGraph`. You need
 Magnum built with `WITH_GLUTAPPLICATION` and `WITH_SCENEGRAPH` enabled.
 
-### Base application with port to Google Native Client
+### Base application with port to Google Chrome Native Client
 
 The [`base-nacl`](https://github.com/mosra/magnum-bootstrap/tree/base-nacl)
 branch contains application using `Platform::GlutApplication` for desktop build
@@ -127,7 +127,7 @@ to have `make install` install the files in proper location.
 
 You can then open `MyApplication.html` through your webserver in Chrome.
 
-### Base application with port to Emscripten
+### Base application with port to Emscripten (HTML5/WebGL)
 
 The [`base-emscripten`](https://github.com/mosra/magnum-bootstrap/tree/base-emscripten)
 branch contains application using `Platform::Sdl2Application` for both desktop
