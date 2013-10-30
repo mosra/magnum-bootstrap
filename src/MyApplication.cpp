@@ -1,4 +1,4 @@
-#include <Platform/GlutApplication.h>
+#include <Platform/Sdl2Application.h>
 #include <DefaultFramebuffer.h>
 
 using namespace Magnum;
