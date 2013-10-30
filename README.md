@@ -90,7 +90,7 @@ The [`base-nacl`](https://github.com/mosra/magnum-bootstrap/tree/base-nacl)
 branch contains application using `Platform::GlutApplication` for desktop build
 and `Platform::NaClApplication` for NaCl build. For desktop build you need
 Magnum built with `WITH_GLUTAPPLICATION` enabled and you can use the commands
-above to buid the desktop version.
+above to build the desktop version.
 
 For NaCl build you need to have NaCl SDK installed with Corrade and Magnum
 crosscompiled for Native Client, Magnum built with `WITH_NACLAPPLICATION`
@@ -99,9 +99,9 @@ and [Magnum's](http://mosra.cz/blog/magnum-doc/building.html#building-cross-nacl
 building documentation for more information.
 
 In the `toolchains/` submodule don't forget to adapt `NACL_PREFIX` variable in
-`generic/NaCl-newlib-x86-32.cmake` and `generic/NaCl-*-x86-64.cmake` to path
-where your SDK is installed. Default is `/usr/nacl`. You may need to adapt also
-`NACL_TOOLCHAIN_PATH` so CMake is able to find the compiler.
+`generic/NaCl-newlib-x86-32.cmake` and `generic/NaCl-newlib-x86-64.cmake` to
+path where your SDK is installed. Default is `/usr/nacl`. You may need to adapt
+also `NACL_TOOLCHAIN_PATH` so CMake is able to find the compiler.
 
 Then create build directories for x86-32 and x86-64 and run `cmake` and `make`
 in them. The toolchains need access to the platform file, so be sure to
@@ -130,9 +130,9 @@ You can then open `MyApplication.html` through your webserver in Chrome.
 ## Base application with port to Emscripten
 
 The [`base-emscripten`](https://github.com/mosra/magnum-bootstrap/tree/base-emscripten)
-branch contains application using `Platform::Sdl2Application`. for both desktop
+branch contains application using `Platform::Sdl2Application` for both desktop
 and Emscripten build. You need Magnum built with `WITH_SDL2APPLICATION` enabled
-and you can use the commands above to buid the desktop version.
+and you can use the commands above to build the desktop version.
 
 For Emscripten build you need to have Emscripten installed with Corrade and
 Magnum crosscompiled for Emscripten, don't forget to build Magnum with
