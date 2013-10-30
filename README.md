@@ -21,26 +21,46 @@ Minimal dependencies
     >= 3.1. On Windows you can use **MinGW**, Visual Studio compiler still
     lacks some needed features.
 *   **CMake** >= 2.8.8
-*   **Magnum** - The engine itself
+*   **Corrade**, **Magnum** - The engine itself
+
+Note that each bootstrap project has additional dependency requirements, listed
+below. See [Magnum building documentation](http://mosra.cz/blog/magnum-doc/building.html)
+for more information.
+
+Contents of the repository
+--------------------------
+
+This `master` branch contains just an README file and the actual bootstrap
+projects are in various other branches, each covering some particular use case.
+
+### Base application
+
+The `base` branch contains barebones windowed application using `Platform::GlutApplication`
+with only the essential files. You need Magnum built with `WITH_GLUTAPPLICATION`
+enabled.
+
+### Windowless application
+
+The `windowless` branch contains windowless application using `Platform::WindowlessGlxApplication`
+(Linux only). Useful for querying information about the renderer, offscreen
+rendering, image processing etc. You need Magnum built with
+`WITH_WINDOWLESSGLXAPPLICATION` enabled.
+
+### Scene graph
+
+The `scenegraph2D` and `scenegraph3D` branches contain application prepared for
+using 2D/3D `SceneGraph`. You need Magnum built with `WITH_GLUTAPPLICATION` and
+`WITH_SCENEGRAPH` enabled.
 
 Bootstrapping the project
 -------------------------
 
-This `master` branch contains just an README file and the actual bootstrap
-projects are in various other branches, each covering some particular use case:
-
-*   `base` -- Base for all projects with only the essential files
-*   `scenegraph2D` -- Base for applications using 2D scene graph
-*   `scenegraph3D` -- Base for applications using 3D scene graph
-*   `windowless` -- Windowless application, usable for querying information
-    about the renderer, offscreen rendering, image processing etc.
-
 Desired usage is to download given branch as an archive (using the Download
-button in GitHub) or by using URL similar to one of the following (replace the
-`(branch)` with desired branch name):
+button in GitHub) or by using URL similar to one of the following (replace
+`<branch>` with desired branch name):
 
-    https://github.com/mosra/magnum-bootstrap/archive/(branch).tar.gz
-    https://github.com/mosra/magnum-bootstrap/archive/(branch).zip
+    https://github.com/mosra/magnum-bootstrap/archive/<branch>.tar.gz
+    https://github.com/mosra/magnum-bootstrap/archive/<branch>.zip
 
 After extracting the downloaded archive you can build and run the application
 with these four commands:
