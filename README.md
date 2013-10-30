@@ -45,6 +45,17 @@ with these four commands:
     make
     ./src/MyApplication
 
+For crosscompiling (in `base-nacl` and `base-emscripten` branches, see below)
+you will need to have the `toolchains` submodule. It is present in Git clone
+and can be updated with these commands:
+
+    git submodule init
+    git submodule update
+
+However, because you should use downloaded archive anyway, you need to manually
+download snapshot of toolchains repository from https://github.com/mosra/toolchains
+and put the contents in `toolchains/` subdirectory.
+
 Contents of the repository
 --------------------------
 
@@ -72,6 +83,83 @@ The [`scenegraph2D`](https://github.com/mosra/magnum-bootstrap/tree/scenegraph2D
 and [`scenegraph3D`](https://github.com/mosra/magnum-bootstrap/tree/scenegraph3D)
 branches contain application prepared for using 2D/3D `SceneGraph`. You need
 Magnum built with `WITH_GLUTAPPLICATION` and `WITH_SCENEGRAPH` enabled.
+
+## Base application with port to Google Native Client
+
+The [`base-nacl`](https://github.com/mosra/magnum-bootstrap/tree/base-nacl)
+branch contains application using `Platform::GlutApplication` for desktop build
+and `Platform::NaClApplication` for NaCl build. For desktop build you need
+Magnum built with `WITH_GLUTAPPLICATION` enabled and you can use the commands
+above to buid the desktop version.
+
+For NaCl build you need to have NaCl SDK installed with Corrade and Magnum
+crosscompiled for Native Client, Magnum built with `WITH_NACLAPPLICATION`
+enabled. See [Corrade's](http://mosra.cz/blog/corrade-doc/building-corrade.html#building-cross-nacl)
+and [Magnum's](http://mosra.cz/blog/magnum-doc/building.html#building-cross-nacl)
+building documentation for more information.
+
+In the `toolchains/` submodule don't forget to adapt `NACL_PREFIX` variable in
+`generic/NaCl-newlib-x86-32.cmake` and `generic/NaCl-*-x86-64.cmake` to path
+where your SDK is installed. Default is `/usr/nacl`. You may need to adapt also
+`NACL_TOOLCHAIN_PATH` so CMake is able to find the compiler.
+
+Then create build directories for x86-32 and x86-64 and run `cmake` and `make`
+in them. The toolchains need access to the platform file, so be sure to
+properly set **absolute** path to `modules/` directory containing
+`Platform/NaCl.cmake`. Set `CMAKE_INSTALL_PREFIX` to location of your webserver
+to have `make install` install the files in proper location.
+
+    mkdir -p build-nacl-x86-32
+    cd build-nacl-x86-32
+    cmake .. \
+        -DCMAKE_MODULE_PATH="/absolute/path/to/toolchains/modules" \
+        -DCMAKE_TOOLCHAIN_FILE="../toolchains/generic/NaCl-newlib-x86-32.cmake" \
+        -DCMAKE_INSTALL_PREFIX=/srv/http/nacl
+    make && make install
+
+    mkdir -p build-nacl-x86-64
+    cd build-nacl-x86-64
+    cmake .. \
+        -DCMAKE_MODULE_PATH="/absolute/path/to/toolchains/modules" \
+        -DCMAKE_TOOLCHAIN_FILE="../toolchains/generic/NaCl-newlib-x86-64.cmake" \
+        -DCMAKE_INSTALL_PREFIX=/srv/http/nacl
+    make && make install
+
+You can then open `MyApplication.html` through your webserver in Chrome.
+
+## Base application with port to Emscripten
+
+The [`base-emscripten`](https://github.com/mosra/magnum-bootstrap/tree/base-emscripten)
+branch contains application using `Platform::Sdl2Application`. for both desktop
+and Emscripten build. You need Magnum built with `WITH_SDL2APPLICATION` enabled
+and you can use the commands above to buid the desktop version.
+
+For Emscripten build you need to have Emscripten installed with Corrade and
+Magnum crosscompiled for Emscripten, don't forget to build Magnum with
+`WITH_SDL2APPLICATION` enabled. See
+[Corrade's](http://mosra.cz/blog/corrade-doc/building-corrade.html#building-cross-emscripten)
+and [Magnum's](http://mosra.cz/blog/magnum-doc/building.html#building-cross-emscripten)
+building documentation for more information.
+
+In the `toolchains/` submodule don't forget to adapt `EMSCRIPTEN_PREFIX`
+variable in `generic/Emscripten.cmake` to path where Emscripten is installed.
+Default is `/usr/emscripten`.
+
+Then create build directory and run `cmake` and `make` in it. The toolchain
+needs access to its platform file, so be sure to properly set **absolute** path
+to `modules/` directory containing `Platform/Emscripten.cmake`. Set
+`CMAKE_INSTALL_PREFIX` to have `make install` install the files in proper
+location (e.g. a webserver).
+
+    mkdir -p build-emscripten
+    cd build-emscripten
+    cmake .. \
+        -DCMAKE_MODULE_PATH="/absolute/path/to/toolchains/modules" \
+        -DCMAKE_TOOLCHAIN_FILE="../toolchains/generic/Emscripten.cmake"
+        -DCMAKE_INSTALL_PREFIX=/srv/http/nacl
+    make && make install
+
+You can then open `MyApplication.html` in Chrome or Firefox.
 
 CONTACT
 =======
