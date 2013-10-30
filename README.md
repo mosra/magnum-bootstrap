@@ -27,37 +27,12 @@ Note that each bootstrap project has additional dependency requirements, listed
 below. See [Magnum building documentation](http://mosra.cz/blog/magnum-doc/building.html)
 for more information.
 
-Contents of the repository
---------------------------
-
-This `master` branch contains just an README file and the actual bootstrap
-projects are in various other branches, each covering some particular use case.
-
-### Base application
-
-The `base` branch contains barebones windowed application using `Platform::GlutApplication`
-with only the essential files. You need Magnum built with `WITH_GLUTAPPLICATION`
-enabled.
-
-### Windowless application
-
-The `windowless` branch contains windowless application using `Platform::WindowlessGlxApplication`
-(Linux only). Useful for querying information about the renderer, offscreen
-rendering, image processing etc. You need Magnum built with
-`WITH_WINDOWLESSGLXAPPLICATION` enabled.
-
-### Scene graph
-
-The `scenegraph2D` and `scenegraph3D` branches contain application prepared for
-using 2D/3D `SceneGraph`. You need Magnum built with `WITH_GLUTAPPLICATION` and
-`WITH_SCENEGRAPH` enabled.
-
 Bootstrapping the project
 -------------------------
 
-Desired usage is to download given branch as an archive (using the Download
-button in GitHub) or by using URL similar to one of the following (replace
-`<branch>` with desired branch name):
+Desired usage is to download selected branch from the list below as an archive
+(using the Download button in GitHub) or by using URL similar to one of the
+following (replace `<branch>` with desired branch name):
 
     https://github.com/mosra/magnum-bootstrap/archive/<branch>.tar.gz
     https://github.com/mosra/magnum-bootstrap/archive/<branch>.zip
@@ -69,6 +44,34 @@ with these four commands:
     cmake ..
     make
     ./src/MyApplication
+
+Contents of the repository
+--------------------------
+
+This `master` branch contains just an README file and the actual bootstrap
+projects are in various other branches, each covering some particular use case.
+
+### Base application
+
+The [`base`](https://github.com/mosra/magnum-bootstrap/tree/base) branch
+contains barebones windowed application using `Platform::GlutApplication` with
+only the essential files. You need Magnum built with `WITH_GLUTAPPLICATION`
+enabled.
+
+### Windowless application
+
+The [`windowless`](https://github.com/mosra/magnum-bootstrap/tree/windowless)
+branch contains windowless application using `Platform::WindowlessGlxApplication`
+(Linux only). Useful for querying information about the renderer, offscreen
+rendering, image processing etc. You need Magnum built with
+`WITH_WINDOWLESSGLXAPPLICATION` enabled.
+
+### Scene graph
+
+The [`scenegraph2D`](https://github.com/mosra/magnum-bootstrap/tree/scenegraph2D)
+and [`scenegraph3D`](https://github.com/mosra/magnum-bootstrap/tree/scenegraph3D)
+branches contain application prepared for using 2D/3D `SceneGraph`. You need
+Magnum built with `WITH_GLUTAPPLICATION` and `WITH_SCENEGRAPH` enabled.
 
 CONTACT
 =======
