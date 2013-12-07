@@ -14,11 +14,9 @@ class MyApplication: public Platform::Application {
     public:
         explicit MyApplication(const Arguments& arguments);
 
-    protected:
-        void viewportEvent(const Vector2i& size) override;
+    private:
         void drawEvent() override;
 
-    private:
         Scene3D scene;
         Object3D* cameraObject;
         SceneGraph::Camera3D* camera;
@@ -35,11 +33,6 @@ MyApplication::MyApplication(const Arguments& arguments): Platform::Application(
         .setViewport(defaultFramebuffer.viewport().size());
 
     /* TODO: Prepare your objects here and add them to the scene */
-}
-
-void MyApplication::viewportEvent(const Vector2i& size) {
-    defaultFramebuffer.setViewport({{}, size});
-    camera->setViewport(size);
 }
 
 void MyApplication::drawEvent() {
