@@ -70,6 +70,13 @@ contains barebones windowed application using `Platform::GlutApplication` with
 only the essential files. You need Magnum built with `WITH_GLUTAPPLICATION`
 enabled.
 
+### Base application using SDL2
+
+The [`base-sdl2`](https://github.com/mosra/magnum-bootstrap/tree/base-sdl2)
+branch is similar to `base` one, except that it uses `Platform::Sdl2Application`
+instead of `Platform::GlutApplication`. See the [difference between these two](https://github.com/mosra/magnum-bootstrap/compare/base...base-sdl2).
+You need Magnum built with `WITH_SDL2APPLICATION` enabled.
+
 ### Windowless application
 
 The [`windowless`](https://github.com/mosra/magnum-bootstrap/tree/windowless)
