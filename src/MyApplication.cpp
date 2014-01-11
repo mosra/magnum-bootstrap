@@ -1,4 +1,4 @@
-#include <Platform/WindowlessGlxApplication.h>
+#include <Magnum/Platform/WindowlessGlxApplication.h>
 
 using namespace Magnum;
 
