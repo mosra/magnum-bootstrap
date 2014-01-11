@@ -1,5 +1,5 @@
-#include <Platform/GlutApplication.h>
-#include <DefaultFramebuffer.h>
+#include <Magnum/DefaultFramebuffer.h>
+#include <Magnum/Platform/GlutApplication.h>
 
 using namespace Magnum;
 
