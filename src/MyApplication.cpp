@@ -1,9 +1,9 @@
-#include <Platform/GlutApplication.h>
-#include <DefaultFramebuffer.h>
-#include <SceneGraph/Scene.h>
-#include <SceneGraph/MatrixTransformation2D.h>
-#include <SceneGraph/Camera2D.h>
-#include <SceneGraph/Drawable.h>
+#include <Magnum/DefaultFramebuffer.h>
+#include <Magnum/Platform/GlutApplication.h>
+#include <Magnum/SceneGraph/Scene.h>
+#include <Magnum/SceneGraph/MatrixTransformation2D.h>
+#include <Magnum/SceneGraph/Camera2D.h>
+#include <Magnum/SceneGraph/Drawable.h>
 
 using namespace Magnum;
 
