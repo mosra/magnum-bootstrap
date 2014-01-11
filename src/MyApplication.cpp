@@ -1,5 +1,5 @@
-#include <Platform/Sdl2Application.h>
-#include <DefaultFramebuffer.h>
+#include <Magnum/DefaultFramebuffer.h>
+#include <Magnum/Platform/Sdl2Application.h>
 
 using namespace Magnum;
 
