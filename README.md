@@ -174,9 +174,9 @@ You can then open `MyApplication.html` in Chrome or Firefox.
 
 The [`base-android`](https://github.com/mosra/magnum-bootstrap/tree/base-android)
 branch contains application using `Platform::GlutApplication` for desktop build
-and `Platform::AndroidApplication` for NaCl build. For desktop build you need
-Magnum built with `WITH_ANDROIDAPPLICATION` enabled and you can use the commands
-above to build the desktop version.
+and `Platform::AndroidApplication` for Android build. For desktop build you
+need Magnum built with `WITH_ANDROIDAPPLICATION` enabled and you can use the
+commands above to build the desktop version.
 
 For Android build you need to have Android NDK installed with Corrade and
 Magnum crosscompiled for Android, Magnum built with `WITH_ANDROIDAPPLICATION`
