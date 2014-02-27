@@ -1,5 +1,9 @@
 #include <Magnum/DefaultFramebuffer.h>
+#ifndef CORRADE_TARGET_ANDROID
 #include <Magnum/Platform/GlutApplication.h>
+#else
+#include <Magnum/Platform/AndroidApplication.h>
+#endif
 
 using namespace Magnum;
 
