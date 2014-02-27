@@ -170,6 +170,57 @@ installed in proper location (e.g. a webserver).
 
 You can then open `MyApplication.html` in Chrome or Firefox.
 
+### Base application with port to Android
+
+The [`base-android`](https://github.com/mosra/magnum-bootstrap/tree/base-android)
+branch contains application using `Platform::GlutApplication` for desktop build
+and `Platform::AndroidApplication` for NaCl build. For desktop build you need
+Magnum built with `WITH_ANDROIDAPPLICATION` enabled and you can use the commands
+above to build the desktop version.
+
+For Android build you need to have Android NDK installed with Corrade and
+Magnum crosscompiled for Android, Magnum built with `WITH_ANDROIDAPPLICATION`
+enabled. See [Corrade's](http://mosra.cz/blog/corrade-doc/building-corrade.html#building-cross-android)
+and [Magnum's](http://mosra.cz/blog/magnum-doc/building.html#building-cross-android)
+building documentation for more information.
+
+In the `toolchains/` submodule don't forget to adapt `ANDROID_NDK_ROOT` in
+`toolchains/generic/Android-*.cmake` to path where NDK is installed. Default is
+`/opt/android-ndk`. Adapt also `ANDROID_SYSROOT` to your preferred API level.
+You might also need to update `ANDROID_TOOLCHAIN_PREFIX` and
+`ANDROID_TOOLCHAIN_ROOT` to fit your system.
+
+First you need to update Android project files with the following command. It
+will create `build.xml` file for Ant and a bunch of other files. You need to
+specify the target for which you will build in the `-t` parameter. List of all
+targets can be obtained by calling `android list target`.
+
+    android update project -p . -t "android-19"
+
+Then create build directories for ARM and x86 and run `cmake` and build command
+in them. The toolchains need access to the platform file, so be sure to
+properly set **absolute** path to `toolchains/modules/` directory containing
+`Platform/Android.cmake`.
+
+    mkdir build-android-arm && cd build-android-arm
+    cmake .. \
+        -DCMAKE_MODULE_PATH="/absolute/path/to/toolchains/modules" \
+        -DCMAKE_TOOLCHAIN_FILE="../toolchains/generic/Android-ARM.cmake"
+    cmake --build .
+
+    mkdir build-android-x86 && cd build-android-x86
+    cmake .. \
+        -DCMAKE_MODULE_PATH="/absolute/path/to/toolchains/modules" \
+        -DCMAKE_TOOLCHAIN_FILE="../toolchains/generic/Android-x86.cmake"
+    cmake --build .
+
+The compiled binaries will be put into `lib/armeabi-v7a` and `lib/x86`. You can
+then build the APK package simply by running `ant`. The resulting APK package
+can be then installed directly on the device or emulator using `adb install`.
+
+    ant debug
+    adb install bin/NativeActivity-debug.apk
+
 CONTACT
 =======
 
