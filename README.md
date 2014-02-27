@@ -41,10 +41,10 @@ following (replace `<branch>` with desired branch name):
 After extracting the downloaded archive you can build and run the application
 with these four commands:
 
-    mkdir -p build && cd build
+    mkdir build && cd build
     cmake ..
-    make
-    ./src/MyApplication
+    cmake --build .
+    ./src/MyApplication # or ./src/Debug/MyApplication
 
 For crosscompiling (in `base-nacl` and `base-emscripten` branches, see below)
 you will need to have the `toolchains` submodule. It is present in Git clone
@@ -111,19 +111,19 @@ In the `toolchains/` submodule don't forget to adapt `NACL_PREFIX` variable in
 path where your SDK is installed. Default is `/usr/nacl`. You may need to adapt
 also `NACL_TOOLCHAIN_PATH` so CMake is able to find the compiler.
 
-Then create build directories for x86-32 and x86-64 and run `cmake` and `make`
-in them. The toolchains need access to the platform file, so be sure to
-properly set **absolute** path to `modules/` directory containing
-`Platform/NaCl.cmake`. Set `CMAKE_INSTALL_PREFIX` to location of your webserver
-to have `make install` install the files in proper location.
+Then create build directories for x86-32 and x86-64 and run `cmake` and
+build/install commands in them. The toolchains need access to the platform
+file, so be sure to properly set **absolute** path to `toolchains/modules/`
+directory containing `Platform/NaCl.cmake`. Set `CMAKE_INSTALL_PREFIX` to
+location of your webserver to have the files installed in proper location.
 
-    mkdir -p build-nacl-x86-32
-    cd build-nacl-x86-32
+    mkdir build-nacl-x86-32 && cd build-nacl-x86-32
     cmake .. \
         -DCMAKE_MODULE_PATH="/absolute/path/to/toolchains/modules" \
         -DCMAKE_TOOLCHAIN_FILE="../toolchains/generic/NaCl-newlib-x86-32.cmake" \
         -DCMAKE_INSTALL_PREFIX=/srv/http/nacl
-    make && make install
+    cmake --build .
+    cmake --build . --target install
 
     mkdir -p build-nacl-x86-64
     cd build-nacl-x86-64
@@ -131,7 +131,8 @@ to have `make install` install the files in proper location.
         -DCMAKE_MODULE_PATH="/absolute/path/to/toolchains/modules" \
         -DCMAKE_TOOLCHAIN_FILE="../toolchains/generic/NaCl-newlib-x86-64.cmake" \
         -DCMAKE_INSTALL_PREFIX=/srv/http/nacl
-    make && make install
+    cmake --build .
+    cmake --build . --target install
 
 You can then open `MyApplication.html` through your webserver in Chrome.
 
@@ -153,19 +154,19 @@ In the `toolchains/` submodule don't forget to adapt `EMSCRIPTEN_PREFIX`
 variable in `generic/Emscripten.cmake` to path where Emscripten is installed.
 Default is `/usr/emscripten`.
 
-Then create build directory and run `cmake` and `make` in it. The toolchain
-needs access to its platform file, so be sure to properly set **absolute** path
-to `modules/` directory containing `Platform/Emscripten.cmake`. Set
-`CMAKE_INSTALL_PREFIX` to have `make install` install the files in proper
-location (e.g. a webserver).
+Then create build directory and run `cmake` and build/install commands in it.
+The toolchain needs access to its platform file, so be sure to properly set
+**absolute** path to `toolchains/modules/` directory containing
+`Platform/Emscripten.cmake`. Set `CMAKE_INSTALL_PREFIX` to have the files
+installed in proper location (e.g. a webserver).
 
-    mkdir -p build-emscripten
-    cd build-emscripten
+    mkdir build-emscripten && cd build-emscripten
     cmake .. \
         -DCMAKE_MODULE_PATH="/absolute/path/to/toolchains/modules" \
         -DCMAKE_TOOLCHAIN_FILE="../toolchains/generic/Emscripten.cmake"
         -DCMAKE_INSTALL_PREFIX=/srv/http/nacl
-    make && make install
+    cmake --build .
+    cmake --build . --target install
 
 You can then open `MyApplication.html` in Chrome or Firefox.
 
