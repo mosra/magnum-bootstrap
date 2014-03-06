@@ -26,7 +26,7 @@ class MyApplication: public Platform::Application {
 MyApplication::MyApplication(const Arguments& arguments): Platform::Application(arguments) {
     /* Configure camera */
     cameraObject = new Object3D(&scene);
-    cameraObject->translate(Vector3::zAxis(-5.0f));
+    cameraObject->translate(Vector3::zAxis(5.0f));
     camera = new SceneGraph::Camera3D(*cameraObject);
     camera->setAspectRatioPolicy(SceneGraph::AspectRatioPolicy::Extend)
         .setPerspective(35.0_degf, 4.0f/3.0f, 0.001f, 100.0f)
