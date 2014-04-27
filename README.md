@@ -70,12 +70,12 @@ contains barebones windowed application using `Platform::Sdl2Application` with
 only the essential files. You need Magnum built with `WITH_SDL2APPLICATION`
 enabled.
 
-### Base application using SDL2
+### Base application using GLUT
 
 The [`base-glut`](https://github.com/mosra/magnum-bootstrap/tree/base-glut)
 branch is similar to `base` one, except that it uses `Platform::GlutApplication`
-instead of `Platform::Sdl2Application`. See the [difference between these two](https://github.com/mosra/magnum-bootstrap/compare/base...base-glut).
-You need Magnum built with `WITH_GLUTAPPLICATION` enabled.
+instead of `Platform::Sdl2Application`. You need Magnum built with
+`WITH_GLUTAPPLICATION` enabled.
 
 ### Windowless application
 
@@ -95,7 +95,7 @@ Magnum built with `WITH_SDL2APPLICATION` and `WITH_SCENEGRAPH` enabled.
 ### Base application with port to Google Chrome Native Client
 
 The [`base-nacl`](https://github.com/mosra/magnum-bootstrap/tree/base-nacl)
-branch contains application using `Platform::GlutApplication` for desktop build
+branch contains application using `Platform::Sdl2Application` for desktop build
 and `Platform::NaClApplication` for NaCl build. For desktop build you need
 Magnum built with `WITH_SDL2APPLICATION` enabled and you can use the commands
 above to build the desktop version.
