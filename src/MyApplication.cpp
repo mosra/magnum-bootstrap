@@ -1,5 +1,5 @@
 #include <Magnum/DefaultFramebuffer.h>
-#include <Magnum/Platform/GlutApplication.h>
+#include <Magnum/Platform/Sdl2Application.h>
 #include <Magnum/SceneGraph/Scene.h>
 #include <Magnum/SceneGraph/MatrixTransformation3D.h>
 #include <Magnum/SceneGraph/Camera3D.h>
