@@ -66,16 +66,16 @@ projects are in various other branches, each covering some particular use case.
 ### Base application
 
 The [`base`](https://github.com/mosra/magnum-bootstrap/tree/base) branch
-contains barebones windowed application using `Platform::GlutApplication` with
-only the essential files. You need Magnum built with `WITH_GLUTAPPLICATION`
+contains barebones windowed application using `Platform::Sdl2Application` with
+only the essential files. You need Magnum built with `WITH_SDL2APPLICATION`
 enabled.
 
 ### Base application using SDL2
 
-The [`base-sdl2`](https://github.com/mosra/magnum-bootstrap/tree/base-sdl2)
-branch is similar to `base` one, except that it uses `Platform::Sdl2Application`
-instead of `Platform::GlutApplication`. See the [difference between these two](https://github.com/mosra/magnum-bootstrap/compare/base...base-sdl2).
-You need Magnum built with `WITH_SDL2APPLICATION` enabled.
+The [`base-glut`](https://github.com/mosra/magnum-bootstrap/tree/base-glut)
+branch is similar to `base` one, except that it uses `Platform::GlutApplication`
+instead of `Platform::Sdl2Application`. See the [difference between these two](https://github.com/mosra/magnum-bootstrap/compare/base...base-glut).
+You need Magnum built with `WITH_GLUTAPPLICATION` enabled.
 
 ### Windowless application
 
@@ -90,14 +90,14 @@ rendering, image processing etc. You need Magnum built with
 The [`scenegraph2D`](https://github.com/mosra/magnum-bootstrap/tree/scenegraph2D)
 and [`scenegraph3D`](https://github.com/mosra/magnum-bootstrap/tree/scenegraph3D)
 branches contain application prepared for using 2D/3D `SceneGraph`. You need
-Magnum built with `WITH_GLUTAPPLICATION` and `WITH_SCENEGRAPH` enabled.
+Magnum built with `WITH_SDL2APPLICATION` and `WITH_SCENEGRAPH` enabled.
 
 ### Base application with port to Google Chrome Native Client
 
 The [`base-nacl`](https://github.com/mosra/magnum-bootstrap/tree/base-nacl)
 branch contains application using `Platform::GlutApplication` for desktop build
 and `Platform::NaClApplication` for NaCl build. For desktop build you need
-Magnum built with `WITH_GLUTAPPLICATION` enabled and you can use the commands
+Magnum built with `WITH_SDL2APPLICATION` enabled and you can use the commands
 above to build the desktop version.
 
 For NaCl build you need to have NaCl SDK installed with Corrade and Magnum
@@ -173,7 +173,7 @@ You can then open `MyApplication.html` in Chrome or Firefox.
 ### Base application with port to Android
 
 The [`base-android`](https://github.com/mosra/magnum-bootstrap/tree/base-android)
-branch contains application using `Platform::GlutApplication` for desktop build
+branch contains application using `Platform::Sdl2Application` for desktop build
 and `Platform::AndroidApplication` for Android build. For desktop build you
 need Magnum built with `WITH_ANDROIDAPPLICATION` enabled and you can use the
 commands above to build the desktop version.
