@@ -1,7 +1,7 @@
 find_package(Magnum REQUIRED)
 
 if(NOT CORRADE_TARGET_ANDROID)
-    find_package(Magnum REQUIRED GlutApplication)
+    find_package(Magnum REQUIRED Sdl2Application)
 else()
     find_package(Magnum REQUIRED AndroidApplication)
 endif()
