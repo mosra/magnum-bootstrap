@@ -81,9 +81,10 @@ instead of `Platform::Sdl2Application`. You need Magnum built with
 
 The [`windowless`](https://github.com/mosra/magnum-bootstrap/tree/windowless)
 branch contains windowless application using `Platform::WindowlessGlxApplication`
-(Linux only). Useful for querying information about the renderer, offscreen
-rendering, image processing etc. You need Magnum built with
-`WITH_WINDOWLESSGLXAPPLICATION` enabled.
+on Linux and `Platform::WindowlessWglApplication` on Windows, other platforms
+are not supported yet. Useful for querying information about the renderer,
+offscreen rendering, image processing etc. You need Magnum built with
+`WITH_WINDOWLESSGLXAPPLICATION` or `WITH_WINDOWLESSWGLAPPLICATION` enabled.
 
 ### Scene graph
 
