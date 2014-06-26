@@ -1,4 +1,14 @@
+#include <Corrade/Corrade.h>
+
+#ifdef CORRADE_TARGET_APPLE
+#include <Magnum/Platform/WindowlessCglApplication.h>
+#elif defined(CORRADE_TARGET_UNIX)
 #include <Magnum/Platform/WindowlessGlxApplication.h>
+#elif defined(CORRADE_TARGET_WINDOWS)
+#include <Magnum/Platform/WindowlessWglApplication.h>
+#else
+#error No windowless application available on this platform
+#endif
 
 using namespace Magnum;
 
