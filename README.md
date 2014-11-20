@@ -155,7 +155,7 @@ building documentation for more information.
 
 In the `toolchains/` submodule don't forget to adapt `EMSCRIPTEN_PREFIX`
 variable in `generic/Emscripten.cmake` to path where Emscripten is installed.
-Default is `/usr/emscripten`.
+Default is `/usr/lib/emscripten`.
 
 Then create build directory and run `cmake` and build/install commands in it.
 The toolchain needs access to its platform file, so be sure to properly set
@@ -166,8 +166,8 @@ installed in proper location (e.g. a webserver).
     mkdir build-emscripten && cd build-emscripten
     cmake .. \
         -DCMAKE_MODULE_PATH="/absolute/path/to/toolchains/modules" \
-        -DCMAKE_TOOLCHAIN_FILE="../toolchains/generic/Emscripten.cmake"
-        -DCMAKE_INSTALL_PREFIX=/srv/http/nacl
+        -DCMAKE_TOOLCHAIN_FILE="../toolchains/generic/Emscripten.cmake" \
+        -DCMAKE_INSTALL_PREFIX=/usr/lib/emscripten/system
     cmake --build .
     cmake --build . --target install
 
