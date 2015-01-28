@@ -1,5 +1,6 @@
-This repository contains "bootstrap projects" for Magnum C++11 OpenGL graphics
-engine. If you don't know what Magnum is, see https://github.com/mosra/magnum.
+This repository contains "bootstrap projects" for Magnum C++11/C++14 OpenGL
+graphics engine. If you don't know what Magnum is, see
+https://github.com/mosra/magnum.
 
 Setting up a new project can be pretty gruesome and nobody likes repeating the
 same process every time. This repository provides "bootstrap" project
