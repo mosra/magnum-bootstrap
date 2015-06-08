@@ -78,6 +78,16 @@ branch is similar to `base` one, except that it uses `Platform::GlutApplication`
 instead of `Platform::Sdl2Application`. You need Magnum built with
 `WITH_GLUTAPPLICATION` enabled.
 
+### Base application using Qt
+
+The [`base-qt`](https://github.com/mosra/magnum-bootstrap/tree/base-qt)
+branch does not use any of the application wrappers provided in `Platform`
+namespace, but uses Qt5 window and context creation directly and manually
+initializes Magnum on top of that using EGL on embedded devices, WGL on Windows,
+CGL on OS X and GLX on Unix/Linux. You need Magnum built with `WITH_EGLCONTEXT`,
+`WITH_WGLCONTEXT`, `WITH_CGLCONTEXT` or `WITH_GLXCONTEXT` enabled, depending on
+the platform of your choice.
+
 ### Windowless application
 
 The [`windowless`](https://github.com/mosra/magnum-bootstrap/tree/windowless)
@@ -87,7 +97,8 @@ on X11-based Unix, `Platform::WindowlessCglApplication` on OS X and
 supported yet. Useful for querying information about the renderer, offscreen
 rendering, image processing etc. You need Magnum built with
 `WITH_WINDOWLESSGLXAPPLICATION`, `WITH_WINDOWLESSCGLAPPLICATION` or
-`WITH_WINDOWLESSWGLAPPLICATION` enabled.
+`WITH_WINDOWLESSWGLAPPLICATION` enabled, depending on the platform of your
+choice.
 
 ### Scene graph
 
