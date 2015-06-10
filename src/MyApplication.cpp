@@ -1,5 +1,4 @@
 /* Magnum GL headers must always be included before Qt ones */
-#include <Magnum/OpenGL.h>
 #include <Magnum/DefaultFramebuffer.h>
 #include <Magnum/Platform/Context.h>
 #include <QtWidgets/QApplication>
