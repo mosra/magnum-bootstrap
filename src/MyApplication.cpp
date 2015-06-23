@@ -19,7 +19,7 @@ class MyApplication: public Platform::WindowlessApplication {
         int exec() override;
 };
 
-MyApplication::MyApplication(const Arguments& arguments): Platform::WindowlessApplication(arguments) {
+MyApplication::MyApplication(const Arguments& arguments): Platform::WindowlessApplication{arguments} {
     /* TODO: Add your initialization code here */
 }
 
