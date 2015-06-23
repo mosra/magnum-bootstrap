@@ -17,19 +17,19 @@ class MyApplication: public Platform::Application {
     private:
         void drawEvent() override;
 
-        Scene3D scene;
-        Object3D* cameraObject;
-        SceneGraph::Camera3D* camera;
-        SceneGraph::DrawableGroup3D drawables;
+        Scene3D _scene;
+        Object3D* _cameraObject;
+        SceneGraph::Camera3D* _camera;
+        SceneGraph::DrawableGroup3D _drawables;
 };
 
-MyApplication::MyApplication(const Arguments& arguments): Platform::Application(arguments) {
+MyApplication::MyApplication(const Arguments& arguments): Platform::Application{arguments} {
     /* Configure camera */
-    cameraObject = new Object3D(&scene);
-    cameraObject->translate(Vector3::zAxis(5.0f));
-    camera = new SceneGraph::Camera3D(*cameraObject);
-    camera->setAspectRatioPolicy(SceneGraph::AspectRatioPolicy::Extend)
-        .setPerspective(35.0_degf, 4.0f/3.0f, 0.001f, 100.0f)
+    _cameraObject = new Object3D{&_scene};
+    _cameraObject->translate(Vector3::zAxis(5.0f));
+    _camera = new SceneGraph::Camera3D{*_cameraObject};
+    _camera->setAspectRatioPolicy(SceneGraph::AspectRatioPolicy::Extend)
+        .setProjectionMatrix(Matrix4::perspectiveProjection(35.0_degf, 4.0f/3.0f, 0.001f, 100.0f))
         .setViewport(defaultFramebuffer.viewport().size());
 
     /* TODO: Prepare your objects here and add them to the scene */
@@ -38,7 +38,7 @@ MyApplication::MyApplication(const Arguments& arguments): Platform::Application(
 void MyApplication::drawEvent() {
     defaultFramebuffer.clear(FramebufferClear::Color);
 
-    camera->draw(drawables);
+    _camera->draw(_drawables);
 
     swapBuffers();
 }
