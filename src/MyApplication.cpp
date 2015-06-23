@@ -17,18 +17,18 @@ class MyApplication: public Platform::Application {
     private:
         void drawEvent() override;
 
-        Scene2D scene;
-        Object2D* cameraObject;
-        SceneGraph::Camera2D* camera;
-        SceneGraph::DrawableGroup2D drawables;
+        Scene2D _scene;
+        Object2D* _cameraObject;
+        SceneGraph::Camera2D* _camera;
+        SceneGraph::DrawableGroup2D _drawables;
 };
 
-MyApplication::MyApplication(const Arguments& arguments): Platform::Application(arguments) {
+MyApplication::MyApplication(const Arguments& arguments): Platform::Application{arguments} {
     /* Configure camera */
-    cameraObject = new Object2D(&scene);
-    camera = new SceneGraph::Camera2D(*cameraObject);
-    camera->setAspectRatioPolicy(SceneGraph::AspectRatioPolicy::Extend)
-        .setProjection({4.0f/3.0f, 1.0f})
+    _cameraObject = new Object2D{&_scene};
+    _camera = new SceneGraph::Camera2D{*_cameraObject};
+    _camera->setAspectRatioPolicy(SceneGraph::AspectRatioPolicy::Extend)
+        .setProjectionMatrix(Matrix3::projection({4.0f/3.0f, 1.0f}))
         .setViewport(defaultFramebuffer.viewport().size());
 
     /* TODO: Prepare your objects here and add them to the scene */
@@ -37,7 +37,7 @@ MyApplication::MyApplication(const Arguments& arguments): Platform::Application(
 void MyApplication::drawEvent() {
     defaultFramebuffer.clear(FramebufferClear::Color);
 
-    camera->draw(drawables);
+    _camera->draw(_drawables);
 
     swapBuffers();
 }
