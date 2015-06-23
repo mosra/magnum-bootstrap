@@ -8,7 +8,7 @@ using namespace Magnum;
 
 class MyApplication: public QOpenGLWidget {
     public:
-        explicit MyApplication(QWidget* parent = nullptr, Qt::WindowFlags f = 0);
+        explicit MyApplication(QWidget* parent = nullptr, Qt::WindowFlags f = nullptr);
 
     private:
         void initializeGL() override;
@@ -22,7 +22,7 @@ MyApplication::MyApplication(QWidget* parent, Qt::WindowFlags f): QOpenGLWidget{
 }
 
 void MyApplication::initializeGL() {
-    _context = Platform::Context{};
+    _context.emplace(Platform::Context{});
 
     /* TODO: Add your initialization code here */
 }
@@ -34,7 +34,7 @@ void MyApplication::paintGL() {
 }
 
 int main(int argc, char** argv) {
-    QApplication app(argc, argv);
+    QApplication app{argc, argv};
 
     MyApplication w;
     w.show();
