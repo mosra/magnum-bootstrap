@@ -17,11 +17,11 @@ thoroughly explained in Magnum documentation, particularly in the
 Minimal dependencies
 --------------------
 
-*   C++ compiler with good C++11 support. Currently there are two compilers
-    which are tested to have everything needed: **GCC** >= 4.7 and **Clang**
-    >= 3.1. On Windows you can use **MinGW**. GCC 4.6, 4.5, 4.4 and **MSVC**
-    2013 are supported if you use `compatibility` branch of Corrade and Magnum
-    libraries.
+-   C++ compiler with good C++11 support. Compilers which are tested to have
+    everything needed are **GCC** >= 4.7, **Clang** >= 3.1 and **MSVC** 2015.
+    On Windows you can also use **MinGW**. GCC 4.6, 4.5, 4.4 and MSVC 2013
+    support involves some ugly workarounds and thus is available only in
+    `compatibility` branch.
 *   **CMake** >= 2.8.9
 *   **Corrade**, **Magnum** -- The engine itself
 
