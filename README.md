@@ -238,6 +238,35 @@ can be then installed directly on the device or emulator using `adb install`.
     ant debug
     adb install bin/NativeActivity-debug.apk
 
+### Base application with port to Windows RT (Store/Phone)
+
+The [`base-winrt`](https://github.com/mosra/magnum-bootstrap/tree/base-winrt)
+branch contains application using `Platform::Sdl2Application` for both desktop
+and Windows RT build. You need Magnum built with `WITH_SDL2APPLICATION` enabled
+and you can use the commands above to build the desktop version.
+
+For Windows RT build you need to have at least Windows 8.1, Visual Studio 2013
+and Windows 8.1 Store/Phone SDK installed with Corrade and Magnum crosscompiled
+for Windows RT, don't forget to build Magnum with `WITH_SDL2APPLICATION` enabled.
+See [Corrade's](http://mosra.cz/blog/corrade-doc/building-corrade.html#building-cross-winrt)
+and [Magnum's](http://mosra.cz/blog/magnum-doc/building.html#building-cross-winrt)
+building documentation for more information.
+
+You need to provide [your own `*.pfx` certificate file](https://msdn.microsoft.com/en-us/library/windows/desktop/jj835832.aspx)
+and pass it to CMake in a `SIGNING_CERTIFICATE` variable. The bootstrap
+application assumes that SDL2 and ANGLE is built as DLL and both Corrade and
+Magnum are built statically. Assuming the native Corrade installation is in
+`C:/Sys` and all WinRT dependencies are in `C:/Sys-winrt`, the build can be
+done similarly to the following:
+
+    mkdir build-winrt && cd build-winrt
+    cmake -DCORRADE_RC_EXECUTABLE="C:/Sys/bin/corrade-rc.exe" -DCMAKE_PREFIX_PATH="C:/Sys-winrt" -DCMAKE_SYSTEM_NAME=WindowsStore -DCMAKE_SYSTEM_VERSION=8.1 -G "Visual Studio 14 2015" -DSIGNING_CERTIFICATE=<path-to-your-pfx-file> ..
+    cmake --build .
+
+Change `WindowsStore` to `WindowsPhone` if you want to build for Windows Phone
+instead. The `build-winrt/src/AppPackages` directory will then contain the
+final package along with a PowerShell script for easy local installation.
+
 CONTACT
 =======
 
