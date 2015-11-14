@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
+  <Identity Name="MyApplication" Publisher="CN=A Publisher" Version="1.0.0.0" />
+  <mp:PhoneIdentity PhoneProductId="00000000-0000-0000-0000-000000000000" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <Properties>
+    <DisplayName>My Application</DisplayName>
+    <PublisherDisplayName>A Publisher</PublisherDisplayName>
+    <Logo>assets/logo-store.png</Logo>
+  </Properties>
+  <Resources>
+    <Resource Language="x-generate" />
+  </Resources>
+  <Applications>
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="MyApplication.App">
+      <m2:VisualElements
+        DisplayName="Magnum Windows Phone Application"
+        Description="My Application"
+        BackgroundColor="#202020"
+        ForegroundText="light"
+        Square150x150Logo="assets/logo.png"
+        Square30x30Logo="assets/logo-small.png">
+        <m2:SplashScreen Image="assets/splash.png" />
+      </m2:VisualElements>
+    </Application>
+  </Applications>
+</Package>
