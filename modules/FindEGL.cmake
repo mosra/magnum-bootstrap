@@ -1,10 +1,10 @@
-# - Find OpenGL ES 2
+# - Find EGL
 #
 # This module defines:
 #
-#  OPENGLES2_FOUND          - True if OpenGL ES 2 library is found
-#  OPENGLES2_LIBRARY        - OpenGL ES 2 library
-#  OPENGLES2_INCLUDE_DIR    - Include dir
+#  EGL_FOUND            - True if EGL library is found
+#  EGL_LIBRARY          - EGL library
+#  EGL_INCLUDE_DIR      - Include dir
 #
 
 #
@@ -32,31 +32,24 @@
 #   DEALINGS IN THE SOFTWARE.
 #
 
-# In Emscripten OpenGL ES 2 is linked automatically, thus no need to find the
-# library.
-if(NOT CORRADE_TARGET_EMSCRIPTEN)
-    find_library(OPENGLES2_LIBRARY NAMES
-        GLESv2
+# Library
+find_library(EGL_LIBRARY NAMES
+    EGL
 
-        # ANGLE (CMake doesn't search for lib prefix on Windows)
-        libGLESv2
+    # ANGLE (CMake doesn't search for lib prefix on Windows)
+    libEGL
 
-        # iOS
-        OpenGLES
-
-        # NaCl
-        ppapi_gles2)
-    set(OPENGLES2_LIBRARY_NEEDED OPENGLES2_LIBRARY)
-endif()
+    # On iOS a part of OpenGLES
+    OpenGLES)
 
 # Include dir
-find_path(OPENGLES2_INCLUDE_DIR NAMES
-    GLES2/gl2.h
+find_path(EGL_INCLUDE_DIR NAMES
+    EGL/egl.h
 
     # iOS
-    ES2/gl.h)
+    EAGL.h)
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args("OpenGLES2" DEFAULT_MSG
-    ${OPENGLES2_LIBRARY_NEEDED}
-    OPENGLES2_INCLUDE_DIR)
+find_package_handle_standard_args("EGL" DEFAULT_MSG
+    EGL_LIBRARY
+    EGL_INCLUDE_DIR)
