@@ -1,10 +1,10 @@
-# - Find EGL
+# - Find OpenGL ES 3
 #
 # This module defines:
 #
-#  EGL_FOUND            - True if EGL library is found
-#  EGL_LIBRARY          - EGL library
-#  EGL_INCLUDE_DIR      - Include dir
+#  OPENGLES3_FOUND          - True if OpenGL ES 3 library is found
+#  OPENGLES3_LIBRARY        - OpenGL ES 3 library
+#  OPENGLES3_INCLUDE_DIR    - Include dir
 #
 
 #
@@ -32,24 +32,32 @@
 #   DEALINGS IN THE SOFTWARE.
 #
 
-# Library
-find_library(EGL_LIBRARY NAMES
-    EGL
+# In Emscripten OpenGL ES 3 is linked automatically, thus no need to find the
+# library.
+if(NOT CORRADE_TARGET_EMSCRIPTEN)
+    find_library(OPENGLES3_LIBRARY NAMES
+        GLESv3
 
-    # ANGLE (CMake doesn't search for lib prefix on Windows)
-    libEGL
+        # On some platforms (e.g. desktop emulation with Mesa or NVidia) ES3
+        # support is provided in ES2 lib
+        GLESv2
 
-    # On iOS a part of OpenGLES
-    OpenGLES)
+        # ANGLE (CMake doesn't search for lib prefix on Windows)
+        libGLESv2
+
+        # iOS
+        OpenGLES)
+    set(OPENGLES3_LIBRARY_NEEDED OPENGLES3_LIBRARY)
+endif()
 
 # Include dir
-find_path(EGL_INCLUDE_DIR NAMES
-    EGL/egl.h
+find_path(OPENGLES3_INCLUDE_DIR NAMES
+    GLES3/gl3.h
 
     # iOS
-    EAGL.h)
+    ES3/gl.h)
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args("EGL" DEFAULT_MSG
-    EGL_LIBRARY
-    EGL_INCLUDE_DIR)
+find_package_handle_standard_args("OpenGLES3" DEFAULT_MSG
+    ${OPENGLES3_LIBRARY_NEEDED}
+    OPENGLES3_INCLUDE_DIR)
