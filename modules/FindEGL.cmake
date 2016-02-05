@@ -10,7 +10,7 @@
 #
 #   This file is part of Magnum.
 #
-#   Copyright © 2010, 2011, 2012, 2013, 2014, 2015
+#   Copyright © 2010, 2011, 2012, 2013, 2014, 2015, 2016
 #             Vladimír Vondruš <mosra@centrum.cz>
 #
 #   Permission is hereby granted, free of charge, to any person obtaining a
@@ -35,11 +35,19 @@
 # Library
 find_library(EGL_LIBRARY NAMES
     EGL
-    libEGL) # ANGLE (CMake doesn't search for lib prefix on Windows)
+
+    # ANGLE (CMake doesn't search for lib prefix on Windows)
+    libEGL
+
+    # On iOS a part of OpenGLES
+    OpenGLES)
 
 # Include dir
-find_path(EGL_INCLUDE_DIR
-    NAMES EGL/egl.h)
+find_path(EGL_INCLUDE_DIR NAMES
+    EGL/egl.h
+
+    # iOS
+    EAGL.h)
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args("EGL" DEFAULT_MSG
