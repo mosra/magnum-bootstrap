@@ -1,10 +1,10 @@
-# - Find OpenGL ES 2
+# - Find OpenGL ES 3
 #
 # This module defines:
 #
-#  OPENGLES2_FOUND          - True if OpenGL ES 2 library is found
-#  OPENGLES2_LIBRARY        - OpenGL ES 2 library
-#  OPENGLES2_INCLUDE_DIR    - Include dir
+#  OPENGLES3_FOUND          - True if OpenGL ES 3 library is found
+#  OPENGLES3_LIBRARY        - OpenGL ES 3 library
+#  OPENGLES3_INCLUDE_DIR    - Include dir
 #
 
 #
@@ -32,31 +32,32 @@
 #   DEALINGS IN THE SOFTWARE.
 #
 
-# In Emscripten OpenGL ES 2 is linked automatically, thus no need to find the
+# In Emscripten OpenGL ES 3 is linked automatically, thus no need to find the
 # library.
 if(NOT CORRADE_TARGET_EMSCRIPTEN)
-    find_library(OPENGLES2_LIBRARY NAMES
+    find_library(OPENGLES3_LIBRARY NAMES
+        GLESv3
+
+        # On some platforms (e.g. desktop emulation with Mesa or NVidia) ES3
+        # support is provided in ES2 lib
         GLESv2
 
         # ANGLE (CMake doesn't search for lib prefix on Windows)
         libGLESv2
 
         # iOS
-        OpenGLES
-
-        # NaCl
-        ppapi_gles2)
-    set(OPENGLES2_LIBRARY_NEEDED OPENGLES2_LIBRARY)
+        OpenGLES)
+    set(OPENGLES3_LIBRARY_NEEDED OPENGLES3_LIBRARY)
 endif()
 
 # Include dir
-find_path(OPENGLES2_INCLUDE_DIR NAMES
-    GLES2/gl2.h
+find_path(OPENGLES3_INCLUDE_DIR NAMES
+    GLES3/gl3.h
 
     # iOS
-    ES2/gl.h)
+    ES3/gl.h)
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args("OpenGLES2" DEFAULT_MSG
-    ${OPENGLES2_LIBRARY_NEEDED}
-    OPENGLES2_INCLUDE_DIR)
+find_package_handle_standard_args("OpenGLES3" DEFAULT_MSG
+    ${OPENGLES3_LIBRARY_NEEDED}
+    OPENGLES3_INCLUDE_DIR)
