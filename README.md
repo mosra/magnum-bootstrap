@@ -238,6 +238,38 @@ can be then installed directly on the device or emulator using `adb install`.
     ant debug
     adb install bin/NativeActivity-debug.apk
 
+### Base application with port to iOS
+
+The [`base-ios`](https://github.com/mosra/magnum-bootstrap/tree/base-ios)
+branch contains application using `Platform::Sdl2Application` for both desktop
+and iOS build. You need Magnum built with `WITH_SDL2APPLICATION` enabled and
+you can use the commands above to build the desktop version.
+
+For iOS you need OSX and XCode installed with Corrade and Magnum crosscompiled
+for iOS, don't forget to build Magnum with `WITH_SDL2APPLICATION` enabled.
+See [Corrade's](http://mosra.cz/blog/corrade-doc/building-corrade.html#building-cross-ios)
+and [Magnum's](http://mosra.cz/blog/magnum-doc/building.html#building-cross-ios)
+building documentation for more information.
+
+Then create build directory and run `cmake` to generate the Xcode project. Set
+`CMAKE_OSX_ROOT` to SDK you want to target and enable all desired architectures
+in `CMAKE_OSX_ARCHITECTURES`. The toolchain needs access to its platform file,
+so be sure to properly set **absolute** path to `toolchains/modules/` directory
+containing `Platform/iOS.cmake`. Set `CMAKE_PREFIX_PATH` to the directory where
+you have all the dependencies.
+
+    mkdir build-ios && cd build-ios
+    cmake .. \
+        -DCMAKE_MODULE_PATH=/absolute/path/to/toolchains/modules/ \
+        -DCMAKE_TOOLCHAIN_FILE=../toolchains/generic/iOS.cmake \
+        -DCMAKE_OSX_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk \
+        -DCMAKE_OSX_ARCHITECTURES="arm64;armv7;armv7s" \
+        -DCMAKE_PREFIX_PATH=~/ios-libs \
+        -G Xcode
+
+You can then open the generated project file in Xcode and build/deploy it from
+there.
+
 ### Base application with port to Windows RT (Store/Phone)
 
 The [`base-winrt`](https://github.com/mosra/magnum-bootstrap/tree/base-winrt)
