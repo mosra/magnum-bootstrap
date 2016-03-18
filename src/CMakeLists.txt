@@ -6,8 +6,7 @@ else()
     find_package(Magnum REQUIRED AndroidApplication)
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CORRADE_CXX_FLAGS}")
-include_directories(${MAGNUM_INCLUDE_DIRS} ${MAGNUM_APPLICATION_INCLUDE_DIRS})
+set_directory_properties(PROPERTIES CORRADE_USE_PEDANTIC_FLAGS ON)
 
 if(NOT CORRADE_TARGET_ANDROID)
     add_executable(MyApplication MyApplication.cpp)
@@ -18,5 +17,5 @@ else()
 endif()
 
 target_link_libraries(MyApplication
-    ${MAGNUM_LIBRARIES}
-    ${MAGNUM_APPLICATION_LIBRARIES})
+    Magnum::Application
+    Magnum::Magnum)
