@@ -22,7 +22,7 @@ MyApplication::MyApplication(QWidget* parent, Qt::WindowFlags f): QOpenGLWidget{
 }
 
 void MyApplication::initializeGL() {
-    _context.emplace(Platform::Context{});
+    _context.emplace(Platform::Context{0, nullptr});
 
     /* TODO: Add your initialization code here */
 }
