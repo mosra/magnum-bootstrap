@@ -1,8 +1,14 @@
-# - Find OpenGL ES 3
+#.rst:
+# Find OpenGL ES 3
+# ----------------
 #
-# This module defines:
+# Finds the OpenGL ES 3 library. This module defines:
 #
-#  OPENGLES3_FOUND          - True if OpenGL ES 3 library is found
+#  OpenGLES3_FOUND          - True if OpenGL ES 3 library is found
+#  OpenGLES3::OpenGLES3     - OpenGL ES 3 imported target
+#
+# Additionally these variables are defined for internal usage:
+#
 #  OPENGLES3_LIBRARY        - OpenGL ES 3 library
 #  OPENGLES3_INCLUDE_DIR    - Include dir
 #
@@ -10,7 +16,7 @@
 #
 #   This file is part of Magnum.
 #
-#   Copyright © 2010, 2011, 2012, 2013, 2014, 2015
+#   Copyright © 2010, 2011, 2012, 2013, 2014, 2015, 2016
 #             Vladimír Vondruš <mosra@centrum.cz>
 #
 #   Permission is hereby granted, free of charge, to any person obtaining a
@@ -61,3 +67,19 @@ include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args("OpenGLES3" DEFAULT_MSG
     ${OPENGLES3_LIBRARY_NEEDED}
     OPENGLES3_INCLUDE_DIR)
+
+if(NOT TARGET OpenGLES3::OpenGLES3)
+    if(OPENGLES3_LIBRARY_NEEDED)
+        add_library(OpenGLES3::OpenGLES3 UNKNOWN IMPORTED)
+        set_property(TARGET OpenGLES3::OpenGLES3 PROPERTY
+            IMPORTED_LOCATION ${OPENGLES3_LIBRARY})
+    else()
+        # This won't work in CMake 2.8.12, but that affects Emscripten only so
+        # I assume people building for that are not on that crap old Ubuntu
+        # 14.04 LTS
+        add_library(OpenGLES3::OpenGLES3 INTERFACE IMPORTED)
+    endif()
+
+    set_property(TARGET OpenGLES3::OpenGLES3 PROPERTY
+        INTERFACE_INCLUDE_DIRECTORIES ${OPENGLES3_INCLUDE_DIR})
+endif()
