@@ -1,8 +1,7 @@
 find_package(Magnum REQUIRED
     Sdl2Application)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CORRADE_CXX_FLAGS}")
-include_directories(${MAGNUM_INCLUDE_DIRS} ${MAGNUM_APPLICATION_INCLUDE_DIRS})
+set_directory_properties(PROPERTIES CORRADE_USE_PEDANTIC_FLAGS ON)
 
 if(CORRADE_TARGET_WINDOWS_RT)
     # The user has to provide the signing certificate
@@ -48,5 +47,5 @@ else()
 endif()
 
 target_link_libraries(MyApplication
-    ${MAGNUM_APPLICATION_LIBRARIES}
-    ${MAGNUM_LIBRARIES})
+    Magnum::Application
+    Magnum::Magnum)
