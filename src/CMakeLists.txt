@@ -10,10 +10,9 @@ else()
     message(FATAL_ERROR "No windowless application available on this platform")
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CORRADE_CXX_FLAGS}")
-include_directories(${MAGNUM_INCLUDE_DIRS} ${MAGNUM_WINDOWLESSAPPLICATION_INCLUDE_DIRS})
+set_directory_properties(PROPERTIES CORRADE_USE_PEDANTIC_FLAGS ON)
 
 add_executable(MyApplication MyApplication.cpp)
 target_link_libraries(MyApplication
-    ${MAGNUM_LIBRARIES}
-    ${MAGNUM_WINDOWLESSAPPLICATION_LIBRARIES})
+    Magnum::Magnum
+    Magnum::WindowlessApplication)
