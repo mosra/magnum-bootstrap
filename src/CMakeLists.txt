@@ -1,11 +1,19 @@
 find_package(Magnum REQUIRED)
 
-if(CORRADE_TARGET_APPLE)
+if(MAGNUM_TARGET_HEADLESS)
+    find_package(Magnum REQUIRED WindowlessEglApplication)
+elseif(CORRADE_TARGET_IOS)
+    find_package(Magnum REQUIRED WindowlessIosApplication)
+elseif(CORRADE_TARGET_APPLE)
     find_package(Magnum REQUIRED WindowlessCglApplication)
 elseif(CORRADE_TARGET_UNIX)
     find_package(Magnum REQUIRED WindowlessGlxApplication)
 elseif(CORRADE_TARGET_WINDOWS)
-    find_package(Magnum REQUIRED WindowlessWglApplication)
+    if(NOT MAGNUM_TARGET_GLES OR MAGNUM_TARGET_DESKTOP_GLES)
+        find_package(Magnum REQUIRED WindowlessWglApplication)
+    else()
+        find_package(Magnum REQUIRED WindowlessWindowsEglApplication)
+    endif()
 else()
     message(FATAL_ERROR "No windowless application available on this platform")
 endif()
@@ -16,3 +24,9 @@ add_executable(MyApplication MyApplication.cpp)
 target_link_libraries(MyApplication
     Magnum::Magnum
     Magnum::WindowlessApplication)
+if(CORRADE_TARGET_IOS)
+    set_target_properties(MyApplication PROPERTIES
+        MACOSX_BUNDLE ON
+        MACOSX_BUNDLE_GUI_IDENTIFIER "cz.mosra.magnum.MyApplication"
+        XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED "YES")
+endif()
