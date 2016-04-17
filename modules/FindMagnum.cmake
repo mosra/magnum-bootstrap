@@ -53,7 +53,9 @@
 #  Sdl2Application              - SDL2 application
 #  XEglApplication              - X/EGL application
 #  WindowlessCglApplication     - Windowless CGL application
+#  WindowlessEglApplication     - Windowless EGL application
 #  WindowlessGlxApplication     - Windowless GLX application
+#  WindowlessIosApplication     - Windowless iOS application
 #  WindowlessNaClApplication    - Windowless NaCl application
 #  WindowlessWglApplication     - Windowless WGL application
 #  WindowlessWindowsEglApplication - Windowless Windows/EGL application
@@ -108,6 +110,7 @@
 #  MAGNUM_TARGET_DESKTOP_GLES   - Defined if compiled with OpenGL ES
 #   emulation on desktop OpenGL
 #  MAGNUM_TARGET_WEBGL          - Defined if compiled for WebGL
+#  MAGNUM_TARGET_HEADLESS       - Defined if compiled for headless machines
 #
 # Additionally these variables are defined for internal usage:
 #
@@ -206,7 +209,8 @@ set(_magnumFlags
     TARGET_GLES2
     TARGET_GLES3
     TARGET_DESKTOP_GLES
-    TARGET_WEBGL)
+    TARGET_WEBGL
+    TARGET_HEADLESS)
 foreach(_magnumFlag ${_magnumFlags})
     string(FIND "${_magnumConfigure}" "#define MAGNUM_${_magnumFlag}" _magnum_${_magnumFlag})
     if(NOT _magnum_${_magnumFlag} EQUAL -1)
@@ -285,6 +289,8 @@ if(NOT TARGET Magnum::Magnum)
         # TODO: give me INTERFACE_LINK_OPTIONS or something, please
         set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s USE_WEBGL2=1")
     endif()
+else()
+    set(MAGNUM_LIBRARY Magnum::Magnum)
 endif()
 
 # Ensure that all inter-component dependencies are specified as well
@@ -312,6 +318,13 @@ foreach(_component ${Magnum_FIND_COMPONENTS})
         list(APPEND _MAGNUM_${_COMPONENT}_DEPENDENCIES Text TextureTools)
     endif()
 
+    # Mark the dependencies as required if the component is also required
+    if(Magnum_FIND_REQUIRED_${_component})
+        foreach(_dependency ${_MAGNUM_${_COMPONENT}_DEPENDENCIES})
+            set(Magnum_FIND_REQUIRED_${_dependency} TRUE)
+        endforeach()
+    endif()
+
     list(APPEND _MAGNUM_ADDITIONAL_COMPONENTS ${_MAGNUM_${_COMPONENT}_DEPENDENCIES})
 endforeach()
 
@@ -325,7 +338,7 @@ endif()
 
 # Component distinction (listing them explicitly to avoid mistakes with finding
 # components from other repositories)
-set(_MAGNUM_LIBRARY_COMPONENTS "^(Audio|DebugTools|MeshTools|Primitives|SceneGraph|Shaders|Shapes|Text|TextureTools|GlutApplication|GlxApplication|NaClApplication|Sdl2Application|XEglApplication|WindowlessCglApplication|WindowlessGlxApplication|WindowlessNaClApplication|WindowlessWglApplication|WindowlessWindowsEglApplication|CglContext|EglContext|GlxContext|WglContext)$")
+set(_MAGNUM_LIBRARY_COMPONENTS "^(Audio|DebugTools|MeshTools|Primitives|SceneGraph|Shaders|Shapes|Text|TextureTools|AndroidApplication|GlutApplication|GlxApplication|NaClApplication|Sdl2Application|XEglApplication|WindowlessCglApplication|WindowlessEglApplication|WindowlessGlxApplication|WindowlessIosApplication|WindowlessNaClApplication|WindowlessWglApplication|WindowlessWindowsEglApplication|CglContext|EglContext|GlxContext|WglContext)$")
 set(_MAGNUM_PLUGIN_COMPONENTS "^(MagnumFont|MagnumFontConverter|ObjImporter|TgaImageConverter|TgaImporter|WavAudioImporter)$")
 set(_MAGNUM_EXECUTABLE_COMPONENTS "^(distancefieldconverter|fontconverter|info)$")
 
@@ -481,6 +494,22 @@ foreach(_component ${Magnum_FIND_COMPONENTS})
                     INTERFACE_LINK_LIBRARIES ${X11_LIBRARIES})
 
             # Windowless CGL application has no additional dependencies
+
+            # Windowless EGL application dependencies
+            elseif(_component STREQUAL WindowlessEglApplication)
+                find_package(EGL)
+                set_property(TARGET Magnum::${_component} APPEND PROPERTY
+                    INTERFACE_LINK_LIBRARIES EGL::EGL)
+
+            # Windowless iOS application dependencies
+            elseif(_component STREQUAL WindowlessIosApplication)
+                # We need to link to Foundation framework to use ObjC
+                find_library(_MAGNUM_IOS_FOUNDATION_FRAMEWORK_LIBRARY Foundation)
+                mark_as_advanced(_MAGNUM_IOS_FOUNDATION_FRAMEWORK_LIBRARY)
+                find_package(EGL)
+                set_property(TARGET Magnum::${_component} APPEND PROPERTY
+                    INTERFACE_LINK_LIBRARIES EGL::EGL ${_MAGNUM_IOS_FOUNDATION_FRAMEWORK_LIBRARY})
+
             # Windowless WGL application has no additional dependencies
 
             # Windowless Windows/EGL application dependencies
@@ -511,10 +540,9 @@ foreach(_component ${Magnum_FIND_COMPONENTS})
                     INTERFACE_INCLUDE_DIRECTORIES ${X11_INCLUDE_DIR})
                 set_property(TARGET Magnum::${_component} APPEND PROPERTY
                     INTERFACE_LINK_LIBRARIES ${X11_LIBRARIES})
-            endif()
 
             # EGL context dependencies
-            if(_component STREQUAL EglContext)
+            elseif(_component STREQUAL EglContext)
                 find_package(EGL)
                 set_property(TARGET Magnum::${_component} APPEND PROPERTY
                     INTERFACE_LINK_LIBRARIES EGL::EGL)
@@ -608,7 +636,7 @@ endforeach()
 # Complete the check with also all components
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(Magnum
-    REQUIRED_VARS MAGNUM_LIBRARY MAGNUM_INCLUDE_DIR
+    REQUIRED_VARS MAGNUM_INCLUDE_DIR MAGNUM_LIBRARY
     HANDLE_COMPONENTS)
 
 # Create Windowless*Application, *Application and *Context aliases
