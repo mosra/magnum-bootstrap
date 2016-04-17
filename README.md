@@ -136,7 +136,6 @@ location of your webserver to have the files installed in proper location.
 
     mkdir build-nacl-x86-32 && cd build-nacl-x86-32
     cmake .. \
-        -DCMAKE_MODULE_PATH="/absolute/path/to/toolchains/modules" \
         -DCMAKE_TOOLCHAIN_FILE="../toolchains/generic/NaCl-newlib-x86-32.cmake" \
         -DCMAKE_INSTALL_PREFIX=/srv/http/nacl
     cmake --build .
@@ -145,7 +144,6 @@ location of your webserver to have the files installed in proper location.
     mkdir -p build-nacl-x86-64
     cd build-nacl-x86-64
     cmake .. \
-        -DCMAKE_MODULE_PATH="/absolute/path/to/toolchains/modules" \
         -DCMAKE_TOOLCHAIN_FILE="../toolchains/generic/NaCl-newlib-x86-64.cmake" \
         -DCMAKE_INSTALL_PREFIX=/srv/http/nacl
     cmake --build .
@@ -179,7 +177,6 @@ installed in proper location (e.g. a webserver).
 
     mkdir build-emscripten && cd build-emscripten
     cmake .. \
-        -DCMAKE_MODULE_PATH="/absolute/path/to/toolchains/modules" \
         -DCMAKE_TOOLCHAIN_FILE="../toolchains/generic/Emscripten.cmake" \
         -DCMAKE_INSTALL_PREFIX=/usr/lib/emscripten/system
     cmake --build .
@@ -220,15 +217,11 @@ properly set **absolute** path to `toolchains/modules/` directory containing
 `Platform/Android.cmake`.
 
     mkdir build-android-arm && cd build-android-arm
-    cmake .. \
-        -DCMAKE_MODULE_PATH="/absolute/path/to/toolchains/modules" \
-        -DCMAKE_TOOLCHAIN_FILE="../toolchains/generic/Android-ARM.cmake"
+    cmake .. -DCMAKE_TOOLCHAIN_FILE="../toolchains/generic/Android-ARM.cmake"
     cmake --build .
 
     mkdir build-android-x86 && cd build-android-x86
-    cmake .. \
-        -DCMAKE_MODULE_PATH="/absolute/path/to/toolchains/modules" \
-        -DCMAKE_TOOLCHAIN_FILE="../toolchains/generic/Android-x86.cmake"
+    cmake .. -DCMAKE_TOOLCHAIN_FILE="../toolchains/generic/Android-x86.cmake"
     cmake --build .
 
 The compiled binaries will be put into `lib/armeabi-v7a` and `lib/x86`. You can
@@ -260,7 +253,6 @@ you have all the dependencies.
 
     mkdir build-ios && cd build-ios
     cmake .. \
-        -DCMAKE_MODULE_PATH=/absolute/path/to/toolchains/modules/ \
         -DCMAKE_TOOLCHAIN_FILE=../toolchains/generic/iOS.cmake \
         -DCMAKE_OSX_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk \
         -DCMAKE_OSX_ARCHITECTURES="arm64;armv7;armv7s" \
