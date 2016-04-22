@@ -73,6 +73,13 @@ contains barebones windowed application using `Platform::Sdl2Application` with
 only the essential files. You need Magnum built with `WITH_SDL2APPLICATION`
 enabled.
 
+### Base application using GLFW
+
+The [`base-glfw`](https://github.com/mosra/magnum-bootstrap/tree/base-glfw)
+branch is similar to `base` one, except that it uses `Platform::GlfwApplication`
+instead of `Platform::Sdl2Application`. You need Magnum built with
+`WITH_GLFWAPPLICATION` enabled.
+
 ### Base application using GLUT
 
 The [`base-glut`](https://github.com/mosra/magnum-bootstrap/tree/base-glut)
