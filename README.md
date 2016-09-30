@@ -316,8 +316,7 @@ idea? Feel free to visit my website or contact me at:
 LICENSE
 =======
 
-While Magnum itself is released under MIT license (see [COPYING](COPYING) file
-for details), the bootstrap projects are released to public domain. To keep
-them as small and terse as possible no licensing information is put anywhere,
-allowing the users to freely use any license without dealing with relicensing
-issues.
+While Magnum itself and its documentation are licensed under MIT/Expat license,
+all bootstrap projects are put into public domain (or UNLICENSE) to free you
+from any legal obstacles when reusing the code in your apps. See the
+[COPYING](COPYING) file for details.

@@ -18,11 +18,12 @@ Code contribution
 *   Best way to contribute is by using GitHub [pull requests](https://github.com/mosra/magnum-bootstrap/pulls)
     -- fork the repository and make pull request from feature branch. You can
     also send patches via e-mail or contact me any other way.
-*   While Magnum itself is released under MIT/Expat license (see [COPYING](COPYING)
-    file for details), the bootstrap projects are released to public domain.
-    To keep them as small and terse as possible no licensing information is put
-    anywhere, allowing the users to freely use any license without dealing with
-    relicensing issues.
+*   All your code will be released under license of the project, so make sure
+    you and your collaborators (or employers) have no problems with it. While
+    Magnum itself and its documentation are licensed under MIT/Expat license,
+    all example code is put into public domain (or UNLICENSE), see the
+    [COPYING](COPYING) file for details. To keep the bootstrap projects as
+    small and as terse as possible, no license header is put into any files.
 
 Contact
 -------
