@@ -1,0 +1,78 @@
+# kate: indent-width 2;
+
+clone_depth: 1
+
+os: Visual Studio 2015
+
+environment:
+  matrix:
+  - BRANCH: base
+    COMPILER: msvc
+    EXTRA: -DWITH_SDL2APPLICATION=ON
+  - BRANCH: base
+    COMPILER: mingw
+    EXTRA: -DWITH_SDL2APPLICATION=ON
+  - BRANCH: base-glfw
+    COMPILER: msvc
+    EXTRA: -DWITH_GLFWAPPLICATION=ON
+  - BRANCH: windowless
+    COMPILER: msvc
+    EXTRA: -DWITH_WINDOWLESSWGLAPPLICATION=ON
+  - BRANCH: scenegraph2D
+    COMPILER: msvc
+    EXTRA: -DWITH_SDL2APPLICATION=ON -DWITH_SCENEGRAPH=ON
+  - BRANCH: scenegraph3D
+    COMPILER: msvc
+    EXTRA: -DWITH_SDL2APPLICATION=ON -DWITH_SCENEGRAPH=ON
+  # Disabled for now because I don't want to be bothered with signing and
+  # certificates and shit
+  #- BRANCH: base-winrt
+    #TARGET_GLES2: ON
+  #- BRANCH: base-winrt
+    #TARGET_GLES2: OFF
+
+notifications:
+- provider: Webhook
+  url: https://webhooks.gitter.im/e/415ae90928ba0dbd3df4
+  on_build_success: false
+  on_build_failure: true
+  on_build_status_changed: true
+
+install:
+- cinst ninja
+- set PATH=C:/Sys/bin;C:/tools/ninja;%PATH%
+# `cinst mingw` fails with 404 since Dec 2016, `appveyor Downloadfile` fails
+# with "Message string length exceeds 32k characters" so I have to call a
+# fucking powershell command in order to download a file. Oh and %20 in the URL
+# somehow gives a 404 ALSO so I have to explicitly use spaces. WHAT THE FUCK!
+- IF "%COMPILER%" == "mingw" IF NOT EXIST %APPVEYOR_BUILD_FOLDER%\x86_64-6.3.0-release-posix-seh-rt_v5-rev1.7z powershell -Command "(new-object System.Net.WebClient).Downloadfile('https://sourceforge.net/projects/mingw-w64/files/Toolchains targetting Win64/Personal Builds/mingw-builds/6.3.0/threads-posix/seh/x86_64-6.3.0-release-posix-seh-rt_v5-rev1.7z', 'x86_64-6.3.0-release-posix-seh-rt_v5-rev1.7z')"
+- IF "%COMPILER%" == "mingw" cd C:\tools && 7z x %APPVEYOR_BUILD_FOLDER%\x86_64-6.3.0-release-posix-seh-rt_v5-rev1.7z && cd %APPVEYOR_BUILD_FOLDER%
+
+# SDL2
+- IF "%BRANCH%" == "base" set DOWNLOAD_SDL=yes
+- IF "%BRANCH%" == "scenegraph2D" set DOWNLOAD_SDL=yes
+- IF "%BRANCH%" == "scenegraph3D" set DOWNLOAD_SDL=yes
+- IF "%DOWNLOAD_SDL%" == "yes" IF "%COMPILER%" == "msvc" IF NOT EXIST %APPVEYOR_BUILD_FOLDER%\SDL2-devel-2.0.4-VC.zip appveyor DownloadFile http://www.libsdl.org/release/SDL2-devel-2.0.4-VC.zip
+- IF "%DOWNLOAD_SDL%" == "yes" IF "%COMPILER%" == "msvc" 7z x SDL2-devel-2.0.4-VC.zip && ren SDL2-2.0.4 SDL
+- IF "%DOWNLOAD_SDL%" == "yes" IF "%COMPILER%" == "mingw" IF NOT EXIST %APPVEYOR_BUILD_FOLDER%\SDL2-devel-2.0.4-mingw.tar.gz appveyor DownloadFile http://libsdl.org/release/SDL2-devel-2.0.4-mingw.tar.gz
+- IF "%DOWNLOAD_SDL%" == "yes" IF "%COMPILER%" == "mingw" 7z x SDL2-devel-2.0.4-mingw.tar.gz & 7z x SDL2-devel-2.0.4-mingw.tar & ren SDL2-2.0.4 SDL
+
+# GLFW
+- IF "%BRANCH%" == "base-glfw" IF NOT EXIST %APPVEYOR_BUILD_FOLDER%\glfw-3.2.1.bin.WIN64.zip appveyor DownloadFile https://github.com/glfw/glfw/releases/download/3.2.1/glfw-3.2.1.bin.WIN64.zip
+- IF "%BRANCH%" == "base-glfw" 7z x glfw-3.2.1.bin.WIN64.zip && ren glfw-3.2.1.bin.WIN64 glfw && mkdir deps && mkdir deps\lib && mkdir deps\bin && mkdir deps\include && copy glfw\lib-vc2015\glfw3.dll deps\bin\ && copy glfw\lib-vc2015\glfw3dll.lib deps\lib\glfw3.lib && xcopy /e glfw\include\* deps\include\
+
+build_script:
+- IF "%BRANCH%" == "base" set TARGET=desktop
+- IF "%BRANCH%" == "base-glfw" set TARGET=desktop
+- IF "%BRANCH%" == "scenegraph2D" set TARGET=desktop
+- IF "%BRANCH%" == "scenegraph3D" set TARGET=desktop
+- IF "%BRANCH%" == "windowless" set TARGET=desktop
+- IF "%TARGET%" == "desktop" IF "%COMPILER%" == "msvc" call package\ci\appveyor-desktop.bat
+- IF "%TARGET%" == "desktop" IF "%COMPILER%" == "mingw" call package\ci\appveyor-desktop-mingw.bat
+- IF "%BRANCH%" == "base-winrt" call package\ci\appveyor-rt.bat
+
+cache:
+- SDL2-devel-2.0.4-VC.zip
+- SDL2-devel-2.0.4-mingw.tar.gz
+- x86_64-6.3.0-release-posix-seh-rt_v5-rev1.7z
+- glfw-3.2.1.bin.WIN64.zip
