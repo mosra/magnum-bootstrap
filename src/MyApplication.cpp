@@ -24,6 +24,8 @@ class MyApplication: public Platform::Application {
 };
 
 MyApplication::MyApplication(const Arguments& arguments): Platform::Application{arguments} {
+    using namespace Math::Literals;
+
     /* Configure camera */
     _cameraObject = new Object3D{&_scene};
     _cameraObject->translate(Vector3::zAxis(5.0f));
