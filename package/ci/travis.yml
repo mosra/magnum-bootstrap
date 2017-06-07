@@ -1,0 +1,195 @@
+# kate: indent-width 2;
+
+matrix:
+  include:
+  - language: cpp
+    os: linux
+    dist: trusty
+    compiler: gcc
+    env:
+    - BRANCH=base
+    - EXTRA="-DWITH_SDL2APPLICATION=ON"
+    addons:
+      apt:
+        packages:
+        - libsdl2-dev
+  - language: cpp
+    os: osx
+    compiler: clang
+    env:
+    - BRANCH=base
+    - EXTRA="-DWITH_SDL2APPLICATION=ON"
+  - language: cpp
+    os: linux
+    dist: trusty
+    compiler: gcc
+    env:
+    - BRANCH=base-glfw
+    - EXTRA="-DWITH_GLFWAPPLICATION=ON"
+    addons:
+      apt:
+        packages:
+        - libxrandr-dev
+        - libxinerama-dev
+        - libxcursor-dev
+        #- libxi-dev # will be needed in the future
+  - language: cpp
+    os: linux
+    dist: trusty
+    compiler: gcc
+    env:
+    - BRANCH=base-glut
+    - EXTRA="-DWITH_GLUTAPPLICATION=ON"
+    addons:
+      apt:
+        packages:
+        - freeglut3-dev
+  # Disabled because QOpenGLWidget is available since Qt 5.4 and 14.04 has 5.2.
+  # It might also need newer cmake in order to handle imported targets
+  # properly.
+  #- language: cpp
+    #os: linux
+    #dist: trusty
+    #compiler: gcc
+    #env:
+    #- BRANCH=base-qt
+    #- EXTRA="-DWITH_GLXCONTEXT=ON"
+    #addons:
+      #apt:
+        #packages:
+        #- qtbase5-dev
+  - language: cpp
+    os: linux
+    dist: trusty
+    compiler: gcc
+    env:
+    - BRANCH=windowless
+    - EXTRA="-DWITH_WINDOWLESSGLXAPPLICATION=ON"
+  - language: cpp
+    os: osx
+    compiler: clang
+    env:
+    - BRANCH=windowless
+    - EXTRA="-DWITH_WINDOWLESSCGLAPPLICATION=ON"
+  - language: cpp
+    os: linux
+    dist: trusty
+    compiler: gcc
+    env:
+    - BRANCH=scenegraph2D
+    - EXTRA="-DWITH_SDL2APPLICATION=ON -DWITH_SCENEGRAPH=ON"
+    addons:
+      apt:
+        packages:
+        - libsdl2-dev
+  - language: cpp
+    os: linux
+    dist: trusty
+    compiler: gcc
+    env:
+    - BRANCH=scenegraph3D
+    - EXTRA="-DWITH_SDL2APPLICATION=ON -DWITH_SCENEGRAPH=ON"
+    addons:
+      apt:
+        packages:
+        - libsdl2-dev
+  - language: cpp
+    os: osx
+    osx_image: xcode7.3
+    env:
+    - BRANCH=base-ios
+    - TARGET_GLES2=ON
+  - language: cpp
+    os: osx
+    osx_image: xcode7.3
+    env:
+    - BRANCH=base-ios
+    - TARGET_GLES2=OFF
+  - language: cpp
+    os: osx
+    osx_image: xcode7.3
+    env:
+    - BRANCH=base-emscripten
+    - TARGET_GLES2=ON
+  - language: cpp
+    os: osx
+    osx_image: xcode7.3
+    env:
+    - BRANCH=base-emscripten
+    - TARGET_GLES2=OFF
+  - language: android
+    os: linux
+    dist: precise
+    env:
+    - BRANCH=base-android
+    - TARGET_GLES2=ON
+    addons:
+      apt:
+        sources:
+        - ubuntu-toolchain-r-test
+        packages:
+        - g++-4.7
+    android:
+      components:
+      - build-tools-19.0.0
+      - android-19
+      - sys-img-armeabi-v7a-android-19
+  - language: android
+    os: linux
+    dist: precise
+    env:
+    - BRANCH=base-android
+    - TARGET_GLES2=OFF
+    addons:
+      apt:
+        sources:
+        - ubuntu-toolchain-r-test
+        packages:
+        - g++-4.7
+    android:
+      components:
+      - build-tools-19.0.0
+      - android-19
+      - sys-img-armeabi-v7a-android-19
+
+notifications:
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/00ec7a9066bb0fec98f3
+    on_success: change
+    on_failure: always
+    on_start: never
+
+cache:
+  directories:
+  - $HOME/sdl2
+  - $HOME/cmake
+
+install:
+- if [ "$BRANCH" == "base-android" ]; then wget -nc http://dl.google.com/android/ndk/android-ndk-r10e-linux-x86_64.bin && chmod +x android-*.bin && ./android-*.bin -y | grep -v Extracting; fi
+# Because Android build has to use 12.04 and CMake 2.8.12 stopped working there
+# since May 2017, I have to manually download a prebuilt version. Also, the
+# PATH setting can't be cached, so it's separate (bit me two times already)
+- if [ "$BRANCH" == "base-android" ] && [ ! -e "$HOME/cmake/bin" ]; then cd $HOME ; wget -nc --no-check-certificate https://cmake.org/files/v2.8/cmake-2.8.12.2-Linux-i386.tar.gz && mkdir -p cmake && cd cmake && tar --strip-components=1 -xzvf ../cmake-2.8.12.2-Linux-i386.tar.gz && cd $TRAVIS_BUILD_DIR ; fi
+- if [ "$BRANCH" == "base-android" ]; then export PATH=$HOME/cmake/bin:$PATH; fi
+- if [ "$BRANCH" == "base-android" ]; then export CXX=g++-4.7; fi
+- if [ "$TRAVIS_OS_NAME" == "osx" ]; then brew update; fi
+- if [ "$BRANCH" == "base-ios" ]; then gem install xcpretty; fi
+# Emscripten 1.37.10 is broken (crashes during optimization), using 1.37.1
+# works. Replace with just `brew install emscripten` when sane again
+- if [ "$BRANCH" == "base-emscripten" ]; then brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/53f53f6498ba0f507c443dd4f0c6217937f1ddf2/Formula/emscripten.rb && export LLVM=/usr/local/opt/emscripten/libexec/llvm/bin && emcc; fi
+
+# SDL (cached)
+- if [ "$TRAVIS_OS_NAME" == "osx" ] && [ "$BRANCH" == "base" ]; then brew install sdl2; fi
+- if [ "$BRANCH" == "base-ios" ]; then curl -O https://www.libsdl.org/release/SDL2-2.0.4.tar.gz && tar -xzvf SDL2-2.0.4.tar.gz && cd SDL2-2.0.4/Xcode-iOS/SDL && xcodebuild -sdk iphonesimulator9.3 | xcpretty && mkdir -p ../../../sdl2/lib && cp build/Release-iphonesimulator/libSDL2.a ../../../sdl2/lib && mkdir -p ../../../sdl2/include/SDL2 && cp -R ../../include/* ../../../sdl2/include/SDL2 && cd ../../..; fi
+
+# GLFW (cached)
+- if [ "$BRANCH" == "base-glfw" ]; then wget https://github.com/glfw/glfw/releases/download/3.1.2/glfw-3.1.2.zip && unzip glfw-3.1.2.zip && cd glfw-3.1.2 && mkdir build && cd build && cmake .. -DCMAKE_INSTALL_PREFIX=$HOME/glfw -DCMAKE_BUILD_TYPE=Release -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_DOCS=OFF -DBUILD_SHARED_LIBS=ON && cmake --build . --target install && cd ../..; fi
+
+script:
+- if [ "$BRANCH" == "base" ] || [ "$BRANCH" == "base-glfw" ] || [ "$BRANCH" == "base-glut" ] || [ "$BRANCH" == "base-qt" ] || [ "$BRANCH" == "windowless" ] || [ "$BRANCH" == "scenegraph2D" ] || [ "$BRANCH" == "scenegraph3D" ]; then ./package/ci/travis-desktop.sh; fi
+- if [ "$BRANCH" == "base-android" ]; then ./package/ci/travis-android-arm.sh; fi
+- if [ "$BRANCH" == "base-ios" ]; then ./package/ci/travis-ios-simulator.sh; fi
+- if [ "$BRANCH" == "base-emscripten" ]; then ./package/ci/travis-emscripten.sh; fi
+# Travis somehow is not able to gather all output, try to force it using this
+- sync
