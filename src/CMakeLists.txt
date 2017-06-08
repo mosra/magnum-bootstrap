@@ -9,9 +9,7 @@ if(CORRADE_TARGET_WINDOWS_RT)
         CACHE PATH "Signing certificate PFX file")
 
     # Use proper manifest file
-    if(MSVC12)
-        set(MyApplication_MANIFEST ${CMAKE_SYSTEM_NAME}.MSVC2013.appxmanifest)
-    elseif(MSVC14)
+    if(MSVC14)
         set(MyApplication_MANIFEST ${CMAKE_SYSTEM_NAME}.MSVC2015.appxmanifest)
     else()
         message(FATAL_ERROR "Unsupported MSVC version")
