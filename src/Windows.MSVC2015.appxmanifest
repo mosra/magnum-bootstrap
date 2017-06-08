@@ -12,7 +12,7 @@
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="MyApplication.App">
       <uap:VisualElements
-        DisplayName="Magnum Windows Store Application"
+        DisplayName="Magnum Windows Application"
         Description="My Application"
         BackgroundColor="#202020"
         Square150x150Logo="assets/logo.png"
