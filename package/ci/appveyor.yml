@@ -2,34 +2,66 @@
 
 clone_depth: 1
 
-os: Visual Studio 2015
-
 environment:
   matrix:
   - BRANCH: base
     COMPILER: msvc
     EXTRA: -DWITH_SDL2APPLICATION=ON
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+  - BRANCH: base
+    COMPILER: msvc
+    EXTRA: -DWITH_SDL2APPLICATION=ON
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
   - BRANCH: base
     COMPILER: mingw
     EXTRA: -DWITH_SDL2APPLICATION=ON
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
   - BRANCH: base-glfw
     COMPILER: msvc
     EXTRA: -DWITH_GLFWAPPLICATION=ON
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+  - BRANCH: base-glfw
+    COMPILER: msvc
+    EXTRA: -DWITH_GLFWAPPLICATION=ON
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
   - BRANCH: windowless
     COMPILER: msvc
     EXTRA: -DWITH_WINDOWLESSWGLAPPLICATION=ON
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+  - BRANCH: windowless
+    COMPILER: msvc
+    EXTRA: -DWITH_WINDOWLESSWGLAPPLICATION=ON
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
   - BRANCH: scenegraph2D
     COMPILER: msvc
     EXTRA: -DWITH_SDL2APPLICATION=ON -DWITH_SCENEGRAPH=ON
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+  - BRANCH: scenegraph2D
+    COMPILER: msvc
+    EXTRA: -DWITH_SDL2APPLICATION=ON -DWITH_SCENEGRAPH=ON
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
   - BRANCH: scenegraph3D
     COMPILER: msvc
     EXTRA: -DWITH_SDL2APPLICATION=ON -DWITH_SCENEGRAPH=ON
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+  - BRANCH: scenegraph3D
+    COMPILER: msvc
+    EXTRA: -DWITH_SDL2APPLICATION=ON -DWITH_SCENEGRAPH=ON
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
   # Disabled for now because I don't want to be bothered with signing and
   # certificates and shit
   #- BRANCH: base-winrt
     #TARGET_GLES2: ON
+    #APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+  #- BRANCH: base-winrt
+    #TARGET_GLES2: ON
+    #APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
   #- BRANCH: base-winrt
     #TARGET_GLES2: OFF
+    #APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+  #- BRANCH: base-winrt
+    #TARGET_GLES2: OFF
+    #APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 
 notifications:
 - provider: Webhook
