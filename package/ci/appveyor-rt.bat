@@ -43,6 +43,7 @@ cmake .. ^
     -DWITH_INTERCONNECT=OFF ^
     -DWITH_PLUGINMANAGER=OFF ^
     -DWITH_TESTSUITE=OFF ^
+    -DBUILD_DEPRECATED=OFF ^
     -G Ninja || exit /b
 cmake --build . --target install || exit /b
 cd .. || exit /b
@@ -57,6 +58,7 @@ cmake .. ^
     -DWITH_INTERCONNECT=OFF ^
     -DWITH_TESTSUITE=OFF ^
     -DBUILD_STATIC=ON ^
+    -DBUILD_DEPRECATED=OFF ^
     -G "%GENERATOR%" -A x64 || exit /b
 cmake --build . --config Release --target install -- /m /v:m || exit /b
 cd .. && cd ..
@@ -83,6 +85,7 @@ cmake .. ^
     -DWITH_SDL2APPLICATION=ON ^
     -DTARGET_GLES2=%TARGET_GLES2% ^
     -DBUILD_STATIC=ON ^
+    -DBUILD_DEPRECATED=OFF ^
     -G "%GENERATOR%" -A x64 || exit /b
 cmake --build . --config Release --target install -- /m /v:m || exit /b
 cd .. && cd ..

@@ -11,6 +11,7 @@ cmake .. ^
     -DCMAKE_INSTALL_PREFIX=%APPVEYOR_BUILD_FOLDER%/deps ^
     -DWITH_INTERCONNECT=OFF ^
     -DWITH_TESTSUITE=OFF ^
+    -DBUILD_DEPRECATED=OFF ^
     -G Ninja || exit /b
 cmake --build . || exit /b
 cmake --build . --target install || exit /b
@@ -33,6 +34,7 @@ cmake .. ^
     -DWITH_SHAPES=OFF ^
     -DWITH_TEXT=OFF ^
     -DWITH_TEXTURETOOLS=OFF %EXTRA% ^
+    -DBUILD_DEPRECATED=OFF ^
     -G Ninja || exit /b
 cmake --build . || exit /b
 cmake --build . --target install || exit /b

@@ -14,7 +14,8 @@ cmake .. \
     -DCMAKE_INSTALL_RPATH=$HOME/deps-native/lib \
     -DWITH_INTERCONNECT=OFF \
     -DWITH_PLUGINMANAGER=OFF \
-    -DWITH_TESTSUITE=OFF
+    -DWITH_TESTSUITE=OFF \
+    -DBUILD_DEPRECATED=OFF
 make -j install
 cd ..
 
@@ -29,6 +30,7 @@ cmake .. \
     -DBUILD_STATIC=ON \
     -DWITH_INTERCONNECT=OFF \
     -DWITH_TESTSUITE=OFF \
+    -DBUILD_DEPRECATED=OFF \
     -G Xcode
 set -o pipefail && cmake --build . --config Release --target install | xcpretty
 cd ../..
@@ -57,6 +59,7 @@ cmake .. \
     -DWITH_SDL2APPLICATION=ON \
     -DTARGET_GLES2=$TARGET_GLES2 \
     -DBUILD_STATIC=ON \
+    -DBUILD_DEPRECATED=OFF \
     -G Xcode
 set -o pipefail && cmake --build . --config Release --target install | xcpretty
 cd ../..

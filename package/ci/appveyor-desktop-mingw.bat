@@ -11,6 +11,7 @@ cmake .. ^
     -DCMAKE_INSTALL_PREFIX=%APPVEYOR_BUILD_FOLDER%/deps ^
     -DWITH_INTERCONNECT=OFF ^
     -DWITH_TESTSUITE=OFF ^
+    -DBUILD_DEPRECATED=OFF ^
     -G "MinGW Makefiles" || exit /b
 cmake --build . -- -j || exit /b
 cmake --build . --target install -- -j || exit /b
@@ -33,6 +34,7 @@ cmake .. ^
     -DWITH_SHAPES=OFF ^
     -DWITH_TEXT=OFF ^
     -DWITH_TEXTURETOOLS=OFF %EXTRA% ^
+    -DBUILD_DEPRECATED=OFF ^
     -G "MinGW Makefiles" || exit /b
 cmake --build . -- -j || exit /b
 cmake --build . --target install -- -j || exit /b
