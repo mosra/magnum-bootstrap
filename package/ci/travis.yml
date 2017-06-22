@@ -12,6 +12,7 @@ matrix:
     addons:
       apt:
         packages:
+        - libgl1-mesa-dev
         - libsdl2-dev
   - language: cpp
     os: osx
@@ -29,6 +30,7 @@ matrix:
     addons:
       apt:
         packages:
+        - libgl1-mesa-dev
         - libxrandr-dev
         - libxinerama-dev
         - libxcursor-dev
@@ -43,6 +45,7 @@ matrix:
     addons:
       apt:
         packages:
+        - libgl1-mesa-dev
         - freeglut3-dev
   # Disabled because QOpenGLWidget is available since Qt 5.4 and 14.04 has 5.2.
   # It might also need newer cmake in order to handle imported targets
@@ -65,6 +68,10 @@ matrix:
     env:
     - BRANCH=windowless
     - EXTRA="-DWITH_WINDOWLESSGLXAPPLICATION=ON"
+    addons:
+      apt:
+        packages:
+        - libgl1-mesa-dev
   - language: cpp
     os: osx
     compiler: clang
@@ -81,6 +88,7 @@ matrix:
     addons:
       apt:
         packages:
+        - libgl1-mesa-dev
         - libsdl2-dev
   - language: cpp
     os: linux
@@ -92,6 +100,7 @@ matrix:
     addons:
       apt:
         packages:
+        - libgl1-mesa-dev
         - libsdl2-dev
   - language: cpp
     os: osx
