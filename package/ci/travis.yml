@@ -47,20 +47,12 @@ matrix:
         packages:
         - libgl1-mesa-dev
         - freeglut3-dev
-  # Disabled because QOpenGLWidget is available since Qt 5.4 and 14.04 has 5.2.
-  # It might also need newer cmake in order to handle imported targets
-  # properly.
-  #- language: cpp
-    #os: linux
-    #dist: trusty
-    #compiler: gcc
-    #env:
-    #- BRANCH=base-qt
-    #- EXTRA="-DWITH_GLXCONTEXT=ON"
-    #addons:
-      #apt:
-        #packages:
-        #- qtbase5-dev
+  - language: cpp
+    os: osx
+    compiler: clang
+    env:
+    - BRANCH=base-qt
+    - EXTRA="-DWITH_CGLCONTEXT=ON"
   - language: cpp
     os: linux
     dist: trusty
@@ -190,6 +182,7 @@ install:
 
 # SDL (cached)
 - if [ "$TRAVIS_OS_NAME" == "osx" ] && [ "$BRANCH" == "base" ]; then brew install sdl2; fi
+- if [ "$TRAVIS_OS_NAME" == "osx" ] && [ "$BRANCH" == "base-qt" ]; then brew install qt; fi
 - if [ "$BRANCH" == "base-ios" ]; then curl -O https://www.libsdl.org/release/SDL2-2.0.4.tar.gz && tar -xzvf SDL2-2.0.4.tar.gz && cd SDL2-2.0.4/Xcode-iOS/SDL && xcodebuild -sdk iphonesimulator9.3 | xcpretty && mkdir -p ../../../sdl2/lib && cp build/Release-iphonesimulator/libSDL2.a ../../../sdl2/lib && mkdir -p ../../../sdl2/include/SDL2 && cp -R ../../include/* ../../../sdl2/include/SDL2 && cd ../../..; fi
 
 # GLFW (cached)
