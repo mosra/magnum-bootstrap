@@ -14,7 +14,7 @@ USAGE
 To use Magnum, you obviously need to have Magnum installed. Note that the whole
 building and installation process (along with the following guide) is
 thoroughly explained in Magnum documentation, particularly in the
-[Getting Started Guide](http://mosra.cz/blog/magnum-doc/getting-started.html).
+[Getting Started Guide](http://doc.magnum.graphics/magnum/getting-started.html).
 
 Minimal dependencies
 --------------------
@@ -26,7 +26,7 @@ Minimal dependencies
 *   **Corrade**, **Magnum** -- The engine itself
 
 Note that each bootstrap project has additional dependency requirements, listed
-below. See [Magnum building documentation](http://mosra.cz/blog/magnum-doc/building.html)
+below. See [Magnum building documentation](http://doc.magnum.graphics/magnum/building.html)
 for more information.
 
 Bootstrapping the project
@@ -124,8 +124,8 @@ above to build the desktop version.
 
 For NaCl build you need to have NaCl SDK installed with Corrade and Magnum
 crosscompiled for Native Client, Magnum built with `WITH_NACLAPPLICATION`
-enabled. See [Corrade's](http://mosra.cz/blog/corrade-doc/building-corrade.html#building-cross-nacl)
-and [Magnum's](http://mosra.cz/blog/magnum-doc/building.html#building-cross-nacl)
+enabled. See [Corrade's](http://doc.magnum.graphics/corrade/building-corrade.html#building-corrade-cross-nacl)
+and [Magnum's](http://doc.magnum.graphics/magnum/building.html#building-cross-nacl)
 building documentation for more information.
 
 In the `toolchains/` submodule don't forget to adapt `NACL_PREFIX` variable in
@@ -166,8 +166,8 @@ and you can use the commands above to build the desktop version.
 For Emscripten build you need to have Emscripten installed with Corrade and
 Magnum crosscompiled for Emscripten, don't forget to build Magnum with
 `WITH_SDL2APPLICATION` enabled. See
-[Corrade's](http://mosra.cz/blog/corrade-doc/building-corrade.html#building-cross-emscripten)
-and [Magnum's](http://mosra.cz/blog/magnum-doc/building.html#building-cross-emscripten)
+[Corrade's](http://doc.magnum.graphics/corrade/building-corrade.html#building-corrade-cross-emscripten)
+and [Magnum's](http://doc.magnum.graphics/magnum/building.html#building-cross-emscripten)
 building documentation for more information.
 
 In the `toolchains/` submodule don't forget to adapt `EMSCRIPTEN_PREFIX`
@@ -199,8 +199,8 @@ commands above to build the desktop version.
 
 For Android build you need to have Android NDK installed with Corrade and
 Magnum crosscompiled for Android, Magnum built with `WITH_ANDROIDAPPLICATION`
-enabled. See [Corrade's](http://mosra.cz/blog/corrade-doc/building-corrade.html#building-cross-android)
-and [Magnum's](http://mosra.cz/blog/magnum-doc/building.html#building-cross-android)
+enabled. See [Corrade's](http://doc.magnum.graphics/corrade/building-corrade.html#building-corrade-cross-android)
+and [Magnum's](http://doc.magnum.graphics/magnum/building.html#building-cross-android)
 building documentation for more information.
 
 In the `toolchains/` submodule don't forget to adapt `ANDROID_NDK_ROOT` in
@@ -245,8 +245,8 @@ you can use the commands above to build the desktop version.
 
 For iOS you need OSX and XCode installed with Corrade and Magnum crosscompiled
 for iOS, don't forget to build Magnum with `WITH_SDL2APPLICATION` enabled.
-See [Corrade's](http://mosra.cz/blog/corrade-doc/building-corrade.html#building-cross-ios)
-and [Magnum's](http://mosra.cz/blog/magnum-doc/building.html#building-cross-ios)
+See [Corrade's](http://doc.magnum.graphics/corrade/building-corrade.html#building-corrade-cross-ios)
+and [Magnum's](http://doc.magnum.graphics/magnum/building.html#building-cross-ios)
 building documentation for more information.
 
 Then create build directory and run `cmake` to generate the Xcode project. Set
@@ -277,8 +277,8 @@ and you can use the commands above to build the desktop version.
 For Windows RT build you need to have at least Windows 8.1, Visual Studio 2013
 and Windows 8.1 Store/Phone SDK installed with Corrade and Magnum crosscompiled
 for Windows RT, don't forget to build Magnum with `WITH_SDL2APPLICATION` enabled.
-See [Corrade's](http://mosra.cz/blog/corrade-doc/building-corrade.html#building-cross-winrt)
-and [Magnum's](http://mosra.cz/blog/magnum-doc/building.html#building-cross-winrt)
+See [Corrade's](http://doc.magnum.graphics/corrade/building-corrade.html#building-corrade-cross-winrt)
+and [Magnum's](http://doc.magnum.graphics/magnum/building.html#building-cross-winrt)
 building documentation for more information.
 
 You need to provide [your own `*.pfx` certificate file](https://msdn.microsoft.com/en-us/library/windows/desktop/jj835832.aspx)
@@ -299,10 +299,10 @@ final package along with a PowerShell script for easy local installation.
 CONTACT
 =======
 
-Want to learn more about the library? Found a bug or want to tell me an awesome
-idea? Feel free to visit my website or contact me at:
+Want to learn more about the library? Found a bug or want to share an awesome
+idea? Feel free to visit the project website or contact the team at:
 
-*   Website -- http://mosra.cz/blog/magnum.php
+*   Website -- http://magnum.graphics
 *   GitHub -- https://github.com/mosra/magnum-bootstrap
 *   Gitter -- https://gitter.im/mosra/magnum
 *   IRC -- join `#magnum-engine` channel on freenode
