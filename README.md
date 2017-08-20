@@ -90,16 +90,16 @@ instead of `Platform::Sdl2Application`. You need Magnum built with
 The [`base-qt`](https://github.com/mosra/magnum-bootstrap/tree/base-qt)
 branch does not use any of the application wrappers provided in `Platform`
 namespace, but uses Qt5 window and context creation directly and manually
-initializes Magnum on top of that using EGL on embedded devices, WGL on Windows,
-CGL on OS X and GLX on Unix/Linux. You need Magnum built with `WITH_EGLCONTEXT`,
-`WITH_WGLCONTEXT`, `WITH_CGLCONTEXT` or `WITH_GLXCONTEXT` enabled, depending on
-the platform of your choice.
+initializes Magnum on top of that using EGL on embedded devices, WGL on
+Windows, CGL on macOS and GLX on Unix/Linux. You need Magnum built with
+`WITH_EGLCONTEXT`, `WITH_WGLCONTEXT`, `WITH_CGLCONTEXT` or `WITH_GLXCONTEXT`
+enabled, depending on the platform of your choice.
 
 ### Windowless application
 
 The [`windowless`](https://github.com/mosra/magnum-bootstrap/tree/windowless)
 branch contains windowless application using `Platform::WindowlessGlxApplication`
-on X11-based Unix, `Platform::WindowlessCglApplication` on OS X and
+on X11-based Unix, `Platform::WindowlessCglApplication` on macOS and
 `Platform::WindowlessWglApplication` on Windows, other platforms are not
 supported yet. Useful for querying information about the renderer, offscreen
 rendering, image processing etc. You need Magnum built with
@@ -243,9 +243,9 @@ branch contains application using `Platform::Sdl2Application` for both desktop
 and iOS build. You need Magnum built with `WITH_SDL2APPLICATION` enabled and
 you can use the commands above to build the desktop version.
 
-For iOS you need OSX and XCode installed with Corrade and Magnum crosscompiled
-for iOS, don't forget to build Magnum with `WITH_SDL2APPLICATION` enabled.
-See [Corrade's](http://doc.magnum.graphics/corrade/building-corrade.html#building-corrade-cross-ios)
+For iOS you need macOS and XCode installed with Corrade and Magnum
+crosscompiled for iOS, don't forget to build Magnum with `WITH_SDL2APPLICATION`
+enabled. See [Corrade's](http://doc.magnum.graphics/corrade/building-corrade.html#building-corrade-cross-ios)
 and [Magnum's](http://doc.magnum.graphics/magnum/building.html#building-cross-ios)
 building documentation for more information.
 
