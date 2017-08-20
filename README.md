@@ -114,48 +114,6 @@ and [`scenegraph3D`](https://github.com/mosra/magnum-bootstrap/tree/scenegraph3D
 branches contain application prepared for using 2D/3D `SceneGraph`. You need
 Magnum built with `WITH_SDL2APPLICATION` and `WITH_SCENEGRAPH` enabled.
 
-### Base application with port to Google Chrome Native Client
-
-The [`base-nacl`](https://github.com/mosra/magnum-bootstrap/tree/base-nacl)
-branch contains application using `Platform::Sdl2Application` for desktop build
-and `Platform::NaClApplication` for NaCl build. For desktop build you need
-Magnum built with `WITH_SDL2APPLICATION` enabled and you can use the commands
-above to build the desktop version.
-
-For NaCl build you need to have NaCl SDK installed with Corrade and Magnum
-crosscompiled for Native Client, Magnum built with `WITH_NACLAPPLICATION`
-enabled. See [Corrade's](http://doc.magnum.graphics/corrade/building-corrade.html#building-corrade-cross-nacl)
-and [Magnum's](http://doc.magnum.graphics/magnum/building.html#building-cross-nacl)
-building documentation for more information.
-
-In the `toolchains/` submodule don't forget to adapt `NACL_PREFIX` variable in
-`generic/NaCl-newlib-x86-32.cmake` and `generic/NaCl-newlib-x86-64.cmake` to
-path where your SDK is installed. Default is `/usr/nacl`. You may need to adapt
-also `NACL_TOOLCHAIN_PATH` so CMake is able to find the compiler.
-
-Then create build directories for x86-32 and x86-64 and run `cmake` and
-build/install commands in them. The toolchains need access to the platform
-file, so be sure to properly set **absolute** path to `toolchains/modules/`
-directory containing `Platform/NaCl.cmake`. Set `CMAKE_INSTALL_PREFIX` to
-location of your webserver to have the files installed in proper location.
-
-    mkdir build-nacl-x86-32 && cd build-nacl-x86-32
-    cmake .. \
-        -DCMAKE_TOOLCHAIN_FILE="../toolchains/generic/NaCl-newlib-x86-32.cmake" \
-        -DCMAKE_INSTALL_PREFIX=/srv/http/nacl
-    cmake --build .
-    cmake --build . --target install
-
-    mkdir -p build-nacl-x86-64
-    cd build-nacl-x86-64
-    cmake .. \
-        -DCMAKE_TOOLCHAIN_FILE="../toolchains/generic/NaCl-newlib-x86-64.cmake" \
-        -DCMAKE_INSTALL_PREFIX=/srv/http/nacl
-    cmake --build .
-    cmake --build . --target install
-
-You can then open `MyApplication.html` through your webserver in Chrome.
-
 ### Base application with port to Emscripten (HTML5/WebGL)
 
 The [`base-emscripten`](https://github.com/mosra/magnum-bootstrap/tree/base-emscripten)
