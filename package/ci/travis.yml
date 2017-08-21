@@ -174,7 +174,6 @@ install:
 - if [ "$BRANCH" == "base-android" ] && [ ! -e "$HOME/cmake/bin" ]; then cd $HOME ; wget -nc --no-check-certificate https://cmake.org/files/v2.8/cmake-2.8.12.2-Linux-i386.tar.gz && mkdir -p cmake && cd cmake && tar --strip-components=1 -xzvf ../cmake-2.8.12.2-Linux-i386.tar.gz && cd $TRAVIS_BUILD_DIR ; fi
 - if [ "$BRANCH" == "base-android" ]; then export PATH=$HOME/cmake/bin:$PATH; fi
 - if [ "$BRANCH" == "base-android" ]; then export CXX=g++-4.7; fi
-- if [ "$TRAVIS_OS_NAME" == "osx" ]; then brew update; fi
 - if [ "$BRANCH" == "base-ios" ]; then gem install xcpretty; fi
 # Emscripten 1.37.10 is broken (crashes during optimization), using 1.37.1
 # works. Replace with just `brew install emscripten` when sane again
