@@ -114,7 +114,7 @@ and [`scenegraph3D`](https://github.com/mosra/magnum-bootstrap/tree/scenegraph3D
 branches contain application prepared for using 2D/3D `SceneGraph`. You need
 Magnum built with `WITH_SDL2APPLICATION` and `WITH_SCENEGRAPH` enabled.
 
-### Base application with port to Emscripten (HTML5/WebGL)
+### Base application with port to Emscripten
 
 The [`base-emscripten`](https://github.com/mosra/magnum-bootstrap/tree/base-emscripten)
 branch contains application using `Platform::Sdl2Application` for both desktop
@@ -128,24 +128,28 @@ Magnum crosscompiled for Emscripten, don't forget to build Magnum with
 and [Magnum's](http://doc.magnum.graphics/magnum/building.html#building-cross-emscripten)
 building documentation for more information.
 
-In the `toolchains/` submodule don't forget to adapt `EMSCRIPTEN_PREFIX`
-variable in `generic/Emscripten.cmake` to path where Emscripten is installed.
-Default is `/usr/lib/emscripten`.
+In the `toolchains/` submodule there are two toolchain files. The
+`generic/Emscripten.cmake` is for the classical (asm.js) build, the
+`generic/Emscripten-wasm.cmake` is for WebAssembly build. Don't forget to adapt
+`EMSCRIPTEN_PREFIX` variable in `generic/Emscripten*.cmake` to path where
+Emscripten is installed; you can also pass it explicitly on command-line using
+`-DEMSCRIPTEN_PREFIX`. Default is `/usr/lib/emscripten`.
 
 Then create build directory and run `cmake` and build/install commands in it.
-The toolchain needs access to its platform file, so be sure to properly set
-**absolute** path to `toolchains/modules/` directory containing
-`Platform/Emscripten.cmake`. Set `CMAKE_INSTALL_PREFIX` to have the files
-installed in proper location (e.g. a webserver).
+Set `CMAKE_PREFIX_PATH` to where you have all the dependencies installed, set
+`CMAKE_INSTALL_PREFIX` to have the files installed in proper location (a
+webserver, e.g.  `/srv/http/emscripten`).
 
     mkdir build-emscripten && cd build-emscripten
     cmake .. \
         -DCMAKE_TOOLCHAIN_FILE="../toolchains/generic/Emscripten.cmake" \
-        -DCMAKE_INSTALL_PREFIX=/usr/lib/emscripten/system
+        -DCMAKE_PREFIX_PATH=/usr/lib/emscripten/system \
+        -DCMAKE_INSTALL_PREFIX=/srv/http/emscripten
     cmake --build .
     cmake --build . --target install
 
-You can then open `MyApplication.html` in Chrome or Firefox.
+You can then open `MyApplication.html` in your browser (through webserver, e.g.
+`http://localhost/emscripten/MyApplication.html`).
 
 ### Base application with port to Android
 
@@ -175,16 +179,19 @@ targets can be obtained by calling `android list target`.
     android update project -p . -t "android-19"
 
 Then create build directories for ARM and x86 and run `cmake` and build command
-in them. The toolchains need access to the platform file, so be sure to
-properly set **absolute** path to `toolchains/modules/` directory containing
-`Platform/Android.cmake`.
+in them. Set `CMAKE_PREFIX_PATH` to the directory where you have all the
+dependencies.
 
     mkdir build-android-arm && cd build-android-arm
-    cmake .. -DCMAKE_TOOLCHAIN_FILE="../toolchains/generic/Android-ARM.cmake"
+    cmake .. \
+        -DCMAKE_TOOLCHAIN_FILE="../toolchains/generic/Android-ARM.cmake" \
+        -DCMAKE_PREFIX_PATH=/opt/android-ndk/platforms/android-19/arch-arm/usr
     cmake --build .
 
     mkdir build-android-x86 && cd build-android-x86
-    cmake .. -DCMAKE_TOOLCHAIN_FILE="../toolchains/generic/Android-x86.cmake"
+    cmake .. \
+        -DCMAKE_TOOLCHAIN_FILE="../toolchains/generic/Android-x86.cmake" \
+        -DCMAKE_PREFIX_PATH=/opt/android-ndk/platforms/android-19/arch-x86/usr
     cmake --build .
 
 The compiled binaries will be put into `lib/armeabi-v7a` and `lib/x86`. You can
@@ -209,9 +216,7 @@ building documentation for more information.
 
 Then create build directory and run `cmake` to generate the Xcode project. Set
 `CMAKE_OSX_ROOT` to SDK you want to target and enable all desired architectures
-in `CMAKE_OSX_ARCHITECTURES`. The toolchain needs access to its platform file,
-so be sure to properly set **absolute** path to `toolchains/modules/` directory
-containing `Platform/iOS.cmake`. Set `CMAKE_PREFIX_PATH` to the directory where
+in `CMAKE_OSX_ARCHITECTURES`. Set `CMAKE_PREFIX_PATH` to the directory where
 you have all the dependencies.
 
     mkdir build-ios && cd build-ios
@@ -247,7 +252,13 @@ Magnum are built statically. Assuming the native Corrade installation is in
 done similarly to the following:
 
     mkdir build-winrt && cd build-winrt
-    cmake -DCORRADE_RC_EXECUTABLE="C:/Sys/bin/corrade-rc.exe" -DCMAKE_PREFIX_PATH="C:/Sys-winrt" -DCMAKE_SYSTEM_NAME=WindowsStore -DCMAKE_SYSTEM_VERSION=8.1 -G "Visual Studio 14 2015" -DSIGNING_CERTIFICATE=<path-to-your-pfx-file> ..
+    cmake .. ^
+        -DCORRADE_RC_EXECUTABLE="C:/Sys/bin/corrade-rc.exe" ^
+        -DCMAKE_PREFIX_PATH="C:/Sys-winrt" ^
+        -DCMAKE_SYSTEM_NAME=WindowsStore ^
+        -DCMAKE_SYSTEM_VERSION=8.1 ^
+        -DSIGNING_CERTIFICATE=<path-to-your-pfx-file> ^
+        -G "Visual Studio 14 2015"
     cmake --build .
 
 Change `WindowsStore` to `WindowsPhone` if you want to build for Windows Phone
