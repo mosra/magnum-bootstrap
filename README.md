@@ -99,13 +99,13 @@ enabled, depending on the platform of your choice.
 
 The [`windowless`](https://github.com/mosra/magnum-bootstrap/tree/windowless)
 branch contains windowless application using `Platform::WindowlessGlxApplication`
-on X11-based Unix, `Platform::WindowlessCglApplication` on macOS and
-`Platform::WindowlessWglApplication` on Windows, other platforms are not
-supported yet. Useful for querying information about the renderer, offscreen
-rendering, image processing etc. You need Magnum built with
-`WITH_WINDOWLESSGLXAPPLICATION`, `WITH_WINDOWLESSCGLAPPLICATION` or
-`WITH_WINDOWLESSWGLAPPLICATION` enabled, depending on the platform of your
-choice.
+on X11-based Unix, `Platform::WindowlessCglApplication` on macOS,
+`Platform::WindowlessWglApplication` on Windows, `Platform::WindowlessWindowsEglApplication`
+on Windows GLES or ANGLE, `Platform::WindowlessEglApplication` on headless
+systems supporting EGL and `Platform::WindowlessIosApplication` on iOS. Useful
+for querying information about the renderer, offscreen rendering, image
+processing etc. You need Magnum built with `WITH_WINDOWLESS*APPLICATION`
+enabled, depending on the platform of your choice.
 
 ### Scene graph
 
@@ -124,6 +124,45 @@ and you can use the commands above to build the desktop version.
 For Emscripten build you need to have Emscripten installed with Corrade and
 Magnum crosscompiled for Emscripten, don't forget to build Magnum with
 `WITH_SDL2APPLICATION` enabled. See
+[Corrade's](http://doc.magnum.graphics/corrade/building-corrade.html#building-corrade-cross-emscripten)
+and [Magnum's](http://doc.magnum.graphics/magnum/building.html#building-cross-emscripten)
+building documentation for more information.
+
+In the `toolchains/` submodule there are two toolchain files. The
+`generic/Emscripten.cmake` is for the classical (asm.js) build, the
+`generic/Emscripten-wasm.cmake` is for WebAssembly build. Don't forget to adapt
+`EMSCRIPTEN_PREFIX` variable in `generic/Emscripten*.cmake` to path where
+Emscripten is installed; you can also pass it explicitly on command-line using
+`-DEMSCRIPTEN_PREFIX`. Default is `/usr/lib/emscripten`.
+
+Then create build directory and run `cmake` and build/install commands in it.
+Set `CMAKE_PREFIX_PATH` to where you have all the dependencies installed, set
+`CMAKE_INSTALL_PREFIX` to have the files installed in proper location (a
+webserver, e.g.  `/srv/http/emscripten`).
+
+    mkdir build-emscripten && cd build-emscripten
+    cmake .. \
+        -DCMAKE_TOOLCHAIN_FILE="../toolchains/generic/Emscripten.cmake" \
+        -DCMAKE_PREFIX_PATH=/usr/lib/emscripten/system \
+        -DCMAKE_INSTALL_PREFIX=/srv/http/emscripten
+    cmake --build .
+    cmake --build . --target install
+
+You can then open `MyApplication.html` in your browser (through webserver, e.g.
+`http://localhost/emscripten/MyApplication.html`).
+
+### Windowless application with port to Emscripten
+
+The [`windowless-emscripten`](https://github.com/mosra/magnum-bootstrap/tree/base-emscripten)
+branch contains a version of the `windowless` bootstrap project which in
+addition uses `Platform::WindowlessEglApplication` for Emscripten build. You
+need Magnum built with `WITH_WINDOWLESS*APPLICATION` enabled depending on your
+platform of choice and you can use the commands above to build the desktop
+version.
+
+For Emscripten build you need to have Emscripten installed with Corrade and
+Magnum crosscompiled for Emscripten, don't forget to build Magnum with
+`WITH_WINDOWLESSEGLAPPLICATION` enabled. See
 [Corrade's](http://doc.magnum.graphics/corrade/building-corrade.html#building-corrade-cross-emscripten)
 and [Magnum's](http://doc.magnum.graphics/magnum/building.html#building-cross-emscripten)
 building documentation for more information.
