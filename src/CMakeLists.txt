@@ -1,6 +1,6 @@
 find_package(Magnum REQUIRED)
 
-if(MAGNUM_TARGET_HEADLESS)
+if(MAGNUM_TARGET_HEADLESS OR CORRADE_TARGET_EMSCRIPTEN)
     find_package(Magnum REQUIRED WindowlessEglApplication)
 elseif(CORRADE_TARGET_IOS)
     find_package(Magnum REQUIRED WindowlessIosApplication)
@@ -29,4 +29,15 @@ if(CORRADE_TARGET_IOS)
         MACOSX_BUNDLE ON
         MACOSX_BUNDLE_GUI_IDENTIFIER "cz.mosra.magnum.MyApplication"
         XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED "YES")
+elseif(CORRADE_TARGET_EMSCRIPTEN)
+    install(FILES MyApplication.html DESTINATION ${MAGNUM_DEPLOY_PREFIX})
+    install(TARGETS MyApplication DESTINATION ${MAGNUM_DEPLOY_PREFIX})
+    install(FILES
+        WebApplication.css
+        WindowlessEmscriptenApplication.js
+        DESTINATION ${MAGNUM_DEPLOY_PREFIX})
+    install(FILES
+        ${CMAKE_CURRENT_BINARY_DIR}/MyApplication.js.mem
+        ${CMAKE_CURRENT_BINARY_DIR}/MyApplication.wasm
+        DESTINATION ${MAGNUM_DEPLOY_PREFIX} OPTIONAL)
 endif()
