@@ -118,6 +118,18 @@ matrix:
     env:
     - BRANCH=base-emscripten
     - TARGET_GLES2=OFF
+  - language: cpp
+    os: osx
+    osx_image: xcode8.3
+    env:
+    - BRANCH=windowless-emscripten
+    - TARGET_GLES2=ON
+  - language: cpp
+    os: osx
+    osx_image: xcode8.3
+    env:
+    - BRANCH=windowless-emscripten
+    - TARGET_GLES2=OFF
   - language: android
     os: linux
     dist: precise
@@ -175,7 +187,7 @@ install:
 - if [ "$BRANCH" == "base-android" ]; then export PATH=$HOME/cmake/bin:$PATH; fi
 - if [ "$BRANCH" == "base-android" ]; then export CXX=g++-4.7; fi
 - if [ "$BRANCH" == "base-ios" ]; then gem install xcpretty; fi
-- if [ "$BRANCH" == "base-emscripten" ]; then brew install emscripten && export LLVM=/usr/local/opt/emscripten/libexec/llvm/bin && emcc; fi
+- if [ "$BRANCH" == "base-emscripten" ] || [ "$BRANCH" == "windowless-emscripten" ]; then brew install emscripten && export LLVM=/usr/local/opt/emscripten/libexec/llvm/bin && emcc; fi
 
 # SDL (cached)
 - if [ "$TRAVIS_OS_NAME" == "osx" ] && [ "$BRANCH" == "base" ]; then brew install sdl2; fi
@@ -189,6 +201,6 @@ script:
 - if [ "$BRANCH" == "base" ] || [ "$BRANCH" == "base-glfw" ] || [ "$BRANCH" == "base-glut" ] || [ "$BRANCH" == "base-qt" ] || [ "$BRANCH" == "windowless" ] || [ "$BRANCH" == "scenegraph2D" ] || [ "$BRANCH" == "scenegraph3D" ]; then ./package/ci/travis-desktop.sh; fi
 - if [ "$BRANCH" == "base-android" ]; then ./package/ci/travis-android-arm.sh; fi
 - if [ "$BRANCH" == "base-ios" ]; then ./package/ci/travis-ios-simulator.sh; fi
-- if [ "$BRANCH" == "base-emscripten" ]; then ./package/ci/travis-emscripten.sh; fi
+- if [ "$BRANCH" == "base-emscripten" ] || [ "$BRANCH" == "windowless-emscripten" ]; then ./package/ci/travis-emscripten.sh; fi
 # Travis somehow is not able to gather all output, try to force it using this
 - sync
