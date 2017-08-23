@@ -1,6 +1,6 @@
 #include <Magnum/Magnum.h>
 
-#ifdef MAGNUM_TARGET_HEADLESS
+#if defined(MAGNUM_TARGET_HEADLESS) || defined(CORRADE_TARGET_EMSCRIPTEN)
 #include <Magnum/Platform/WindowlessEglApplication.h>
 #elif defined(CORRADE_TARGET_IOS)
 #include <Magnum/Platform/WindowlessIosApplication.h>
