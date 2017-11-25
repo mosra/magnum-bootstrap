@@ -7,6 +7,7 @@ matrix:
     dist: trusty
     compiler: gcc
     env:
+    - JOBID=base-linux
     - BRANCH=base
     - EXTRA="-DWITH_SDL2APPLICATION=ON"
     addons:
@@ -18,6 +19,7 @@ matrix:
     os: osx
     compiler: clang
     env:
+    - JOBID=base-macos
     - BRANCH=base
     - EXTRA="-DWITH_SDL2APPLICATION=ON"
   - language: cpp
@@ -25,6 +27,7 @@ matrix:
     dist: trusty
     compiler: gcc
     env:
+    - JOBID=base-glfw-linux
     - BRANCH=base-glfw
     - EXTRA="-DWITH_GLFWAPPLICATION=ON"
     addons:
@@ -40,6 +43,7 @@ matrix:
     dist: trusty
     compiler: gcc
     env:
+    - JOBID=base-glut-linux
     - BRANCH=base-glut
     - EXTRA="-DWITH_GLUTAPPLICATION=ON"
     addons:
@@ -51,6 +55,7 @@ matrix:
     os: osx
     compiler: clang
     env:
+    - JOBID=base-qt-macos
     - BRANCH=base-qt
     - EXTRA="-DWITH_CGLCONTEXT=ON"
   - language: cpp
@@ -58,6 +63,7 @@ matrix:
     dist: trusty
     compiler: gcc
     env:
+    - JOBID=windowles-linux
     - BRANCH=windowless
     - EXTRA="-DWITH_WINDOWLESSGLXAPPLICATION=ON"
     addons:
@@ -68,6 +74,7 @@ matrix:
     os: osx
     compiler: clang
     env:
+    - JOBID=windowles-macos
     - BRANCH=windowless
     - EXTRA="-DWITH_WINDOWLESSCGLAPPLICATION=ON"
   - language: cpp
@@ -75,6 +82,7 @@ matrix:
     dist: trusty
     compiler: gcc
     env:
+    - JOBID=scenegraph2D-linux
     - BRANCH=scenegraph2D
     - EXTRA="-DWITH_SDL2APPLICATION=ON -DWITH_SCENEGRAPH=ON"
     addons:
@@ -87,6 +95,7 @@ matrix:
     dist: trusty
     compiler: gcc
     env:
+    - JOBID=scenegraph3D-linux
     - BRANCH=scenegraph3D
     - EXTRA="-DWITH_SDL2APPLICATION=ON -DWITH_SCENEGRAPH=ON"
     addons:
@@ -98,42 +107,49 @@ matrix:
     os: osx
     osx_image: xcode7.3
     env:
+    - JOBID=base-ios-es2
     - BRANCH=base-ios
     - TARGET_GLES2=ON
   - language: cpp
     os: osx
     osx_image: xcode7.3
     env:
+    - JOBID=base-ios-es3
     - BRANCH=base-ios
     - TARGET_GLES2=OFF
   - language: cpp
     os: osx
     osx_image: xcode8.3
     env:
+    - JOBID=base-emscripten-webgl1
     - BRANCH=base-emscripten
     - TARGET_GLES2=ON
   - language: cpp
     os: osx
     osx_image: xcode8.3
     env:
+    - JOBID=base-emscripten-webgl2
     - BRANCH=base-emscripten
     - TARGET_GLES2=OFF
   - language: cpp
     os: osx
     osx_image: xcode8.3
     env:
+    - JOBID=windowless-emscripten-webgl1
     - BRANCH=windowless-emscripten
     - TARGET_GLES2=ON
   - language: cpp
     os: osx
     osx_image: xcode8.3
     env:
+    - JOBID=windowless-emscripten-webgl2
     - BRANCH=windowless-emscripten
     - TARGET_GLES2=OFF
   - language: android
     os: linux
     dist: precise
     env:
+    - JOBID=base-android-es2
     - BRANCH=base-android
     - TARGET_GLES2=ON
     addons:
@@ -151,6 +167,7 @@ matrix:
     os: linux
     dist: precise
     env:
+    - JOBID=base-android-es3
     - BRANCH=base-android
     - TARGET_GLES2=OFF
     addons:
