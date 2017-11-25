@@ -17,6 +17,7 @@ matrix:
         - libsdl2-dev
   - language: cpp
     os: osx
+    osx_image: xcode8.3
     compiler: clang
     env:
     - JOBID=base-macos
@@ -53,6 +54,7 @@ matrix:
         - freeglut3-dev
   - language: cpp
     os: osx
+    osx_image: xcode8.3
     compiler: clang
     env:
     - JOBID=base-qt-macos
@@ -63,7 +65,7 @@ matrix:
     dist: trusty
     compiler: gcc
     env:
-    - JOBID=windowles-linux
+    - JOBID=windowless-linux
     - BRANCH=windowless
     - EXTRA="-DWITH_WINDOWLESSGLXAPPLICATION=ON"
     addons:
@@ -74,7 +76,7 @@ matrix:
     os: osx
     compiler: clang
     env:
-    - JOBID=windowles-macos
+    - JOBID=windowless-macos
     - BRANCH=windowless
     - EXTRA="-DWITH_WINDOWLESSCGLAPPLICATION=ON"
   - language: cpp

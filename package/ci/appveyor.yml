@@ -28,7 +28,7 @@ environment:
     COMPILER: msvc
     EXTRA: -DWITH_GLFWAPPLICATION=ON
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    APPVEYOR_JOB_NAME: base-glfwwindows-msvc2017
+    APPVEYOR_JOB_NAME: base-glfw-windows-msvc2017
   - BRANCH: windowless
     COMPILER: msvc
     EXTRA: -DWITH_WINDOWLESSWGLAPPLICATION=ON
