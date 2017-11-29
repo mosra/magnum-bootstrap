@@ -17,7 +17,6 @@ matrix:
         - libsdl2-dev
   - language: cpp
     os: osx
-    osx_image: xcode8.3
     compiler: clang
     env:
     - JOBID=base-macos
@@ -54,7 +53,6 @@ matrix:
         - freeglut3-dev
   - language: cpp
     os: osx
-    osx_image: xcode8.3
     compiler: clang
     env:
     - JOBID=base-qt-macos
@@ -121,28 +119,24 @@ matrix:
     - TARGET_GLES2=OFF
   - language: cpp
     os: osx
-    osx_image: xcode8.3
     env:
     - JOBID=base-emscripten-webgl1
     - BRANCH=base-emscripten
     - TARGET_GLES2=ON
   - language: cpp
     os: osx
-    osx_image: xcode8.3
     env:
     - JOBID=base-emscripten-webgl2
     - BRANCH=base-emscripten
     - TARGET_GLES2=OFF
   - language: cpp
     os: osx
-    osx_image: xcode8.3
     env:
     - JOBID=windowless-emscripten-webgl1
     - BRANCH=windowless-emscripten
     - TARGET_GLES2=ON
   - language: cpp
     os: osx
-    osx_image: xcode8.3
     env:
     - JOBID=windowless-emscripten-webgl2
     - BRANCH=windowless-emscripten
