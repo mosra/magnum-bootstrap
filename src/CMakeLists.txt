@@ -9,6 +9,13 @@ target_link_libraries(MyApplication
 
 if(CORRADE_TARGET_EMSCRIPTEN)
     install(TARGETS MyApplication DESTINATION ${CMAKE_INSTALL_PREFIX})
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/MyApplication.js.mem DESTINATION ${CMAKE_INSTALL_PREFIX} OPTIONAL)
-    install(FILES MyApplication.html EmscriptenApplication.js WebApplication.css DESTINATION ${CMAKE_INSTALL_PREFIX})
+    install(FILES
+        MyApplication.html
+        EmscriptenApplication.js
+        WebApplication.css
+        DESTINATION ${CMAKE_INSTALL_PREFIX})
+    install(FILES
+        ${CMAKE_CURRENT_BINARY_DIR}/MyApplication.js.mem
+        ${CMAKE_CURRENT_BINARY_DIR}/MyApplication.wasm
+        DESTINATION ${CMAKE_INSTALL_PREFIX} OPTIONAL)
 endif()
