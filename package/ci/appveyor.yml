@@ -17,7 +17,7 @@ environment:
   - BRANCH: base
     COMPILER: mingw
     EXTRA: -DWITH_SDL2APPLICATION=ON
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     APPVEYOR_JOB_NAME: base-windows-mingw
   - BRANCH: base-glfw
     COMPILER: msvc
@@ -88,12 +88,6 @@ notifications:
 install:
 - cinst ninja
 - set PATH=C:/Sys/bin;C:/tools/ninja;%PATH%
-# `cinst mingw` fails with 404 since Dec 2016, `appveyor Downloadfile` fails
-# with "Message string length exceeds 32k characters" so I have to call a
-# fucking powershell command in order to download a file. Oh and %20 in the URL
-# somehow gives a 404 ALSO so I have to explicitly use spaces. WHAT THE FUCK!
-- IF "%COMPILER%" == "mingw" IF NOT EXIST %APPVEYOR_BUILD_FOLDER%\x86_64-6.3.0-release-posix-seh-rt_v5-rev1.7z powershell -Command "(new-object System.Net.WebClient).Downloadfile('https://sourceforge.net/projects/mingw-w64/files/Toolchains targetting Win64/Personal Builds/mingw-builds/6.3.0/threads-posix/seh/x86_64-6.3.0-release-posix-seh-rt_v5-rev1.7z', 'x86_64-6.3.0-release-posix-seh-rt_v5-rev1.7z')"
-- IF "%COMPILER%" == "mingw" cd C:\tools && 7z x %APPVEYOR_BUILD_FOLDER%\x86_64-6.3.0-release-posix-seh-rt_v5-rev1.7z && cd %APPVEYOR_BUILD_FOLDER%
 
 # SDL2
 - IF "%BRANCH%" == "base" set DOWNLOAD_SDL=yes
@@ -121,5 +115,4 @@ build_script:
 cache:
 - SDL2-devel-2.0.4-VC.zip
 - SDL2-devel-2.0.4-mingw.tar.gz
-- x86_64-6.3.0-release-posix-seh-rt_v5-rev1.7z
 - glfw-3.2.1.bin.WIN64.zip
