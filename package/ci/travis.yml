@@ -15,6 +15,7 @@ matrix:
         packages:
         - libgl1-mesa-dev
         - libsdl2-dev
+        - ninja-build
   - language: cpp
     os: osx
     compiler: clang
@@ -34,6 +35,8 @@ matrix:
       apt:
         packages:
         - libgl1-mesa-dev
+        - ninja-build
+        # GLFW dependencies
         - libxrandr-dev
         - libxinerama-dev
         - libxcursor-dev
@@ -51,6 +54,7 @@ matrix:
         packages:
         - libgl1-mesa-dev
         - freeglut3-dev
+        - ninja-build
   - language: cpp
     os: osx
     compiler: clang
@@ -70,6 +74,7 @@ matrix:
       apt:
         packages:
         - libgl1-mesa-dev
+        - ninja-build
   - language: cpp
     os: osx
     compiler: clang
@@ -90,6 +95,7 @@ matrix:
         packages:
         - libgl1-mesa-dev
         - libsdl2-dev
+        - ninja-build
   - language: cpp
     os: linux
     dist: trusty
@@ -103,6 +109,7 @@ matrix:
         packages:
         - libgl1-mesa-dev
         - libsdl2-dev
+        - ninja-build
   - language: cpp
     os: osx
     osx_image: xcode7.3
@@ -200,6 +207,7 @@ install:
 - if [ "$BRANCH" == "base-android" ]; then export PATH=$HOME/cmake/bin:$PATH; fi
 - if [ "$BRANCH" == "base-android" ]; then export CXX=g++-4.7; fi
 - if [ "$BRANCH" == "base-ios" ]; then gem install xcpretty; fi
+- if [ "$TRAVIS_OS_NAME" == "osx" ]; then HOMEBREW_NO_AUTO_UPDATE=1 brew install ninja; fi
 - if [ "$BRANCH" == "base-emscripten" ] || [ "$BRANCH" == "windowless-emscripten" ]; then brew install emscripten && export LLVM=/usr/local/opt/emscripten/libexec/llvm/bin && emcc; fi
 
 # SDL (cached)

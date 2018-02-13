@@ -14,8 +14,9 @@ cmake .. \
     -DWITH_INTERCONNECT=OFF \
     -DWITH_PLUGINMANAGER=OFF \
     -DWITH_TESTSUITE=OFF \
-    -DBUILD_DEPRECATED=OFF
-make -j install
+    -DBUILD_DEPRECATED=OFF \
+    -G Ninja
+ninja install
 cd ..
 
 # Crosscompile Corrade
@@ -30,8 +31,9 @@ cmake .. \
     -DCMAKE_INSTALL_PREFIX=$HOME/deps \
     -DWITH_INTERCONNECT=OFF \
     -DWITH_TESTSUITE=OFF \
-    -DBUILD_DEPRECATED=OFF
-make -j install
+    -DBUILD_DEPRECATED=OFF \
+    -G Ninja
+ninja install
 cd ../..
 
 # Crosscompile Magnum
@@ -60,8 +62,9 @@ cmake .. \
     -DWITH_SDL2APPLICATION=ON \
     -DWITH_WINDOWLESSEGLAPPLICATION=ON \
     -DTARGET_GLES2=$TARGET_GLES2 \
-    -DBUILD_DEPRECATED=OFF
-make -j install
+    -DBUILD_DEPRECATED=OFF \
+    -G Ninja
+ninja install
 cd ../..
 
 # Crosscompile bootstrap project
@@ -77,5 +80,6 @@ cmake .. \
     -DCMAKE_CXX_FLAGS_RELEASE="-DNDEBUG -O1" \
     -DCMAKE_EXE_LINKER_FLAGS_RELEASE="-O1" \
     -DCMAKE_INSTALL_PREFIX=$HOME/deps \
-    -DCMAKE_FIND_ROOT_PATH=$HOME/deps
-make -j
+    -DCMAKE_FIND_ROOT_PATH=$HOME/deps \
+    -G Ninja
+ninja

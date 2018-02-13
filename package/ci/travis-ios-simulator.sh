@@ -15,8 +15,9 @@ cmake .. \
     -DWITH_INTERCONNECT=OFF \
     -DWITH_PLUGINMANAGER=OFF \
     -DWITH_TESTSUITE=OFF \
-    -DBUILD_DEPRECATED=OFF
-make -j install
+    -DBUILD_DEPRECATED=OFF \
+    -G Ninja
+ninja install
 cd ..
 
 # Crosscompile Corrade

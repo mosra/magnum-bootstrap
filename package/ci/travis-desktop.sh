@@ -11,8 +11,9 @@ cmake .. \
     -DCMAKE_BUILD_TYPE=Release \
     -DWITH_INTERCONNECT=OFF \
     -DWITH_TESTSUITE=OFF \
-    -DBUILD_DEPRECATED=OFF
-make -j install
+    -DBUILD_DEPRECATED=OFF \
+    -G Ninja
+ninja install
 cd ../..
 
 # Magnum
@@ -33,8 +34,9 @@ cmake .. \
     -DWITH_SHAPES=OFF \
     -DWITH_TEXT=OFF \
     -DWITH_TEXTURETOOLS=OFF \
-    -DBUILD_DEPRECATED=OFF $EXTRA
-make -j install
+    -DBUILD_DEPRECATED=OFF $EXTRA \
+    -G Ninja
+ninja install
 cd ../..
 
 # Bootstrap project
@@ -45,5 +47,6 @@ cmake .. \
     -DCMAKE_PREFIX_PATH="$HOME/deps;$HOME/sdl2;$HOME/glfw;/usr/local/opt/qt" \
     -DCMAKE_INSTALL_PREFIX=$HOME/deps \
     -DCMAKE_INSTALL_RPATH=$HOME/deps/lib \
-    -DCMAKE_BUILD_TYPE=Release
-make -j
+    -DCMAKE_BUILD_TYPE=Release \
+    -G Ninja
+ninja
