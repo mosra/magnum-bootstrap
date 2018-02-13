@@ -1,3 +1,4 @@
+#include <Corrade/Containers/Optional.h>
 /* Magnum GL headers must always be included before Qt ones */
 #include <Magnum/DefaultFramebuffer.h>
 #include <Magnum/Platform/Context.h>
@@ -14,7 +15,7 @@ class MyApplication: public QOpenGLWidget {
         void initializeGL() override;
         void paintGL() override;
 
-        std::optional<Platform::Context> _context;
+        Containers::Optional<Platform::Context> _context;
 };
 
 MyApplication::MyApplication(QWidget* parent, Qt::WindowFlags f): QOpenGLWidget{parent, f} {
