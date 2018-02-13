@@ -1,8 +1,13 @@
-This repository contains "bootstrap projects" for Magnum C++11/C++14 OpenGL
-graphics engine. If you don't know what Magnum is, see
-https://github.com/mosra/magnum.
+This repository contains "bootstrap projects" for the Magnum C++11/C++14
+graphics engine.
 
-[![Build Status](https://travis-ci.org/mosra/magnum-bootstrap.svg?branch=master)](https://travis-ci.org/mosra/magnum-bootstrap) [![Build Status](https://ci.appveyor.com/api/projects/status/90yi0xhj3pmkk1ig/branch/master?svg=true)](https://ci.appveyor.com/project/mosra/magnum-bootstrap/branch/master) [![Join the chat at https://gitter.im/mosra/magnum](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/mosra/magnum?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](https://travis-ci.org/mosra/magnum-bootstrap.svg?branch=master)](https://travis-ci.org/mosra/magnum-bootstrap)
+[![Build Status](https://ci.appveyor.com/api/projects/status/90yi0xhj3pmkk1ig/branch/master?svg=true)](https://ci.appveyor.com/project/mosra/magnum-bootstrap/branch/master)
+[![Join the chat at https://gitter.im/mosra/magnum](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/mosra/magnum?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+-   Project homepage — http://magnum.graphics/
+-   Documentation — http://doc.magnum.graphics/
+-   GitHub project page — https://github.com/mosra/magnum-bootstrap
 
 Setting up a new project can be pretty gruesome and nobody likes repeating the
 same process every time. This repository provides "bootstrap" project
@@ -11,9 +16,9 @@ structures for many use cases, helping you get up and running in no time.
 USAGE
 =====
 
-To use Magnum, you obviously need to have Magnum installed. Note that the whole
-building and installation process (along with the following guide) is
-thoroughly explained in Magnum documentation, particularly in the
+To use Magnum, you obviously need to have Magnum installed. The whole building
+and installation process (along with the following guide) is thoroughly
+explained in Magnum documentation, particularly in the
 [Getting Started Guide](http://doc.magnum.graphics/magnum/getting-started.html).
 
 Minimal dependencies
@@ -304,25 +309,33 @@ Change `WindowsStore` to `WindowsPhone` if you want to build for Windows Phone
 instead. The `build-winrt/src/AppPackages` directory will then contain the
 final package along with a PowerShell script for easy local installation.
 
-CONTACT
-=======
+CONTACT & SUPPORT
+=================
 
-Want to learn more about the library? Found a bug or want to share an awesome
-idea? Feel free to visit the project website or contact the team at:
+If you want to contribute to Magnum, if you spotted a bug, need a feature or
+have an awesome idea, you can get a copy of the sources from GitHub and start
+right away! There is the already mentioned guide about
+[how to download and build Magnum](http://doc.magnum.graphics/magnum/building.html)
+and also a guide about [coding style and best practices](http://doc.magnum.graphics/magnum/coding-style.html)
+which you should follow to keep the library as consistent and maintainable as
+possible.
 
-*   Website -- http://magnum.graphics
-*   GitHub -- https://github.com/mosra/magnum-bootstrap
-*   Gitter -- https://gitter.im/mosra/magnum
-*   IRC -- join `#magnum-engine` channel on freenode
-*   Google Groups -- https://groups.google.com/forum/#!forum/magnum-engine
-*   Twitter -- https://twitter.com/czmosra
-*   E-mail -- mosra@centrum.cz
-*   Jabber -- mosra@jabbim.cz
+-   Project homepage — http://magnum.graphics/
+-   Documentation — http://doc.magnum.graphics/
+-   GitHub project page — https://github.com/mosra/magnum-examples
+-   Gitter community chat — https://gitter.im/mosra/magnum
+-   E-mail — info@magnum.graphics
+-   IRC — join the `#magnum-engine` channel on freenode
+-   Google Groups mailing list — magnum-engine@googlegroups.com ([archive](https://groups.google.com/forum/#!forum/magnum-engine))
+-   Author's personal Twitter — https://twitter.com/czmosra
+
+See also the Magnum Project [Contact & Support page](http://magnum.graphics/contact/)
+for further information.
 
 LICENSE
 =======
 
-While Magnum itself and its documentation are licensed under MIT/Expat license,
-all bootstrap projects are put into public domain (or UNLICENSE) to free you
-from any legal obstacles when reusing the code in your apps. See the
+While Magnum itself and its documentation are licensed under the MIT/Expat
+license, all boostrap projects are put into public domain (or UNLICENSE) to
+free you from any legal obstacles when reusing the code in your apps. See the
 [COPYING](COPYING) file for details.
