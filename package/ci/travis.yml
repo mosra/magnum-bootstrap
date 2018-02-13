@@ -192,21 +192,22 @@ notifications:
 cache:
   directories:
   - $HOME/sdl2
+  - $HOME/glfw
   - $HOME/cmake
 
 install:
 - if [ "$BRANCH" == "base-android" ]; then wget -nc http://dl.google.com/android/ndk/android-ndk-r10e-linux-x86_64.bin && chmod +x android-*.bin && ./android-*.bin -y | grep -v Extracting; fi
 - if [ "$BRANCH" == "base-ios" ]; then gem install xcpretty; fi
 - if [ "$TRAVIS_OS_NAME" == "osx" ]; then HOMEBREW_NO_AUTO_UPDATE=1 brew install ninja; fi
+- if [ "$TRAVIS_OS_NAME" == "osx" ] && [ "$BRANCH" == "base-qt" ]; then HOMEBREW_NO_AUTO_UPDATE=1 brew install qt; fi
 - if [ "$BRANCH" == "base-emscripten" ] || [ "$BRANCH" == "windowless-emscripten" ]; then brew install emscripten && export LLVM=/usr/local/opt/emscripten/libexec/llvm/bin && emcc; fi
 
 # SDL (cached)
-- if [ "$TRAVIS_OS_NAME" == "osx" ] && [ "$BRANCH" == "base" ]; then brew install sdl2; fi
-- if [ "$TRAVIS_OS_NAME" == "osx" ] && [ "$BRANCH" == "base-qt" ]; then brew install qt; fi
-- if [ "$BRANCH" == "base-ios" ]; then curl -O https://www.libsdl.org/release/SDL2-2.0.4.tar.gz && tar -xzvf SDL2-2.0.4.tar.gz && cd SDL2-2.0.4/Xcode-iOS/SDL && xcodebuild -sdk iphonesimulator9.3 | xcpretty && mkdir -p ../../../sdl2/lib && cp build/Release-iphonesimulator/libSDL2.a ../../../sdl2/lib && mkdir -p ../../../sdl2/include/SDL2 && cp -R ../../include/* ../../../sdl2/include/SDL2 && cd ../../..; fi
+- if [ "$TRAVIS_OS_NAME" == "osx" ] && [ "$BRANCH" == "base" ]; then HOMEBREW_NO_AUTO_UPDATE=1 brew install sdl2; fi
+- if [ "$BRANCH" == "base-ios" ] && [ ! -e "$HOME/sdl2/include" ]; then curl -O https://www.libsdl.org/release/SDL2-2.0.4.tar.gz && tar -xzvf SDL2-2.0.4.tar.gz && cd SDL2-2.0.4/Xcode-iOS/SDL && xcodebuild -sdk iphonesimulator9.3 | xcpretty && mkdir -p ../../../sdl2/lib && cp build/Release-iphonesimulator/libSDL2.a ../../../sdl2/lib && mkdir -p ../../../sdl2/include/SDL2 && cp -R ../../include/* ../../../sdl2/include/SDL2 && cd ../../..; fi
 
 # GLFW (cached)
-- if [ "$BRANCH" == "base-glfw" ]; then wget https://github.com/glfw/glfw/releases/download/3.1.2/glfw-3.1.2.zip && unzip glfw-3.1.2.zip && cd glfw-3.1.2 && mkdir build && cd build && cmake .. -DCMAKE_INSTALL_PREFIX=$HOME/glfw -DCMAKE_BUILD_TYPE=Release -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_DOCS=OFF -DBUILD_SHARED_LIBS=ON && cmake --build . --target install && cd ../..; fi
+- if [ "$BRANCH" == "base-glfw" ] && [ ! -e "$HOME/glfw/include" ]; then wget https://github.com/glfw/glfw/releases/download/3.1.2/glfw-3.1.2.zip && unzip glfw-3.1.2.zip && cd glfw-3.1.2 && mkdir build && cd build && cmake .. -DCMAKE_INSTALL_PREFIX=$HOME/glfw -DCMAKE_BUILD_TYPE=Release -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_DOCS=OFF -DBUILD_SHARED_LIBS=ON && cmake --build . --target install && cd ../..; fi
 
 script:
 - if [ "$BRANCH" == "base" ] || [ "$BRANCH" == "base-glfw" ] || [ "$BRANCH" == "base-glut" ] || [ "$BRANCH" == "base-qt" ] || [ "$BRANCH" == "windowless" ] || [ "$BRANCH" == "scenegraph2D" ] || [ "$BRANCH" == "scenegraph3D" ]; then ./package/ci/travis-desktop.sh; fi
