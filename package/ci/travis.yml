@@ -150,17 +150,15 @@ matrix:
     - TARGET_GLES2=OFF
   - language: android
     os: linux
-    dist: precise
+    dist: trusty
     env:
     - JOBID=base-android-es2
     - BRANCH=base-android
     - TARGET_GLES2=ON
     addons:
       apt:
-        sources:
-        - ubuntu-toolchain-r-test
         packages:
-        - g++-4.7
+        - ant
     android:
       components:
       - build-tools-19.0.0
@@ -168,17 +166,15 @@ matrix:
       - sys-img-armeabi-v7a-android-19
   - language: android
     os: linux
-    dist: precise
+    dist: trusty
     env:
     - JOBID=base-android-es3
     - BRANCH=base-android
     - TARGET_GLES2=OFF
     addons:
       apt:
-        sources:
-        - ubuntu-toolchain-r-test
         packages:
-        - g++-4.7
+        - ant
     android:
       components:
       - build-tools-19.0.0
@@ -200,12 +196,6 @@ cache:
 
 install:
 - if [ "$BRANCH" == "base-android" ]; then wget -nc http://dl.google.com/android/ndk/android-ndk-r10e-linux-x86_64.bin && chmod +x android-*.bin && ./android-*.bin -y | grep -v Extracting; fi
-# Because Android build has to use 12.04 and CMake 2.8.12 stopped working there
-# since May 2017, I have to manually download a prebuilt version. Also, the
-# PATH setting can't be cached, so it's separate (bit me two times already)
-- if [ "$BRANCH" == "base-android" ] && [ ! -e "$HOME/cmake/bin" ]; then cd $HOME ; wget -nc --no-check-certificate https://cmake.org/files/v2.8/cmake-2.8.12.2-Linux-i386.tar.gz && mkdir -p cmake && cd cmake && tar --strip-components=1 -xzvf ../cmake-2.8.12.2-Linux-i386.tar.gz && cd $TRAVIS_BUILD_DIR ; fi
-- if [ "$BRANCH" == "base-android" ]; then export PATH=$HOME/cmake/bin:$PATH; fi
-- if [ "$BRANCH" == "base-android" ]; then export CXX=g++-4.7; fi
 - if [ "$BRANCH" == "base-ios" ]; then gem install xcpretty; fi
 - if [ "$TRAVIS_OS_NAME" == "osx" ]; then HOMEBREW_NO_AUTO_UPDATE=1 brew install ninja; fi
 - if [ "$BRANCH" == "base-emscripten" ] || [ "$BRANCH" == "windowless-emscripten" ]; then brew install emscripten && export LLVM=/usr/local/opt/emscripten/libexec/llvm/bin && emcc; fi
