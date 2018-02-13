@@ -16,7 +16,7 @@
 #
 #   This file is part of Magnum.
 #
-#   Copyright © 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017
+#   Copyright © 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018
 #             Vladimír Vondruš <mosra@centrum.cz>
 #   Copyright © 2016 Jonathan Hale <squareys@googlemail.com>
 #
@@ -43,8 +43,7 @@ find_library(GLFW_LIBRARY NAMES glfw glfw3)
 
 # Include dir
 find_path(GLFW_INCLUDE_DIR
-    NAMES glfw3.h
-    PATH_SUFFIXES GLFW)
+    NAMES GLFW/glfw3.h)
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args("GLFW" DEFAULT_MSG
@@ -70,7 +69,7 @@ if(NOT TARGET GLFW::GLFW)
     endif()
     add_library(GLFW::GLFW ${_GLFW_IMPORTED_LIBRARY_KIND})
 
-    # Work around BUGGY framework support on OSX
+    # Work around BUGGY framework support on macOS
     # https://cmake.org/Bug/view.php?id=14105
     if(CORRADE_TARGET_APPLE AND ${GLFW_LIBRARY} MATCHES "\\.framework$")
         set_property(TARGET GLFW::GLFW PROPERTY IMPORTED_LOCATION ${GLFW_LIBRARY}/GLFW)
