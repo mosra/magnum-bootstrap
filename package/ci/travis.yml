@@ -155,15 +155,10 @@ matrix:
     - JOBID=base-android-es2
     - BRANCH=base-android
     - TARGET_GLES2=ON
-    addons:
-      apt:
-        packages:
-        - ant
     android:
       components:
-      - build-tools-19.0.0
-      - android-19
-      - sys-img-armeabi-v7a-android-19
+      - build-tools-26.0.2
+      - android-22
   - language: android
     os: linux
     dist: trusty
@@ -171,15 +166,10 @@ matrix:
     - JOBID=base-android-es3
     - BRANCH=base-android
     - TARGET_GLES2=OFF
-    addons:
-      apt:
-        packages:
-        - ant
     android:
       components:
-      - build-tools-19.0.0
-      - android-19
-      - sys-img-armeabi-v7a-android-19
+      - build-tools-26.0.2
+      - android-22
 
 notifications:
   webhooks:
@@ -195,8 +185,15 @@ cache:
   - $HOME/glfw
   - $HOME/cmake
 
+before_install:
+- if [ "$BRANCH" == "base-android" ]; then yes | sdkmanager "cmake;3.6.4111459"; fi
+
 install:
-- if [ "$BRANCH" == "base-android" ]; then wget -nc http://dl.google.com/android/ndk/android-ndk-r10e-linux-x86_64.bin && chmod +x android-*.bin && ./android-*.bin -y | grep -v Extracting; fi
+# Android needs CMake 3.7, but https://gitlab.kitware.com/cmake/cmake/issues/17253
+# is fixed in 3.9.2, so grab that.
+- if [ "$BRANCH" == "base-android" ] && [ ! -e "$HOME/cmake/bin" ]; then cd $HOME ; wget -nc --no-check-certificate https://cmake.org/files/v3.9/cmake-3.9.2-Linux-x86_64.tar.gz && mkdir -p cmake && cd cmake && tar --strip-components=1 -xzf ../cmake-3.9.2-Linux-x86_64.tar.gz && cd $TRAVIS_BUILD_DIR ; fi
+- if [ "$BRANCH" == "base-android" ]; then export PATH=$HOME/cmake/bin:$PATH && cmake --version; fi
+- if [ "$BRANCH" == "base-android" ]; then wget -nc https://dl.google.com/android/repository/android-ndk-r16b-linux-x86_64.zip && unzip -q android-*.zip; fi
 - if [ "$BRANCH" == "base-ios" ]; then gem install xcpretty; fi
 - if [ "$TRAVIS_OS_NAME" == "osx" ]; then HOMEBREW_NO_AUTO_UPDATE=1 brew install ninja; fi
 - if [ "$TRAVIS_OS_NAME" == "osx" ] && [ "$BRANCH" == "base-qt" ]; then HOMEBREW_NO_AUTO_UPDATE=1 brew install qt; fi

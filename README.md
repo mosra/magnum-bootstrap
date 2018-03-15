@@ -200,7 +200,7 @@ You can then open `MyApplication.html` in your browser (through webserver, e.g.
 The [`base-android`](https://github.com/mosra/magnum-bootstrap/tree/base-android)
 branch contains application using `Platform::Sdl2Application` for desktop build
 and `Platform::AndroidApplication` for Android build. For desktop build you
-need Magnum built with `WITH_ANDROIDAPPLICATION` enabled and you can use the
+need Magnum built with `WITH_SDL2APPLICATION` enabled and you can use the
 commands above to build the desktop version.
 
 For Android build you need to have Android NDK installed with Corrade and
@@ -209,41 +209,10 @@ enabled. See [Corrade's](http://doc.magnum.graphics/corrade/building-corrade.htm
 and [Magnum's](http://doc.magnum.graphics/magnum/building.html#building-cross-android)
 building documentation for more information.
 
-In the `toolchains/` submodule don't forget to adapt `ANDROID_NDK_ROOT` in
-`toolchains/generic/Android-*.cmake` to path where NDK is installed. Default is
-`/opt/android-ndk`. Adapt also `ANDROID_SYSROOT` to your preferred API level.
-You might also need to update `ANDROID_TOOLCHAIN_PREFIX` and
-`ANDROID_TOOLCHAIN_ROOT` to fit your system.
+In order to build the application and install it on your device, use Gradle:
 
-First you need to update Android project files with the following command. It
-will create `build.xml` file for Ant and a bunch of other files. You need to
-specify the target for which you will build in the `-t` parameter. List of all
-targets can be obtained by calling `android list target`.
-
-    android update project -p . -t "android-19"
-
-Then create build directories for ARM and x86 and run `cmake` and build command
-in them. Set `CMAKE_PREFIX_PATH` to the directory where you have all the
-dependencies.
-
-    mkdir build-android-arm && cd build-android-arm
-    cmake .. \
-        -DCMAKE_TOOLCHAIN_FILE="../toolchains/generic/Android-ARM.cmake" \
-        -DCMAKE_PREFIX_PATH=/opt/android-ndk/platforms/android-19/arch-arm/usr
-    cmake --build .
-
-    mkdir build-android-x86 && cd build-android-x86
-    cmake .. \
-        -DCMAKE_TOOLCHAIN_FILE="../toolchains/generic/Android-x86.cmake" \
-        -DCMAKE_PREFIX_PATH=/opt/android-ndk/platforms/android-19/arch-x86/usr
-    cmake --build .
-
-The compiled binaries will be put into `lib/armeabi-v7a` and `lib/x86`. You can
-then build the APK package simply by running `ant`. The resulting APK package
-can be then installed directly on the device or emulator using `adb install`.
-
-    ant debug
-    adb install bin/NativeActivity-debug.apk
+    gradle build
+    gradle installDebug
 
 ### Base application with port to iOS
 
