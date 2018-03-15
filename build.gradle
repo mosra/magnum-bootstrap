@@ -4,14 +4,15 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.android.tools.build:gradle:2.3.3'
     }
 }
 
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 22
+    buildToolsVersion '26.0.2'
 
     defaultConfig {
         minSdkVersion 22
@@ -22,7 +23,7 @@ android {
             }
         }
         ndk {
-            abiFilters "arm64-v8a"
+            abiFilters 'arm64-v8a'
         }
     }
 
