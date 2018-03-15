@@ -1,6 +1,5 @@
-bin/
-libs/
+.gradle/
+.externalNativeBuild/
 build*/
-local.properties
 *.kdev4
 *~
