@@ -44,6 +44,6 @@ else()
     add_executable(MyApplication MyApplication.cpp)
 endif()
 
-target_link_libraries(MyApplication
+target_link_libraries(MyApplication PRIVATE
     Magnum::Application
     Magnum::Magnum)
