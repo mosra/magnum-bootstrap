@@ -14,6 +14,6 @@ else()
     add_library(MyApplication SHARED MyApplication.cpp)
 endif()
 
-target_link_libraries(MyApplication
+target_link_libraries(MyApplication PRIVATE
     Magnum::Application
     Magnum::Magnum)
