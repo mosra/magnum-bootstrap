@@ -10,6 +10,7 @@ cmake .. \
     -DCMAKE_INSTALL_RPATH=$HOME/deps/lib \
     -DCMAKE_BUILD_TYPE=Release \
     -DWITH_INTERCONNECT=OFF \
+    -DWITH_PLUGINMANAGER=OFF \
     -DWITH_TESTSUITE=OFF \
     -DBUILD_DEPRECATED=OFF \
     -G Ninja
@@ -34,6 +35,7 @@ cmake .. \
     -DWITH_SHAPES=OFF \
     -DWITH_TEXT=OFF \
     -DWITH_TEXTURETOOLS=OFF \
+    -DWITH_TRADE=OFF \
     -DBUILD_DEPRECATED=OFF $EXTRA \
     -G Ninja
 ninja install
