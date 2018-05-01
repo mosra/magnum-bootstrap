@@ -1,4 +1,4 @@
-#include <Magnum/DefaultFramebuffer.h>
+#include <Magnum/GL/DefaultFramebuffer.h>
 #include <Magnum/Platform/Sdl2Application.h>
 #include <Magnum/SceneGraph/Scene.h>
 #include <Magnum/SceneGraph/MatrixTransformation2D.h>
@@ -29,13 +29,13 @@ MyApplication::MyApplication(const Arguments& arguments): Platform::Application{
     _camera = new SceneGraph::Camera2D{*_cameraObject};
     _camera->setAspectRatioPolicy(SceneGraph::AspectRatioPolicy::Extend)
         .setProjectionMatrix(Matrix3::projection({4.0f/3.0f, 1.0f}))
-        .setViewport(defaultFramebuffer.viewport().size());
+        .setViewport(GL::defaultFramebuffer.viewport().size());
 
     /* TODO: Prepare your objects here and add them to the scene */
 }
 
 void MyApplication::drawEvent() {
-    defaultFramebuffer.clear(FramebufferClear::Color);
+    GL::defaultFramebuffer.clear(GL::FramebufferClear::Color);
 
     _camera->draw(_drawables);
 
