@@ -1,7 +1,7 @@
 #include <Corrade/Containers/Optional.h>
 /* Magnum GL headers must always be included before Qt ones */
-#include <Magnum/DefaultFramebuffer.h>
-#include <Magnum/Platform/Context.h>
+#include <Magnum/GL/DefaultFramebuffer.h>
+#include <Magnum/Platform/GLContext.h>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QOpenGLWidget>
 
@@ -15,7 +15,7 @@ class MyApplication: public QOpenGLWidget {
         void initializeGL() override;
         void paintGL() override;
 
-        Containers::Optional<Platform::Context> _context;
+        Containers::Optional<Platform::GLContext> _context;
 };
 
 MyApplication::MyApplication(QWidget* parent, Qt::WindowFlags f): QOpenGLWidget{parent, f} {
@@ -23,13 +23,13 @@ MyApplication::MyApplication(QWidget* parent, Qt::WindowFlags f): QOpenGLWidget{
 }
 
 void MyApplication::initializeGL() {
-    _context.emplace(Platform::Context{0, nullptr});
+    _context.emplace(Platform::GLContext{});
 
     /* TODO: Add your initialization code here */
 }
 
 void MyApplication::paintGL() {
-    defaultFramebuffer.clear(FramebufferClear::Color);
+    GL::defaultFramebuffer.clear(GL::FramebufferClear::Color);
 
     /* TODO: Add your drawing code here */
 }

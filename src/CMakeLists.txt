@@ -1,5 +1,5 @@
 find_package(Qt5Widgets REQUIRED)
-find_package(Magnum REQUIRED)
+find_package(Magnum REQUIRED GL)
 
 if(MAGNUM_TARGET_GLES AND NOT MAGNUM_TARGET_DESKTOP_GLES)
     find_package(Magnum REQUIRED EglContext)
@@ -17,6 +17,7 @@ set_directory_properties(PROPERTIES CORRADE_USE_PEDANTIC_FLAGS ON)
 
 add_executable(MyApplication MyApplication.cpp)
 target_link_libraries(MyApplication PRIVATE
-    Magnum::Context
+    Magnum::GLContext
+    Magnum::GL
     Magnum::Magnum
     Qt5::Widgets)
