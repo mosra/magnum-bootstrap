@@ -1,4 +1,4 @@
-find_package(Magnum REQUIRED)
+find_package(Magnum REQUIRED GL)
 
 if(NOT CORRADE_TARGET_ANDROID)
     find_package(Magnum REQUIRED Sdl2Application)
@@ -16,4 +16,5 @@ endif()
 
 target_link_libraries(MyApplication PRIVATE
     Magnum::Application
+    Magnum::GL
     Magnum::Magnum)
