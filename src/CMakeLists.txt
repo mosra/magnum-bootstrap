@@ -1,4 +1,4 @@
-find_package(Magnum REQUIRED)
+find_package(Magnum REQUIRED GL)
 
 if(MAGNUM_TARGET_HEADLESS)
     find_package(Magnum REQUIRED WindowlessEglApplication)
@@ -22,6 +22,7 @@ set_directory_properties(PROPERTIES CORRADE_USE_PEDANTIC_FLAGS ON)
 
 add_executable(MyApplication MyApplication.cpp)
 target_link_libraries(MyApplication PRIVATE
+    Magnum::GL
     Magnum::Magnum
     Magnum::WindowlessApplication)
 if(CORRADE_TARGET_IOS)
