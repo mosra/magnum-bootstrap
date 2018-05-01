@@ -1,11 +1,11 @@
-find_package(Magnum REQUIRED
-    Sdl2Application)
+find_package(Magnum REQUIRED GL Sdl2Application)
 
 set_directory_properties(PROPERTIES CORRADE_USE_PEDANTIC_FLAGS ON)
 
 add_executable(MyApplication MACOSX_BUNDLE MyApplication.cpp)
 target_link_libraries(MyApplication PRIVATE
     Magnum::Application
+    Magnum::GL
     Magnum::Magnum)
 if(CORRADE_TARGET_IOS)
     set_target_properties(MyApplication PROPERTIES
