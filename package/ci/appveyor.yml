@@ -64,19 +64,19 @@ environment:
   #- BRANCH: base-winrt
     #TARGET_GLES2: ON
     #APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-    #APPVEYOR_JOB_NAME: base-winrt-es2-msvc2015
+    #APPVEYOR_JOB_NAME: base-winrt-gles2-msvc2015
   #- BRANCH: base-winrt
     #TARGET_GLES2: ON
     #APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    #APPVEYOR_JOB_NAME: base-winrt-es2-msvc2017
+    #APPVEYOR_JOB_NAME: base-winrt-gles2-msvc2017
   #- BRANCH: base-winrt
     #TARGET_GLES2: OFF
     #APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-    #APPVEYOR_JOB_NAME: base-winrt-es3-msvc2015
+    #APPVEYOR_JOB_NAME: base-winrt-gles3-msvc2015
   #- BRANCH: base-winrt
     #TARGET_GLES2: OFF
     #APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    #APPVEYOR_JOB_NAME: base-winrt-es3-msvc2017
+    #APPVEYOR_JOB_NAME: base-winrt-gles3-msvc2017
 
 notifications:
 - provider: Webhook
