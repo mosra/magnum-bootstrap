@@ -42,20 +42,6 @@ matrix:
         - libxcursor-dev
         #- libxi-dev # will be needed in the future
   - language: cpp
-    os: linux
-    dist: trusty
-    compiler: gcc
-    env:
-    - JOBID=base-glut-linux
-    - BRANCH=base-glut
-    - EXTRA="-DWITH_GLUTAPPLICATION=ON"
-    addons:
-      apt:
-        packages:
-        - libgl1-mesa-dev
-        - freeglut3-dev
-        - ninja-build
-  - language: cpp
     os: osx
     compiler: clang
     env:
