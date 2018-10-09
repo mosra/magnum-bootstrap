@@ -7,7 +7,11 @@
 #elif defined(CORRADE_TARGET_APPLE)
 #include <Magnum/Platform/WindowlessCglApplication.h>
 #elif defined(CORRADE_TARGET_UNIX)
+#if !defined(MAGNUM_TARGET_GLES) || defined(MAGNUM_TARGET_DESKTOP_GLES)
 #include <Magnum/Platform/WindowlessGlxApplication.h>
+#else
+#include <Magnum/Platform/WindowlessEglApplication.h>
+#endif
 #elif defined(CORRADE_TARGET_WINDOWS)
 #if !defined(MAGNUM_TARGET_GLES) || defined(MAGNUM_TARGET_DESKTOP_GLES)
 #include <Magnum/Platform/WindowlessWglApplication.h>
