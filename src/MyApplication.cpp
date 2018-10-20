@@ -8,22 +8,18 @@ class MyApplication: public Platform::Application {
         explicit MyApplication(const Arguments& arguments);
 
     private:
-        void viewportEvent(const Vector2i& size) override;
+        void viewportEvent(ViewportEvent& event) override;
         void drawEvent() override;
 };
 
 MyApplication::MyApplication(const Arguments& arguments): Platform::Application{arguments,
-    Configuration{}.setWindowFlags(Configuration::WindowFlag::Resizable
-        #ifdef CORRADE_TARGET_IOS
-        |Configuration::WindowFlag::Borderless|Configuration::WindowFlag::AllowHighDpi
-        #endif
-    )}
+    Configuration{}.setWindowFlags(Configuration::WindowFlag::Resizable)}
 {
     /* TODO: Add your initialization code here */
 }
 
-void MyApplication::viewportEvent(const Vector2i& size) {
-    GL::defaultFramebuffer.setViewport({{}, size});
+void MyApplication::viewportEvent(ViewportEvent& event) {
+    GL::defaultFramebuffer.setViewport({{}, event.framebufferSize()});
 }
 
 void MyApplication::drawEvent() {
