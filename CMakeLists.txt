@@ -25,4 +25,4 @@
 
 cmake_minimum_required(VERSION 2.8.12)
 
-message(FATAL_ERROR "The master branch of magnum-bootstrap doesn't contain any project. Download one of the other branches (such as `base`) instead. See http://doc.magnum.graphics/magnum/getting-started.html for more information.")
+message(FATAL_ERROR "The master branch of magnum-bootstrap doesn't contain any project. Download one of the other branches (such as `base`) instead. See https://doc.magnum.graphics/magnum/getting-started.html for more information.")

@@ -5,8 +5,8 @@ graphics engine.
 [![Build Status](https://ci.appveyor.com/api/projects/status/90yi0xhj3pmkk1ig/branch/master?svg=true)](https://ci.appveyor.com/project/mosra/magnum-bootstrap/branch/master)
 [![Join the chat at https://gitter.im/mosra/magnum](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/mosra/magnum?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
--   Project homepage — http://magnum.graphics/
--   Documentation — http://doc.magnum.graphics/
+-   Project homepage — https://magnum.graphics/
+-   Documentation — https://doc.magnum.graphics/
 -   GitHub project page — https://github.com/mosra/magnum-bootstrap
 
 Setting up a new project can be pretty gruesome and nobody likes repeating the
@@ -19,7 +19,7 @@ USAGE
 To use Magnum, you obviously need to have Magnum installed. The whole building
 and installation process (along with the following guide) is thoroughly
 explained in Magnum documentation, particularly in the
-[Getting Started Guide](http://doc.magnum.graphics/magnum/getting-started.html).
+[Getting Started Guide](https://doc.magnum.graphics/magnum/getting-started.html).
 
 Minimal dependencies
 --------------------
@@ -31,7 +31,7 @@ Minimal dependencies
 *   **Corrade**, **Magnum** -- The engine itself
 
 Note that each bootstrap project has additional dependency requirements, listed
-below. See [Magnum building documentation](http://doc.magnum.graphics/magnum/building.html)
+below. See [Magnum building documentation](https://doc.magnum.graphics/magnum/building.html)
 for more information.
 
 Bootstrapping the project
@@ -129,8 +129,8 @@ and you can use the commands above to build the desktop version.
 For Emscripten build you need to have Emscripten installed with Corrade and
 Magnum crosscompiled for Emscripten, don't forget to build Magnum with
 `WITH_SDL2APPLICATION` enabled. See
-[Corrade's](http://doc.magnum.graphics/corrade/building-corrade.html#building-corrade-cross-emscripten)
-and [Magnum's](http://doc.magnum.graphics/magnum/building.html#building-cross-emscripten)
+[Corrade's](https://doc.magnum.graphics/corrade/building-corrade.html#building-corrade-cross-emscripten)
+and [Magnum's](https://doc.magnum.graphics/magnum/building.html#building-cross-emscripten)
 building documentation for more information.
 
 In the `toolchains/` submodule there are two toolchain files. The
@@ -168,8 +168,8 @@ version.
 For Emscripten build you need to have Emscripten installed with Corrade and
 Magnum crosscompiled for Emscripten, don't forget to build Magnum with
 `WITH_WINDOWLESSEGLAPPLICATION` enabled. See
-[Corrade's](http://doc.magnum.graphics/corrade/building-corrade.html#building-corrade-cross-emscripten)
-and [Magnum's](http://doc.magnum.graphics/magnum/building.html#building-cross-emscripten)
+[Corrade's](https://doc.magnum.graphics/corrade/building-corrade.html#building-corrade-cross-emscripten)
+and [Magnum's](https://doc.magnum.graphics/magnum/building.html#building-cross-emscripten)
 building documentation for more information.
 
 In the `toolchains/` submodule there are two toolchain files. The
@@ -205,8 +205,8 @@ commands above to build the desktop version.
 
 For Android build you need to have Android NDK installed with Corrade and
 Magnum crosscompiled for Android, Magnum built with `WITH_ANDROIDAPPLICATION`
-enabled. See [Corrade's](http://doc.magnum.graphics/corrade/building-corrade.html#building-corrade-cross-android)
-and [Magnum's](http://doc.magnum.graphics/magnum/building.html#building-cross-android)
+enabled. See [Corrade's](https://doc.magnum.graphics/corrade/building-corrade.html#building-corrade-cross-android)
+and [Magnum's](https://doc.magnum.graphics/magnum/building.html#building-cross-android)
 building documentation for more information.
 
 In order to build the application and install it on your device, use Gradle:
@@ -223,8 +223,8 @@ you can use the commands above to build the desktop version.
 
 For iOS you need macOS and XCode installed with Corrade and Magnum
 crosscompiled for iOS, don't forget to build Magnum with `WITH_SDL2APPLICATION`
-enabled. See [Corrade's](http://doc.magnum.graphics/corrade/building-corrade.html#building-corrade-cross-ios)
-and [Magnum's](http://doc.magnum.graphics/magnum/building.html#building-cross-ios)
+enabled. See [Corrade's](https://doc.magnum.graphics/corrade/building-corrade.html#building-corrade-cross-ios)
+and [Magnum's](https://doc.magnum.graphics/magnum/building.html#building-cross-ios)
 building documentation for more information.
 
 Then create build directory and run `cmake` to generate the Xcode project. Set
@@ -253,8 +253,8 @@ and you can use the commands above to build the desktop version.
 For Windows RT build you need to have at least Windows 8.1, Visual Studio 2013
 and Windows 8.1 Store/Phone SDK installed with Corrade and Magnum crosscompiled
 for Windows RT, don't forget to build Magnum with `WITH_SDL2APPLICATION` enabled.
-See [Corrade's](http://doc.magnum.graphics/corrade/building-corrade.html#building-corrade-cross-winrt)
-and [Magnum's](http://doc.magnum.graphics/magnum/building.html#building-cross-winrt)
+See [Corrade's](https://doc.magnum.graphics/corrade/building-corrade.html#building-corrade-cross-winrt)
+and [Magnum's](https://doc.magnum.graphics/magnum/building.html#building-cross-winrt)
 building documentation for more information.
 
 You need to provide [your own `*.pfx` certificate file](https://msdn.microsoft.com/en-us/library/windows/desktop/jj835832.aspx)
@@ -284,13 +284,13 @@ CONTACT & SUPPORT
 If you want to contribute to Magnum, if you spotted a bug, need a feature or
 have an awesome idea, you can get a copy of the sources from GitHub and start
 right away! There is the already mentioned guide about
-[how to download and build Magnum](http://doc.magnum.graphics/magnum/building.html)
-and also a guide about [coding style and best practices](http://doc.magnum.graphics/magnum/coding-style.html)
+[how to download and build Magnum](https://doc.magnum.graphics/magnum/building.html)
+and also a guide about [coding style and best practices](https://doc.magnum.graphics/magnum/coding-style.html)
 which you should follow to keep the library as consistent and maintainable as
 possible.
 
--   Project homepage — http://magnum.graphics/
--   Documentation — http://doc.magnum.graphics/
+-   Project homepage — https://magnum.graphics/
+-   Documentation — https://doc.magnum.graphics/
 -   GitHub project page — https://github.com/mosra/magnum-examples
 -   Gitter community chat — https://gitter.im/mosra/magnum
 -   E-mail — info@magnum.graphics
@@ -298,7 +298,7 @@ possible.
 -   Google Groups mailing list — magnum-engine@googlegroups.com ([archive](https://groups.google.com/forum/#!forum/magnum-engine))
 -   Author's personal Twitter — https://twitter.com/czmosra
 
-See also the Magnum Project [Contact & Support page](http://magnum.graphics/contact/)
+See also the Magnum Project [Contact & Support page](https://magnum.graphics/contact/)
 for further information.
 
 LICENSE
