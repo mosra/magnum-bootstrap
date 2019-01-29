@@ -9,21 +9,21 @@ using namespace Magnum;
 
 class MyApplication: public QOpenGLWidget {
     public:
-        explicit MyApplication(QWidget* parent = nullptr, Qt::WindowFlags f = nullptr);
+        explicit MyApplication(Platform::GLContext& context, QWidget* parent = nullptr, Qt::WindowFlags f = nullptr);
 
     private:
         void initializeGL() override;
         void paintGL() override;
 
-        Containers::Optional<Platform::GLContext> _context;
+        Platform::GLContext& _context;
 };
 
-MyApplication::MyApplication(QWidget* parent, Qt::WindowFlags f): QOpenGLWidget{parent, f} {
+MyApplication::MyApplication(Platform::GLContext& context, QWidget* parent, Qt::WindowFlags f): QOpenGLWidget{parent, f}, _context(context) {
     /* TODO: Add your context format setup code here */
 }
 
 void MyApplication::initializeGL() {
-    _context.emplace(Platform::GLContext{});
+    _context.create();
 
     /* TODO: Add your initialization code here */
 }
@@ -35,9 +35,10 @@ void MyApplication::paintGL() {
 }
 
 int main(int argc, char** argv) {
+    Platform::GLContext context{NoCreate, argc, argv};
     QApplication app{argc, argv};
 
-    MyApplication w;
+    MyApplication w{context};
     w.show();
 
     return app.exec();
