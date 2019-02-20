@@ -4,7 +4,7 @@ matrix:
   include:
   - language: cpp
     os: linux
-    dist: trusty
+    dist: xenial
     compiler: gcc
     env:
     - JOBID=base-linux
@@ -25,7 +25,7 @@ matrix:
     - EXTRA="-DWITH_SDL2APPLICATION=ON"
   - language: cpp
     os: linux
-    dist: trusty
+    dist: xenial
     compiler: gcc
     env:
     - JOBID=base-glfw-linux
@@ -36,11 +36,7 @@ matrix:
         packages:
         - libgl1-mesa-dev
         - ninja-build
-        # GLFW dependencies
-        - libxrandr-dev
-        - libxinerama-dev
-        - libxcursor-dev
-        #- libxi-dev # will be needed in the future
+        - libglfw3-dev
   - language: cpp
     os: osx
     compiler: clang
@@ -50,7 +46,7 @@ matrix:
     - EXTRA="-DWITH_CGLCONTEXT=ON"
   - language: cpp
     os: linux
-    dist: trusty
+    dist: xenial
     compiler: gcc
     env:
     - JOBID=windowless-linux
@@ -70,7 +66,7 @@ matrix:
     - EXTRA="-DWITH_WINDOWLESSCGLAPPLICATION=ON"
   - language: cpp
     os: linux
-    dist: trusty
+    dist: xenial
     compiler: gcc
     env:
     - JOBID=scenegraph2D-linux
@@ -84,7 +80,7 @@ matrix:
         - ninja-build
   - language: cpp
     os: linux
-    dist: trusty
+    dist: xenial
     compiler: gcc
     env:
     - JOBID=scenegraph3D-linux
@@ -140,6 +136,8 @@ matrix:
     - TARGET_GLES2=OFF
   - language: android
     os: linux
+    # Setting xenial here will cause it to use 12.04, with GCC 4.6 and other
+    # prehistoric nightmares. So staying with 14.04 for the time being.
     dist: trusty
     env:
     - JOBID=base-android-gles2
@@ -151,6 +149,8 @@ matrix:
       - android-22
   - language: android
     os: linux
+    # Setting xenial here will cause it to use 12.04, with GCC 4.6 and other
+    # prehistoric nightmares. So staying with 14.04 for the time being.
     dist: trusty
     env:
     - JOBID=base-android-gles3
@@ -172,7 +172,6 @@ notifications:
 cache:
   directories:
   - $HOME/sdl2
-  - $HOME/glfw
   - $HOME/cmake
 
 before_install:
@@ -192,9 +191,6 @@ install:
 # SDL (cached)
 - if [ "$TRAVIS_OS_NAME" == "osx" ] && [ "$BRANCH" == "base" ]; then HOMEBREW_NO_AUTO_UPDATE=1 brew install sdl2; fi
 - if [ "$BRANCH" == "base-ios" ] && [ ! -e "$HOME/sdl2/include" ]; then curl -O https://www.libsdl.org/release/SDL2-2.0.4.tar.gz && tar -xzvf SDL2-2.0.4.tar.gz && cd SDL2-2.0.4/Xcode-iOS/SDL && xcodebuild -sdk iphonesimulator9.3 | xcpretty && mkdir -p ../../../sdl2/lib && cp build/Release-iphonesimulator/libSDL2.a ../../../sdl2/lib && mkdir -p ../../../sdl2/include/SDL2 && cp -R ../../include/* ../../../sdl2/include/SDL2 && cd ../../..; fi
-
-# GLFW (cached)
-- if [ "$BRANCH" == "base-glfw" ] && [ ! -e "$HOME/glfw/include" ]; then wget https://github.com/glfw/glfw/releases/download/3.1.2/glfw-3.1.2.zip && unzip glfw-3.1.2.zip && cd glfw-3.1.2 && mkdir build && cd build && cmake .. -DCMAKE_INSTALL_PREFIX=$HOME/glfw -DCMAKE_BUILD_TYPE=Release -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_DOCS=OFF -DBUILD_SHARED_LIBS=ON && cmake --build . --target install && cd ../..; fi
 
 script:
 - if [ "$BRANCH" == "base" ] || [ "$BRANCH" == "base-glfw" ] || [ "$BRANCH" == "base-glut" ] || [ "$BRANCH" == "base-qt" ] || [ "$BRANCH" == "windowless" ] || [ "$BRANCH" == "scenegraph2D" ] || [ "$BRANCH" == "scenegraph3D" ]; then ./package/ci/travis-desktop.sh; fi

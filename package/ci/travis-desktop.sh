@@ -23,7 +23,6 @@ cd magnum
 mkdir build && cd build
 cmake .. \
     -DCMAKE_INSTALL_PREFIX=$HOME/deps \
-    -DCMAKE_PREFIX_PATH="$HOME/sdl2;$HOME/glfw" \
     -DCMAKE_INSTALL_RPATH=$HOME/deps/lib \
     -DCMAKE_BUILD_TYPE=Release \
     -DWITH_AUDIO=OFF \
