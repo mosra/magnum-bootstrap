@@ -29,18 +29,18 @@ void MyApplication::initializeGL() {
 }
 
 void MyApplication::paintGL() {
-	/* Reset state to avoid Qt affecting Magnum */
-	GL::Context::current().resetState(GL::Context::State::ExitExternal);
+    /* Reset state to avoid Qt affecting Magnum */
+    GL::Context::current().resetState(GL::Context::State::ExitExternal);
 		
-	/* Using framebuffer provided by Qt as default framebuffer */
+    /* Using framebuffer provided by Qt as default framebuffer */
     auto qtDefaultFramebuffer = GL::Framebuffer::wrap(defaultFramebufferObject(), {{}, {width(), height()}});
 
     qtDefaultFramebuffer.clear(GL::FramebufferClear::Color);
 
     /* TODO: Add your drawing code here */
 	
-	/* Clean up Magnum state and back to Qt */
-	GL::Context::current().resetState(GL::Context::State::EnterExternal);
+    /* Clean up Magnum state and back to Qt */
+    GL::Context::current().resetState(GL::Context::State::EnterExternal);
 }
 
 int main(int argc, char** argv) {
