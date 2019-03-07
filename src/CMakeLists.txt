@@ -12,8 +12,8 @@ if(CORRADE_TARGET_EMSCRIPTEN)
     install(TARGETS MyApplication DESTINATION ${CMAKE_INSTALL_PREFIX})
     install(FILES
         MyApplication.html
-        EmscriptenApplication.js
-        WebApplication.css
+        ${MAGNUM_EMSCRIPTENAPPLICATION_JS}
+        ${MAGNUM_WEBAPPLICATION_CSS}
         DESTINATION ${CMAKE_INSTALL_PREFIX})
     install(FILES
         ${CMAKE_CURRENT_BINARY_DIR}/MyApplication.js.mem
