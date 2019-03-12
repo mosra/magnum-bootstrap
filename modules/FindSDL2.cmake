@@ -145,13 +145,6 @@ if(NOT TARGET SDL2::SDL2)
             set_property(TARGET SDL2::SDL2 APPEND PROPERTY
                 INTERFACE_LINK_LIBRARIES ${_SDL2_FRAMEWORK_LIBRARIES})
         endif()
-
-        # Link also EGL library, if on ES (and not on WebGL)
-        if(MAGNUM_TARGET_GLES AND NOT MAGNUM_TARGET_DESKTOP_GLES AND NOT MAGNUM_TARGET_WEBGL)
-            find_package(EGL REQUIRED)
-            set_property(TARGET SDL2::SDL2 APPEND PROPERTY
-                INTERFACE_LINK_LIBRARIES EGL::EGL)
-        endif()
     else()
         add_library(SDL2::SDL2 INTERFACE IMPORTED)
     endif()
@@ -159,3 +152,5 @@ if(NOT TARGET SDL2::SDL2)
     set_property(TARGET SDL2::SDL2 PROPERTY
         INTERFACE_INCLUDE_DIRECTORIES ${SDL2_INCLUDE_DIR})
 endif()
+
+mark_as_advanced(SDL2_INCLUDE_DIR)
