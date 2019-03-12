@@ -34,8 +34,8 @@ elseif(CORRADE_TARGET_EMSCRIPTEN)
     install(FILES MyApplication.html DESTINATION ${MAGNUM_DEPLOY_PREFIX})
     install(TARGETS MyApplication DESTINATION ${MAGNUM_DEPLOY_PREFIX})
     install(FILES
-        WebApplication.css
-        WindowlessEmscriptenApplication.js
+        ${MAGNUM_WINDOWLESSEMSCRIPTENAPPLICATION_JS}
+        ${MAGNUM_WEBAPPLICATION_CSS}
         DESTINATION ${MAGNUM_DEPLOY_PREFIX})
     install(FILES
         ${CMAKE_CURRENT_BINARY_DIR}/MyApplication.js.mem
