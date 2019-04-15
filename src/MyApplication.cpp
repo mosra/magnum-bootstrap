@@ -1,5 +1,9 @@
 #include <Magnum/GL/DefaultFramebuffer.h>
+#ifndef CORRADE_TARGET_EMSCRIPTEN
 #include <Magnum/Platform/Sdl2Application.h>
+#else
+#include <Magnum/Platform/EmscriptenApplication.h>
+#endif
 
 using namespace Magnum;
 
