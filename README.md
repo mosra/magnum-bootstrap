@@ -26,10 +26,10 @@ Minimal dependencies
 --------------------
 
 *   C++ compiler with good C++11 support. Compilers which are tested to have
-    everything needed are **GCC** >= 4.7, **Clang** >= 3.1 and **MSVC** >= 2015.
-    On Windows you can also use **MinGW-w64**.
-*   **CMake** >= 2.8.12
-*   **Corrade**, **Magnum** -- The engine itself
+    everything needed are **GCC** >= 4.8.1, **Clang** >= 3.3 and
+    **MSVC** >= 2015. On Windows you can also use **MinGW-w64**.
+*   **CMake** >= 3.1
+*   **Corrade**, **Magnum** — The engine itself
 
 Note that each bootstrap project has additional dependency requirements, listed
 below. See [Magnum building documentation](https://doc.magnum.graphics/magnum/building.html)
