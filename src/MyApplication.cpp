@@ -16,7 +16,7 @@ class MyApplication: public wxApp {
 
 class MainFrame: public wxFrame {
     public:
-        MainFrame(int argc, char** argv);
+        explicit MainFrame(int argc, char** argv);
         ~MainFrame();
 
     private:
@@ -39,7 +39,7 @@ MainFrame::MainFrame(int argc, char** argv): wxFrame{nullptr, wxID_ANY, "Magnum 
     wxBoxSizer* bSizer;
     bSizer = new wxBoxSizer{wxVERTICAL};
 
-#if (wxMAJOR_VERSION == 3) && (wxMINOR_VERSION >= 1)
+    #if (wxMAJOR_VERSION == 3) && (wxMINOR_VERSION >= 1)
     wxGLAttributes attributes;
     attributes.PlatformDefaults()
               .BufferSize(24)
@@ -49,16 +49,16 @@ MainFrame::MainFrame(int argc, char** argv): wxFrame{nullptr, wxID_ANY, "Magnum 
               .DoubleBuffer()
               .EndList();
     _wxGlCanvas = new wxGLCanvas{this, attributes, wxID_ANY, wxDefaultPosition, wxSize{800, 600}};
-#elif (wxMAJOR_VERSION == 3) && (wxMINOR_VERSION == 0)
+    #elif (wxMAJOR_VERSION == 3) && (wxMINOR_VERSION == 0)
     int attributes[] = { WX_GL_RGBA,
                          WX_GL_DOUBLEBUFFER,
                          WX_GL_DEPTH_SIZE, 24,
                          WX_GL_STENCIL_SIZE, 0,
                          0 };
     _wxGlCanvas = new wxGLCanvas{this, wxID_ANY, &attributes[0], wxDefaultPosition, wxSize{800, 600}};
-#else
+    #else
     #error You need wxWidgets version 3.0 or later.
-#endif
+    #endif
 
     _wxGlContext = new wxGLContext{_wxGlCanvas};
     _wxGlCanvas->SetCurrent(*_wxGlContext);
