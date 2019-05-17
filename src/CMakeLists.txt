@@ -1,3 +1,5 @@
+# wxWidgets 3.0 needs -std=gnu++11 instead of -std=c++11 in order to compile
+# correctly
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_EXTENSIONS ON)
 
