@@ -93,10 +93,10 @@ install:
 - IF "%BRANCH%" == "base" set DOWNLOAD_SDL=yes
 - IF "%BRANCH%" == "scenegraph2D" set DOWNLOAD_SDL=yes
 - IF "%BRANCH%" == "scenegraph3D" set DOWNLOAD_SDL=yes
-- IF "%DOWNLOAD_SDL%" == "yes" IF "%COMPILER%" == "msvc" IF NOT EXIST %APPVEYOR_BUILD_FOLDER%\SDL2-devel-2.0.4-VC.zip appveyor DownloadFile http://www.libsdl.org/release/SDL2-devel-2.0.4-VC.zip
-- IF "%DOWNLOAD_SDL%" == "yes" IF "%COMPILER%" == "msvc" 7z x SDL2-devel-2.0.4-VC.zip && ren SDL2-2.0.4 SDL
-- IF "%DOWNLOAD_SDL%" == "yes" IF "%COMPILER%" == "mingw" IF NOT EXIST %APPVEYOR_BUILD_FOLDER%\SDL2-devel-2.0.4-mingw.tar.gz appveyor DownloadFile http://libsdl.org/release/SDL2-devel-2.0.4-mingw.tar.gz
-- IF "%DOWNLOAD_SDL%" == "yes" IF "%COMPILER%" == "mingw" 7z x SDL2-devel-2.0.4-mingw.tar.gz & 7z x SDL2-devel-2.0.4-mingw.tar & ren SDL2-2.0.4 SDL
+- IF "%DOWNLOAD_SDL%" == "yes" IF "%COMPILER%" == "msvc" IF NOT EXIST %APPVEYOR_BUILD_FOLDER%\SDL2-devel-2.0.9-VC.zip appveyor DownloadFile http://www.libsdl.org/release/SDL2-devel-2.0.9-VC.zip
+- IF "%DOWNLOAD_SDL%" == "yes" IF "%COMPILER%" == "msvc" 7z x SDL2-devel-2.0.9-VC.zip && ren SDL2-2.0.9 SDL
+- IF "%DOWNLOAD_SDL%" == "yes" IF "%COMPILER%" == "mingw" IF NOT EXIST %APPVEYOR_BUILD_FOLDER%\SDL2-devel-2.0.9-mingw.tar.gz appveyor DownloadFile http://libsdl.org/release/SDL2-devel-2.0.9-mingw.tar.gz
+- IF "%DOWNLOAD_SDL%" == "yes" IF "%COMPILER%" == "mingw" 7z x SDL2-devel-2.0.9-mingw.tar.gz & 7z x SDL2-devel-2.0.9-mingw.tar & ren SDL2-2.0.9 SDL
 
 # GLFW
 - IF "%BRANCH%" == "base-glfw" IF NOT EXIST %APPVEYOR_BUILD_FOLDER%\glfw-3.2.1.bin.WIN64.zip appveyor DownloadFile https://github.com/glfw/glfw/releases/download/3.2.1/glfw-3.2.1.bin.WIN64.zip
@@ -113,6 +113,6 @@ build_script:
 - IF "%BRANCH%" == "base-winrt" call package\ci\appveyor-rt.bat
 
 cache:
-- SDL2-devel-2.0.4-VC.zip
-- SDL2-devel-2.0.4-mingw.tar.gz
+- SDL2-devel-2.0.9-VC.zip
+- SDL2-devel-2.0.9-mingw.zip
 - glfw-3.2.1.bin.WIN64.zip
