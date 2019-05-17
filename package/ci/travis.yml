@@ -38,6 +38,20 @@ matrix:
         - ninja-build
         - libglfw3-dev
   - language: cpp
+    os: linux
+    dist: xenial
+    compiler: gcc
+    env:
+    - JOBID=base-wxwidgets-linux
+    - BRANCH=base-wxwidgets
+    - EXTRA="-DWITH_GLXCONTEXT=ON"
+    addons:
+      apt:
+        packages:
+        - libgl1-mesa-dev
+        - ninja-build
+        - libwxgtk3.0-dev
+  - language: cpp
     os: osx
     compiler: clang
     env:
@@ -193,7 +207,7 @@ install:
 - if [ "$BRANCH" == "base-ios" ] && [ ! -e "$HOME/sdl2/include" ]; then curl -O https://www.libsdl.org/release/SDL2-2.0.4.tar.gz && tar -xzvf SDL2-2.0.4.tar.gz && cd SDL2-2.0.4/Xcode-iOS/SDL && xcodebuild -sdk iphonesimulator9.3 | xcpretty && mkdir -p ../../../sdl2/lib && cp build/Release-iphonesimulator/libSDL2.a ../../../sdl2/lib && mkdir -p ../../../sdl2/include/SDL2 && cp -R ../../include/* ../../../sdl2/include/SDL2 && cd ../../..; fi
 
 script:
-- if [ "$BRANCH" == "base" ] || [ "$BRANCH" == "base-glfw" ] || [ "$BRANCH" == "base-glut" ] || [ "$BRANCH" == "base-qt" ] || [ "$BRANCH" == "windowless" ] || [ "$BRANCH" == "scenegraph2D" ] || [ "$BRANCH" == "scenegraph3D" ]; then ./package/ci/travis-desktop.sh; fi
+- if [ "$BRANCH" == "base" ] || [ "$BRANCH" == "base-glfw" ] || [ "$BRANCH" == "base-glut" ] || [ "$BRANCH" == "base-qt" ] || [ "$BRANCH" == "base-wxwidgets" ] || [ "$BRANCH" == "windowless" ] || [ "$BRANCH" == "scenegraph2D" ] || [ "$BRANCH" == "scenegraph3D" ]; then ./package/ci/travis-desktop.sh; fi
 - if [ "$BRANCH" == "base-android" ]; then ./package/ci/travis-android-arm.sh; fi
 - if [ "$BRANCH" == "base-ios" ]; then ./package/ci/travis-ios-simulator.sh; fi
 - if [ "$BRANCH" == "base-emscripten" ] || [ "$BRANCH" == "windowless-emscripten" ]; then ./package/ci/travis-emscripten.sh; fi

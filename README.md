@@ -101,6 +101,16 @@ Windows, CGL on macOS and GLX on Unix/Linux. You need Magnum built with
 `WITH_EGLCONTEXT`, `WITH_WGLCONTEXT`, `WITH_CGLCONTEXT` or `WITH_GLXCONTEXT`
 enabled, depending on the platform of your choice.
 
+### Base application using wxWidgets
+
+The [`base-wxwidgets`](https://github.com/mosra/magnum-bootstrap/tree/base-wxwidgets)
+branch does not use any of the application wrappers provided in `Platform`
+namespace, but uses wxWidgets window and context creation directly and
+manually initializes Magnum on top of that using EGL on embedded devices, WGL
+on Windows, CGL on macOS and GLX on Unix/Linux. You need Magnum built with
+`WITH_EGLCONTEXT`, `WITH_WGLCONTEXT`, `WITH_CGLCONTEXT` or `WITH_GLXCONTEXT`
+enabled, depending on the platform of your choice.
+
 ### Windowless application
 
 The [`windowless`](https://github.com/mosra/magnum-bootstrap/tree/windowless)
