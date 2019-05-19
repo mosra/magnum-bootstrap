@@ -63,13 +63,11 @@
 #  Primitives                   - Primitives library
 #  SceneGraph                   - SceneGraph library
 #  Shaders                      - Shaders library
-#  Shapes                       - Shapes library
 #  Text                         - Text library
 #  TextureTools                 - TextureTools library
 #  Trade                        - Trade library
 #  Vk                           - Vk library
 #  GlfwApplication              - GLFW application
-#  GlutApplication              - GLUT application
 #  GlxApplication               - GLX application
 #  Sdl2Application              - SDL2 application
 #  XEglApplication              - X/EGL application
@@ -262,6 +260,14 @@ foreach(_magnumFlag ${_magnumFlags})
     endif()
 endforeach()
 
+# OpenGL library preference. Prefer to use GLVND, since that's the better
+# approach nowadays, but allow the users to override it from outside in case
+# it is broken for some reason (Nvidia drivers in Debian's testing (Buster) --
+# reported on 2019-04-09).
+if(NOT CMAKE_VERSION VERSION_LESS 3.10 AND NOT OpenGL_GL_PREFERENCE)
+    set(OpenGL_GL_PREFERENCE GLVND)
+endif()
+
 # Base Magnum library
 if(NOT TARGET Magnum::Magnum)
     add_library(Magnum::Magnum UNKNOWN IMPORTED)
@@ -332,14 +338,12 @@ endif()
 set(_MAGNUM_LIBRARY_COMPONENT_LIST
     Audio DebugTools GL MeshTools Primitives SceneGraph Shaders Text
     TextureTools Trade Vk
-    AndroidApplication GlfwApplication GlutApplication GlxApplication
-    Sdl2Application XEglApplication WindowlessCglApplication
-    WindowlessEglApplication WindowlessGlxApplication WindowlessIosApplication WindowlessWglApplication WindowlessWindowsEglApplication
+    AndroidApplication GlfwApplication GlxApplication Sdl2Application
+    XEglApplication WindowlessCglApplication WindowlessEglApplication
+    WindowlessGlxApplication WindowlessIosApplication WindowlessWglApplication
+    WindowlessWindowsEglApplication
     CglContext EglContext GlxContext WglContext
     OpenGLTester)
-if(MAGNUM_BUILD_DEPRECATED)
-    list(APPEND _MAGNUM_LIBRARY_COMPONENT_LIST Shapes)
-endif()
 set(_MAGNUM_PLUGIN_COMPONENT_LIST
     AnyAudioImporter AnyImageConverter AnyImageImporter AnySceneImporter
     MagnumFont MagnumFontConverter ObjImporter TgaImageConverter TgaImporter
@@ -352,9 +356,9 @@ set(_MAGNUM_Audio_DEPENDENCIES )
 
 set(_MAGNUM_DebugTools_DEPENDENCIES )
 if(MAGNUM_TARGET_GL)
-    # MeshTools, Primitives, SceneGraph, Shaders and Shapes are used only for
-    # GL renderers. All of this is optional, compiled in only if the base
-    # library was selected.
+    # MeshTools, Primitives, SceneGraph and Shaders are used only for GL
+    # renderers. All of this is optional, compiled in only if the base library
+    # was selected.
     list(APPEND _MAGNUM_DebugTools_DEPENDENCIES MeshTools Primitives SceneGraph Shaders Trade GL)
     set(_MAGNUM_DebugTools_MeshTools_DEPENDENCY_IS_OPTIONAL ON)
     set(_MAGNUM_DebugTools_Primitives_DEPENDENCY_IS_OPTIONAL ON)
@@ -362,10 +366,6 @@ if(MAGNUM_TARGET_GL)
     set(_MAGNUM_DebugTools_Shaders_DEPENDENCY_IS_OPTIONAL ON)
     set(_MAGNUM_DebugTools_Trade_DEPENDENCY_IS_OPTIONAL ON)
     set(_MAGNUM_DebugTools_GL_DEPENDENCY_IS_OPTIONAL ON)
-    if(MAGNUM_BUILD_DEPRECATED)
-        list(APPEND _MAGNUM_DebugTools_DEPENDENCIES Shapes)
-        set(_MAGNUM_DebugTools_Shapes_DEPENDENCY_IS_OPTIONAL ON)
-    endif()
 endif()
 
 set(_MAGNUM_MeshTools_DEPENDENCIES )
@@ -398,9 +398,6 @@ endif()
 set(_MAGNUM_Primitives_DEPENDENCIES Trade)
 set(_MAGNUM_SceneGraph_DEPENDENCIES )
 set(_MAGNUM_Shaders_DEPENDENCIES GL)
-if(MAGNUM_BUILD_DEPRECATED)
-    set(_MAGNUM_Shapes_DEPENDENCIES SceneGraph)
-endif()
 set(_MAGNUM_Text_DEPENDENCIES TextureTools)
 if(MAGNUM_TARGET_GL)
     list(APPEND _MAGNUM_Text_DEPENDENCIES GL)
@@ -419,7 +416,6 @@ if(MAGNUM_TARGET_GL)
     list(APPEND _MAGNUM_GlfwApplication_DEPENDENCIES GL)
 endif()
 
-set(_MAGNUM_GlutApplication_DEPENDENCIES GL)
 set(_MAGNUM_GlxApplication_DEPENDENCIES GL)
 
 set(_MAGNUM_Sdl2Application_DEPENDENCIES )
@@ -554,11 +550,17 @@ foreach(_component ${Magnum_FIND_COMPONENTS})
             set(CMAKE_FIND_LIBRARY_PREFIXES "${CMAKE_FIND_LIBRARY_PREFIXES};")
 
             # Try to find both debug and release version. Dynamic and static
-            # debug libraries are in different places.
-            find_library(MAGNUM_${_COMPONENT}_LIBRARY_DEBUG ${_component}
-                PATH_SUFFIXES magnum-d/${_MAGNUM_${_COMPONENT}_PATH_SUFFIX})
+            # debug libraries are in different places. Static debug plugins are
+            # in magnum/ with a -d suffix while dynamic debug plugins are in
+            # magnum-d/ with no suffix. Problem is that Vcpkg's library linking
+            # automagic needs the static libs to be in the root library
+            # directory along with everything else and so we need to search for
+            # the -d suffixed version *before* the unsuffixed so it doesn't
+            # pick the release library for both debug and release.
             find_library(MAGNUM_${_COMPONENT}_LIBRARY_DEBUG ${_component}-d
                 PATH_SUFFIXES magnum/${_MAGNUM_${_COMPONENT}_PATH_SUFFIX})
+            find_library(MAGNUM_${_COMPONENT}_LIBRARY_DEBUG ${_component}
+                PATH_SUFFIXES magnum-d/${_MAGNUM_${_COMPONENT}_PATH_SUFFIX})
             find_library(MAGNUM_${_COMPONENT}_LIBRARY_RELEASE ${_component}
                 PATH_SUFFIXES magnum/${_MAGNUM_${_COMPONENT}_PATH_SUFFIX})
             mark_as_advanced(MAGNUM_${_COMPONENT}_LIBRARY_DEBUG
@@ -630,12 +632,13 @@ foreach(_component ${Magnum_FIND_COMPONENTS})
                 # our own EGL find module, which makes things simpler. The
                 # upstream FindOpenGL is anything but simple. Also can't use
                 # OpenGL_OpenGL_FOUND, because that one is set also if GLVND is
-                # *not* found. WTF.
+                # *not* found. WTF. Also can't just check for
+                # OPENGL_opengl_LIBRARY because that's set even if
+                # OpenGL_GL_PREFERENCE is explicitly set to LEGACY.
                 if(MAGNUM_TARGET_GL)
                     if(CORRADE_TARGET_UNIX AND NOT CORRADE_TARGET_APPLE AND (NOT MAGNUM_TARGET_GLES OR MAGNUM_TARGET_DESKTOP_GLES))
-                        set(OpenGL_GL_PREFERENCE GLVND)
                         find_package(OpenGL)
-                        if(OPENGL_opengl_LIBRARY)
+                        if(OPENGL_opengl_LIBRARY AND OpenGL_GL_PREFERENCE STREQUAL GLVND)
                             set_property(TARGET Magnum::${_component} APPEND
                             PROPERTY INTERFACE_LINK_LIBRARIES OpenGL::GLX)
                         endif()
@@ -644,26 +647,6 @@ foreach(_component ${Magnum_FIND_COMPONENTS})
                         set_property(TARGET Magnum::${_component} APPEND
                             PROPERTY INTERFACE_LINK_LIBRARIES EGL::EGL)
                     endif()
-                endif()
-
-            # GLUT application dependencies
-            elseif(_component STREQUAL GlutApplication)
-                find_package(GLUT)
-                set_property(TARGET Magnum::${_component} APPEND PROPERTY
-                    INTERFACE_INCLUDE_DIRECTORIES ${GLUT_INCLUDE_DIR})
-                set_property(TARGET Magnum::${_component} APPEND PROPERTY
-                    INTERFACE_LINK_LIBRARIES ${GLUT_glut_LIBRARY})
-
-                # With GLVND (since CMake 3.11) we need to explicitly link to
-                # GLX because libOpenGL doesn't provide it. Also can't use
-                # OpenGL_OpenGL_FOUND, because that one is set also if GLVND is
-                # *not* found. WTF. I don't think GLUT works with EGL, so not
-                # handling that.
-                set(OpenGL_GL_PREFERENCE GLVND)
-                find_package(OpenGL)
-                if(OPENGL_opengl_LIBRARY)
-                    set_property(TARGET Magnum::${_component} APPEND PROPERTY
-                        INTERFACE_LINK_LIBRARIES OpenGL::GLX)
                 endif()
 
             # SDL2 application dependencies
@@ -688,12 +671,13 @@ foreach(_component ${Magnum_FIND_COMPONENTS})
                 # our own EGL find module, which makes things simpler. The
                 # upstream FindOpenGL is anything but simple. Also can't use
                 # OpenGL_OpenGL_FOUND, because that one is set also if GLVND is
-                # *not* found. WTF.
+                # *not* found. WTF. Also can't just check for
+                # OPENGL_opengl_LIBRARY because that's set even if
+                # OpenGL_GL_PREFERENCE is explicitly set to LEGACY.
                 if(MAGNUM_TARGET_GL)
                     if(CORRADE_TARGET_UNIX AND NOT CORRADE_TARGET_APPLE AND (NOT MAGNUM_TARGET_GLES OR MAGNUM_TARGET_DESKTOP_GLES))
-                        set(OpenGL_GL_PREFERENCE GLVND)
                         find_package(OpenGL)
-                        if(OPENGL_opengl_LIBRARY)
+                        if(OPENGL_opengl_LIBRARY AND OpenGL_GL_PREFERENCE STREQUAL GLVND)
                             set_property(TARGET Magnum::${_component} APPEND
                             PROPERTY INTERFACE_LINK_LIBRARIES OpenGL::GLX)
                         endif()
@@ -715,10 +699,11 @@ foreach(_component ${Magnum_FIND_COMPONENTS})
                 # With GLVND (since CMake 3.11) we need to explicitly link to
                 # GLX because libOpenGL doesn't provide it. Also can't use
                 # OpenGL_OpenGL_FOUND, because that one is set also if GLVND is
-                # *not* found. WTF.
-                set(OpenGL_GL_PREFERENCE GLVND)
+                # *not* found. WTF. Also can't just check for
+                # OPENGL_opengl_LIBRARY because that's set even if
+                # OpenGL_GL_PREFERENCE is explicitly set to LEGACY.
                 find_package(OpenGL)
-                if(OPENGL_opengl_LIBRARY)
+                if(OPENGL_opengl_LIBRARY AND OpenGL_GL_PREFERENCE STREQUAL GLVND)
                     set_property(TARGET Magnum::${_component} APPEND PROPERTY
                         INTERFACE_LINK_LIBRARIES OpenGL::GLX)
                 endif()
@@ -768,10 +753,11 @@ foreach(_component ${Magnum_FIND_COMPONENTS})
                 # With GLVND (since CMake 3.11) we need to explicitly link to
                 # GLX because libOpenGL doesn't provide it. Also can't use
                 # OpenGL_OpenGL_FOUND, because that one is set also if GLVND is
-                # *not* found. If GLVND is not used, link to X11 instead.
-                set(OpenGL_GL_PREFERENCE GLVND)
+                # *not* found. If GLVND is not used, link to X11 instead. Also
+                # can't just check for OPENGL_opengl_LIBRARY because that's set
+                # even if OpenGL_GL_PREFERENCE is explicitly set to LEGACY.
                 find_package(OpenGL)
-                if(OPENGL_opengl_LIBRARY)
+                if(OPENGL_opengl_LIBRARY AND OpenGL_GL_PREFERENCE STREQUAL GLVND)
                     set_property(TARGET Magnum::${_component} APPEND PROPERTY
                         INTERFACE_LINK_LIBRARIES OpenGL::GLX)
                 else()
@@ -812,10 +798,11 @@ foreach(_component ${Magnum_FIND_COMPONENTS})
                 # imported target. Otherwise (and also on all systems except
                 # Linux) link to the classic libGL. Can't use
                 # OpenGL_OpenGL_FOUND, because that one is set also if GLVND is
-                # *not* found. WTF.
-                set(OpenGL_GL_PREFERENCE GLVND)
+                # *not* found. WTF. Also can't just check for
+                # OPENGL_opengl_LIBRARY because that's set even if
+                # OpenGL_GL_PREFERENCE is explicitly set to LEGACY.
                 find_package(OpenGL REQUIRED)
-                if(OPENGL_opengl_LIBRARY)
+                if(OPENGL_opengl_LIBRARY AND OpenGL_GL_PREFERENCE STREQUAL GLVND)
                     set_property(TARGET Magnum::${_component} APPEND PROPERTY
                         INTERFACE_LINK_LIBRARIES OpenGL::OpenGL)
                 else()
@@ -846,7 +833,6 @@ foreach(_component ${Magnum_FIND_COMPONENTS})
 
         # No special setup for SceneGraph library
         # No special setup for Shaders library
-        # No special setup for Shapes library
 
         # Text library
         elseif(_component STREQUAL Text)
