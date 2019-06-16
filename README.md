@@ -133,13 +133,14 @@ Magnum built with `WITH_SDL2APPLICATION` and `WITH_SCENEGRAPH` enabled.
 ### Base application with port to Emscripten
 
 The [`base-emscripten`](https://github.com/mosra/magnum-bootstrap/tree/base-emscripten)
-branch contains application using `Platform::Sdl2Application` for both desktop
-and Emscripten build. You need Magnum built with `WITH_SDL2APPLICATION` enabled
-and you can use the commands above to build the desktop version.
+branch contains application using `Platform::Sdl2Application` for desktop and
+and `Platform::EmscriptenApplication` for Emscripten build. For desktop build
+you need Magnum built with `WITH_SDL2APPLICATION` enabled and you can use the
+commands above to build it.
 
 For Emscripten build you need to have Emscripten installed with Corrade and
 Magnum crosscompiled for Emscripten, don't forget to build Magnum with
-`WITH_SDL2APPLICATION` enabled. See
+`WITH_EMSCRIPTENAPPLICATION` enabled. See
 [Corrade's](https://doc.magnum.graphics/corrade/building-corrade.html#building-corrade-cross-emscripten)
 and [Magnum's](https://doc.magnum.graphics/magnum/building.html#building-cross-emscripten)
 building documentation for more information.
@@ -212,7 +213,7 @@ The [`base-android`](https://github.com/mosra/magnum-bootstrap/tree/base-android
 branch contains application using `Platform::Sdl2Application` for desktop build
 and `Platform::AndroidApplication` for Android build. For desktop build you
 need Magnum built with `WITH_SDL2APPLICATION` enabled and you can use the
-commands above to build the desktop version.
+commands above to build it.
 
 For Android build you need to have Android NDK installed with Corrade and
 Magnum crosscompiled for Android, Magnum built with `WITH_ANDROIDAPPLICATION`
