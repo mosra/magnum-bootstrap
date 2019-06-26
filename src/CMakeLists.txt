@@ -15,14 +15,14 @@ target_link_libraries(MyApplication PRIVATE
     Magnum::Magnum)
 
 if(CORRADE_TARGET_EMSCRIPTEN)
-    install(TARGETS MyApplication DESTINATION ${CMAKE_INSTALL_PREFIX})
+    install(TARGETS MyApplication DESTINATION ${MAGNUM_DEPLOY_PREFIX})
     install(FILES
         MyApplication.html
         ${MAGNUM_EMSCRIPTENAPPLICATION_JS}
         ${MAGNUM_WEBAPPLICATION_CSS}
-        DESTINATION ${CMAKE_INSTALL_PREFIX})
+        DESTINATION ${MAGNUM_DEPLOY_PREFIX})
     install(FILES
         ${CMAKE_CURRENT_BINARY_DIR}/MyApplication.js.mem
         ${CMAKE_CURRENT_BINARY_DIR}/MyApplication.wasm
-        DESTINATION ${CMAKE_INSTALL_PREFIX} OPTIONAL)
+        DESTINATION ${MAGNUM_DEPLOY_PREFIX} OPTIONAL)
 endif()
