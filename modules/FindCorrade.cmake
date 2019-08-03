@@ -9,8 +9,11 @@
 # This module tries to find the base Corrade library and then defines the
 # following:
 #
-#  Corrade_FOUND                - Whether the base library was found
-#  CORRADE_LIB_SUFFIX_MODULE    - Path to CorradeLibSuffix.cmake module
+#  Corrade_FOUND                  - Whether the base library was found
+#  CORRADE_LIB_SUFFIX_MODULE      - Path to CorradeLibSuffix.cmake module
+#  CORRADE_INCLUDE_INSTALL_PREFIX - Prefix where to put platform-independent
+#   include and other files, defaults to ``.``. If a relative path is used,
+#   it's relative to :variable:`CMAKE_INSTALL_PREFIX`.
 #
 # This command will try to find only the base library, not the optional
 # components, which are:
@@ -62,6 +65,8 @@
 #
 # Features of found Corrade library are exposed in these variables:
 #
+#  CORRADE_MSVC2019_COMPATIBILITY - Defined if compiled with compatibility
+#   mode for MSVC 2019
 #  CORRADE_MSVC2017_COMPATIBILITY - Defined if compiled with compatibility
 #   mode for MSVC 2017
 #  CORRADE_MSVC2015_COMPATIBILITY - Defined if compiled with compatibility
@@ -70,6 +75,9 @@
 #   included
 #  CORRADE_BUILD_STATIC         - Defined if compiled as static libraries.
 #   Default are shared libraries.
+#  CORRADE_BUILD_MULTITHREADED  - Defined if compiled in a way that makes it
+#   possible to safely use certain Corrade features simultaenously in multiple
+#   threads
 #  CORRADE_TARGET_UNIX          - Defined if compiled for some Unix flavor
 #   (Linux, BSD, macOS)
 #  CORRADE_TARGET_APPLE         - Defined if compiled for Apple platforms
@@ -287,8 +295,10 @@ set(_corradeFlags
     # So far that's not a problem, but might become an issue for new flags.
     MSVC2015_COMPATIBILITY
     MSVC2017_COMPATIBILITY
+    MSVC2019_COMPATIBILITY
     BUILD_DEPRECATED
     BUILD_STATIC
+    BUILD_MULTITHREADED
     TARGET_UNIX
     TARGET_APPLE
     TARGET_IOS
@@ -327,7 +337,7 @@ foreach(_component ${Corrade_FIND_COMPONENTS})
     elseif(_component STREQUAL PluginManager)
         set(_CORRADE_${_COMPONENT}_DEPENDENCIES Containers Utility rc)
     elseif(_component STREQUAL TestSuite)
-        set(_CORRADE_${_COMPONENT}_DEPENDENCIES Utility)
+        set(_CORRADE_${_COMPONENT}_DEPENDENCIES Utility Main) # see below
     elseif(_component STREQUAL Utility)
         set(_CORRADE_${_COMPONENT}_DEPENDENCIES Containers rc)
     endif()
@@ -340,6 +350,13 @@ foreach(_component ${Corrade_FIND_COMPONENTS})
     endif()
 
     list(APPEND _CORRADE_ADDITIONAL_COMPONENTS ${_CORRADE_${_COMPONENT}_DEPENDENCIES})
+
+    # Main is linked only in corrade_add_test(), not to everything that depends
+    # on TestSuite, so remove it from the list again once we filled the above
+    # variables
+    if(_component STREQUAL TestSuite)
+        set(_CORRADE_${_COMPONENT}_DEPENDENCIES Utility)
+    endif()
 endforeach()
 
 # Join the lists, remove duplicate components
@@ -351,8 +368,13 @@ if(Corrade_FIND_COMPONENTS)
 endif()
 
 # Component distinction
-set(_CORRADE_LIBRARY_COMPONENTS "^(Containers|Interconnect|PluginManager|TestSuite|Utility)$")
-set(_CORRADE_HEADER_ONLY_COMPONENTS "^(Containers)$")
+set(_CORRADE_LIBRARY_COMPONENTS "^(Containers|Interconnect|Main|PluginManager|TestSuite|Utility)$")
+if(CORRADE_TARGET_WINDOWS)
+    # CorradeMain is a real library only on windows, a dummy target elsewhere
+    set(_CORRADE_HEADER_ONLY_COMPONENTS "^(Containers)$")
+else()
+    set(_CORRADE_HEADER_ONLY_COMPONENTS "^(Containers|Main)$")
+endif()
 set(_CORRADE_EXECUTABLE_COMPONENTS "^(rc)$")
 
 # Find all components
@@ -365,7 +387,7 @@ foreach(_component ${Corrade_FIND_COMPONENTS})
     if(TARGET Corrade::${_component})
         set(Corrade_${_component}_FOUND TRUE)
     else()
-        # Library components
+        # Library (and not header-only) components
         if(_component MATCHES ${_CORRADE_LIBRARY_COMPONENTS} AND NOT _component MATCHES ${_CORRADE_HEADER_ONLY_COMPONENTS})
             add_library(Corrade::${_component} UNKNOWN IMPORTED)
 
@@ -395,6 +417,13 @@ foreach(_component ${Corrade_FIND_COMPONENTS})
             add_library(Corrade::${_component} INTERFACE IMPORTED)
         endif()
 
+        # Default include path names to look for for library / header-only
+        # components
+        if(_component MATCHES ${_CORRADE_LIBRARY_COMPONENTS})
+            set(_CORRADE_${_COMPONENT}_INCLUDE_PATH_SUFFIX Corrade/${_component})
+            set(_CORRADE_${_COMPONENT}_INCLUDE_PATH_NAMES ${_component}.h)
+        endif()
+
         # Executable components
         if(_component MATCHES ${_CORRADE_EXECUTABLE_COMPONENTS})
             add_executable(Corrade::${_component} IMPORTED)
@@ -421,6 +450,26 @@ foreach(_component ${Corrade_FIND_COMPONENTS})
                 else()
                     set_property(TARGET Corrade::${_component} PROPERTY
                         INTERFACE_LINK_OPTIONS "/OPT:NOICF,REF")
+                endif()
+            endif()
+
+        # Main library
+        elseif(_component STREQUAL Main)
+            set(_CORRADE_${_COMPONENT}_INCLUDE_PATH_SUFFIX Corrade)
+            set(_CORRADE_${_COMPONENT}_INCLUDE_PATH_NAMES Corrade.h)
+
+            if(CORRADE_TARGET_WINDOWS)
+                if(NOT MINGW)
+                    # Abusing INTERFACE_LINK_LIBRARIES because
+                    # INTERFACE_LINK_OPTIONS is only since 3.13. They treat
+                    # things with `-` in front as linker flags and fortunately
+                    # I can use `-ENTRY` instead of `/ENTRY`.
+                    # https://gitlab.kitware.com/cmake/cmake/issues/16543
+                    set_property(TARGET Corrade::${_component} APPEND PROPERTY
+                        INTERFACE_LINK_LIBRARIES "-ENTRY:$<$<NOT:$<BOOL:$<TARGET_PROPERTY:WIN32_EXECUTABLE>>>:wmainCRTStartup>$<$<BOOL:$<TARGET_PROPERTY:WIN32_EXECUTABLE>>:wWinMainCRTStartup>")
+                else()
+                    set_property(TARGET Corrade::${_component} APPEND PROPERTY
+                        INTERFACE_LINK_LIBRARIES "-municode")
                 endif()
             endif()
 
@@ -475,8 +524,8 @@ foreach(_component ${Corrade_FIND_COMPONENTS})
         # Find library includes
         if(_component MATCHES ${_CORRADE_LIBRARY_COMPONENTS})
             find_path(_CORRADE_${_COMPONENT}_INCLUDE_DIR
-                NAMES ${_component}.h
-                HINTS ${CORRADE_INCLUDE_DIR}/Corrade/${_component})
+                NAMES ${_CORRADE_${_COMPONENT}_INCLUDE_PATH_NAMES}
+                HINTS ${CORRADE_INCLUDE_DIR}/${_CORRADE_${_COMPONENT}_INCLUDE_PATH_SUFFIX})
             mark_as_advanced(_CORRADE_${_COMPONENT}_INCLUDE_DIR)
         endif()
 
@@ -511,3 +560,9 @@ find_package_handle_standard_args(Corrade REQUIRED_VARS
 
 # Finalize the finding process
 include(${CORRADE_USE_MODULE})
+
+# Installation dirs
+set(CORRADE_INCLUDE_INSTALL_PREFIX "."
+    CACHE STRING "Prefix where to put platform-independent include and other files")
+
+set(CORRADE_INCLUDE_INSTALL_DIR ${CORRADE_INCLUDE_INSTALL_PREFIX}/include/Corrade)
