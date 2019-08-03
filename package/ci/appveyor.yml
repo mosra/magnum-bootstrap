@@ -7,11 +7,6 @@ environment:
   - BRANCH: base
     COMPILER: msvc
     EXTRA: -DWITH_SDL2APPLICATION=ON
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-    APPVEYOR_JOB_NAME: base-windows-msvc2015
-  - BRANCH: base
-    COMPILER: msvc
-    EXTRA: -DWITH_SDL2APPLICATION=ON
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     APPVEYOR_JOB_NAME: base-windows-msvc2017
   - BRANCH: base
@@ -19,46 +14,51 @@ environment:
     EXTRA: -DWITH_SDL2APPLICATION=ON
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     APPVEYOR_JOB_NAME: base-windows-mingw
-  - BRANCH: base-glfw
+  - BRANCH: base
     COMPILER: msvc
-    EXTRA: -DWITH_GLFWAPPLICATION=ON
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-    APPVEYOR_JOB_NAME: base-glfw-windows-msvc2015
+    EXTRA: -DWITH_SDL2APPLICATION=ON
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    APPVEYOR_JOB_NAME: base-windows-msvc2019
   - BRANCH: base-glfw
     COMPILER: msvc
     EXTRA: -DWITH_GLFWAPPLICATION=ON
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     APPVEYOR_JOB_NAME: base-glfw-windows-msvc2017
-  - BRANCH: windowless
+  - BRANCH: base-glfw
     COMPILER: msvc
-    EXTRA: -DWITH_WINDOWLESSWGLAPPLICATION=ON
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-    APPVEYOR_JOB_NAME: windowless-windows-msvc2015
+    EXTRA: -DWITH_GLFWAPPLICATION=ON
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    APPVEYOR_JOB_NAME: base-glfw-windows-msvc2019
   - BRANCH: windowless
     COMPILER: msvc
     EXTRA: -DWITH_WINDOWLESSWGLAPPLICATION=ON
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     APPVEYOR_JOB_NAME: windowless-windows-msvc2017
-  - BRANCH: scenegraph2D
+  - BRANCH: windowless
     COMPILER: msvc
-    EXTRA: -DWITH_SDL2APPLICATION=ON -DWITH_SCENEGRAPH=ON
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-    APPVEYOR_JOB_NAME: scenegraph2D-windows-msvc2015
+    EXTRA: -DWITH_WINDOWLESSWGLAPPLICATION=ON
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    APPVEYOR_JOB_NAME: windowless-windows-msvc2019
   - BRANCH: scenegraph2D
     COMPILER: msvc
     EXTRA: -DWITH_SDL2APPLICATION=ON -DWITH_SCENEGRAPH=ON
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     APPVEYOR_JOB_NAME: scenegraph2D-windows-msvc2017
-  - BRANCH: scenegraph3D
+  - BRANCH: scenegraph2D
     COMPILER: msvc
     EXTRA: -DWITH_SDL2APPLICATION=ON -DWITH_SCENEGRAPH=ON
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-    APPVEYOR_JOB_NAME: scenegraph3D-windows-msvc2015
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    APPVEYOR_JOB_NAME: scenegraph2D-windows-msvc2019
   - BRANCH: scenegraph3D
     COMPILER: msvc
     EXTRA: -DWITH_SDL2APPLICATION=ON -DWITH_SCENEGRAPH=ON
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     APPVEYOR_JOB_NAME: scenegraph3D-windows-msvc2017
+  - BRANCH: scenegraph3D
+    COMPILER: msvc
+    EXTRA: -DWITH_SDL2APPLICATION=ON -DWITH_SCENEGRAPH=ON
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    APPVEYOR_JOB_NAME: scenegraph3D-windows-msvc2019
   # Disabled for now because I don't want to be bothered with signing and
   # certificates and shit
   #- BRANCH: base-winrt
