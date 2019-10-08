@@ -48,6 +48,19 @@ int main(int argc, char** argv) {
     QApplication app{argc, argv};
 
     MyApplication w{context};
+
+    #ifdef CORRADE_TARGET_APPLE
+    /* On macOS, this is needed in order to use GL 4.1 instead of GL 2.1. Qt
+       doesn't do that on its own, sorry. */
+    QSurfaceFormat format;
+    format.setDepthBufferSize(24);
+    format.setStencilBufferSize(8);
+    format.setVersion(4, 1);
+    format.setProfile(QSurfaceFormat::CoreProfile);
+    QSurfaceFormat::setDefaultFormat(format);
+    w.setFormat(format);
+    #endif
+
     w.show();
 
     return app.exec();
