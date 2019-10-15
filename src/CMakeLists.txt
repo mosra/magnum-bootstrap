@@ -35,3 +35,6 @@ if(CORRADE_TARGET_IOS)
         MACOSX_BUNDLE_GUI_IDENTIFIER "cz.mosra.magnum.MyApplication"
         XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED "YES")
 endif()
+
+# Make the executable a default target to build & run in Visual Studio
+set_property(DIRECTORY ${PROJECT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT MyApplication)
