@@ -18,3 +18,6 @@ target_link_libraries(MyApplication PRIVATE
     Magnum::Application
     Magnum::GL
     Magnum::Magnum)
+
+# Make the executable a default target to build & run in Visual Studio
+set_property(DIRECTORY ${PROJECT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT MyApplication)
