@@ -19,5 +19,11 @@ target_link_libraries(MyApplication PRIVATE
     Magnum::GL
     Magnum::Magnum)
 
+# Gradle-free Android build
+if(CORRADE_TARGET_ANDROID AND CMAKE_ANDROID_NDK)
+    include(${PROJECT_SOURCE_DIR}/toolchains/modules/UseAndroid.cmake)
+    android_create_apk(MyApplication main/AndroidManifest.xml)
+endif()
+
 # Make the executable a default target to build & run in Visual Studio
 set_property(DIRECTORY ${PROJECT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT MyApplication)
