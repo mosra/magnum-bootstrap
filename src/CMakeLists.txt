@@ -25,12 +25,25 @@ target_link_libraries(MyApplication PRIVATE
     Magnum::GL
     Magnum::Magnum
     Magnum::WindowlessApplication)
+
+# iOS specifics
 if(CORRADE_TARGET_IOS)
     set_target_properties(MyApplication PROPERTIES
         MACOSX_BUNDLE ON
         MACOSX_BUNDLE_GUI_IDENTIFIER "cz.mosra.magnum.MyApplication"
         XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED "YES")
-elseif(CORRADE_TARGET_EMSCRIPTEN)
+endif()
+
+# For Emscripten copy the boilerplate next to the executable so it can be run
+# directly from the build dir; provide an install target as well
+if(CORRADE_TARGET_EMSCRIPTEN)
+    add_custom_command(TARGET MyApplication POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            ${MAGNUM_WINDOWLESSEMSCRIPTENAPPLICATION_JS}
+            ${MAGNUM_WEBAPPLICATION_CSS}
+            ${CMAKE_CURRENT_SOURCE_DIR}/MyApplication.html
+            $<TARGET_FILE_DIR:MyApplication>)
+
     install(TARGETS MyApplication DESTINATION ${MAGNUM_DEPLOY_PREFIX})
     install(FILES
         MyApplication.html
