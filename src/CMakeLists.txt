@@ -14,7 +14,16 @@ target_link_libraries(MyApplication PRIVATE
     Magnum::GL
     Magnum::Magnum)
 
+# For Emscripten copy the boilerplate next to the executable so it can be run
+# directly from the build dir; provide an install target as well
 if(CORRADE_TARGET_EMSCRIPTEN)
+    add_custom_command(TARGET MyApplication POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            ${MAGNUM_EMSCRIPTENAPPLICATION_JS}
+            ${MAGNUM_WEBAPPLICATION_CSS}
+            ${CMAKE_CURRENT_SOURCE_DIR}/MyApplication.html
+            $<TARGET_FILE_DIR:MyApplication>)
+
     install(TARGETS MyApplication DESTINATION ${MAGNUM_DEPLOY_PREFIX})
     install(FILES
         MyApplication.html
