@@ -31,8 +31,8 @@ if(CORRADE_TARGET_EMSCRIPTEN)
         ${MAGNUM_WEBAPPLICATION_CSS}
         DESTINATION ${MAGNUM_DEPLOY_PREFIX})
     install(FILES
-        ${CMAKE_CURRENT_BINARY_DIR}/MyApplication.js.mem
-        ${CMAKE_CURRENT_BINARY_DIR}/MyApplication.wasm
+        $<TARGET_FILE_DIR:MyApplication>/MyApplication.js.mem
+        $<TARGET_FILE_DIR:MyApplication>/MyApplication.wasm
         DESTINATION ${MAGNUM_DEPLOY_PREFIX} OPTIONAL)
 endif()
 
