@@ -16,7 +16,7 @@ endif()
 
 ]]
 
-set_directory_properties(PROPERTIES CORRADE_USE_PEDANTIC_FLAGS ON)
+#set_directory_properties(PROPERTIES CORRADE_USE_PEDANTIC_FLAGS ON)
 
 include_directories(${GTKMM_INCLUDE_DIRS})
 
