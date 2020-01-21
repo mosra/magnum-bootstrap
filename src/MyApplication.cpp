@@ -25,11 +25,17 @@ protected:
 
     void onRealize() {
 
-        //_context.create();
+        make_current();
+        _context.create();
+
     }
 
     bool onRender(const Glib::RefPtr<Gdk::GLContext>& context) {
 
+        GL::Context::current().resetState(GL::Context::State::ExitExternal);
+
+
+        GL::Context::current().resetState(GL::Context::State::EnterExternal);
 
         return true;
     }
