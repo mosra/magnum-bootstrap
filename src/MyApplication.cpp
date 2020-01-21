@@ -1,6 +1,18 @@
 
 
 #include <gtkmm/application.h>
+#include <gtkmm/glarea.h>
+
+
+class MagnumWidget : public Gtk::GLArea {
+
+public:
+
+
+private:
+
+
+};
 
 
 int main(int argc, char **argv) {
