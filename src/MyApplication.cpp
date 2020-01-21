@@ -1,15 +1,17 @@
-
+#include <Magnum/GL/Framebuffer.h>
+#include <Magnum/Platform/GLContext.h>
 
 #include <gtkmm/application.h>
 #include <gtkmm/glarea.h>
 #include <gtkmm/window.h>
 
+using namespace Magnum;
 
 class MagnumWidget : public Gtk::GLArea {
 
 public:
 
-    explicit MagnumWidget() {
+    explicit MagnumWidget(Platform::GLContext& context) : Gtk::GLArea(), _context(context) {
 
         set_size_request(1024, 1024);
 
@@ -33,6 +35,9 @@ protected:
 
     }
 
+private:
+
+    Platform::GLContext& _context;
 
 };
 
