@@ -1,5 +1,6 @@
 #include <Magnum/GL/Framebuffer.h>
 #include <Magnum/Platform/GLContext.h>
+#include <Magnum/Math/Color.h>
 
 #include <gtkmm/application.h>
 #include <gtkmm/glarea.h>
@@ -13,6 +14,7 @@ public:
 
     explicit MagnumWidget(Platform::GLContext& context) : Gtk::GLArea(), _context(context) {
 
+        set_auto_render();
         set_size_request(1024, 1024);
 
         signal_realize().connect(sigc::mem_fun(this, &MagnumWidget::onRealize));
@@ -24,8 +26,6 @@ public:
 protected:
 
     void onRealize() {
-
-        make_current();
         _context.create();
 
     }
@@ -33,8 +33,18 @@ protected:
     bool onRender(const Glib::RefPtr<Gdk::GLContext>& context) {
 
         GL::Context::current().resetState(GL::Context::State::ExitExternal);
+        {
+
+            auto gtkmmDefaultFramebuffer = GL::Framebuffer::wrap(0 /* How do I get the ID? */ , {{}, {get_width(), get_height()}});
 
 
+
+            gtkmmDefaultFramebuffer.clearColor(0, Color4{0, 0.5, 1, 1});
+
+            gtkmmDefaultFramebuffer
+                    .clear(GL::FramebufferClear::Color|GL::FramebufferClear::Depth)
+                    .bind();
+        }
         GL::Context::current().resetState(GL::Context::State::EnterExternal);
 
         return true;
