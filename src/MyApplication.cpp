@@ -25,10 +25,13 @@ protected:
 
     void onRealize() {
 
+        //_context.create();
     }
 
     bool onRender(const Glib::RefPtr<Gdk::GLContext>& context) {
 
+
+        return true;
     }
 
     void onUnrealize() {
@@ -44,9 +47,11 @@ private:
 
 int main(int argc, char **argv) {
 
+    Platform::GLContext context{NoCreate, argc, argv};
+
     auto app = Gtk::Application::create(argc, argv, "graphics.magnum.bootstrap.base-gtkmm");
 
-    auto widget = MagnumWidget();
+    auto widget = MagnumWidget(context);
     auto window = Gtk::Window();
     window.add(widget);
 

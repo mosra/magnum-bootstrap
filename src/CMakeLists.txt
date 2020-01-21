@@ -1,6 +1,5 @@
 find_package(Magnum REQUIRED GL)
 
-#[[
 
 if(MAGNUM_TARGET_GLES AND NOT MAGNUM_TARGET_DESKTOP_GLES)
     find_package(Magnum REQUIRED EglContext)
@@ -14,7 +13,6 @@ else()
     message(FATAL_ERROR "Magnum context creation is not supported on this platform")
 endif()
 
-]]
 
 #set_directory_properties(PROPERTIES CORRADE_USE_PEDANTIC_FLAGS ON)
 
@@ -22,7 +20,7 @@ include_directories(${GTKMM_INCLUDE_DIRS})
 
 add_executable(MyApplication MyApplication.cpp)
 target_link_libraries(MyApplication PRIVATE
-        #Magnum::GLContext
+        Magnum::GLContext
         Magnum::GL
         Magnum::Magnum
         ${GTKMM_LIBRARIES})
