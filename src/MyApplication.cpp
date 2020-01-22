@@ -11,23 +11,16 @@
 using namespace Magnum;
 
 class MagnumWidget : public Gtk::GLArea {
-
 public:
-
     explicit MagnumWidget(Platform::GLContext &context);
 
-
-protected:
-
+private:
     void onRealize();
     bool onRender(const Glib::RefPtr<Gdk::GLContext> &context);
     void onResize(int width, int height);
     void onUnrealize();
 
-private:
-
     Platform::GLContext &_context;
-
 };
 
 MagnumWidget::MagnumWidget(Platform::GLContext &context) : Gtk::GLArea(), _context(context) {
