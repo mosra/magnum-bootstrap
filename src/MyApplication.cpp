@@ -39,9 +39,9 @@ public:
 protected:
 
     void onRealize() {
-        make_current();
 
-        /* FIXME: This fails with the message "unsupported OpenGL version (0, 0)" */
+        /* Makes sure the OpenGL context is current before configuring it */
+        make_current();
         _context.create();
 
         /* TODO: Add your initialization code here */
@@ -50,13 +50,15 @@ protected:
 
     bool onRender(const Glib::RefPtr<Gdk::GLContext> &context) {
 
+        /* Retrieves the ID of the relevant framebuffer */
+        GLint framebufferID;
+        glGetIntegerv(GL_FRAMEBUFFER_BINDING, &framebufferID);
+
+        /* Attaches Magnum's framebuffer manager to the framebuffer provided by Gtkmm */
+        auto gtkmmDefaultFramebuffer = GL::Framebuffer::wrap(framebufferID, {{}, {get_width(), get_height()}});
+
         /* Reset state to avoid Gtkmm affecting Magnum */
         GL::Context::current().resetState(GL::Context::State::ExitExternal);
-
-        /* FIXME: How do I get the default framebuffer ID? */
-        GLint frameBufferID;
-        glGetIntegerv(GL_FRAMEBUFFER_BINDING, &frameBufferID);
-        auto gtkmmDefaultFramebuffer = GL::Framebuffer::wrap(frameBufferID, {{}, {get_width(), get_height()}});
 
         /* Clears the frame */
         GL::Renderer::setClearColor(Color4{1, 0, 0, 1});
