@@ -32,6 +32,7 @@ public:
         /* Connecting signals to their respective handlers */
         signal_realize().connect(sigc::mem_fun(this, &MagnumWidget::onRealize));
         signal_render().connect(sigc::mem_fun(this, &MagnumWidget::onRender));
+        signal_resize().connect(sigc::mem_fun(this, &MagnumWidget::onResize));
         signal_unrealize().connect(sigc::mem_fun(this, &MagnumWidget::onUnrealize));
     }
 
@@ -61,7 +62,7 @@ protected:
         GL::Context::current().resetState(GL::Context::State::ExitExternal);
 
         /* Clears the frame */
-        GL::Renderer::setClearColor(Color4{1, 0, 0, 1});
+        GL::Renderer::setClearColor(Color4{0.5, 0, 0, 1});
         gtkmmDefaultFramebuffer.clear(GL::FramebufferClear::Color);
 
         /* TODO: Add your drawing code here */
@@ -70,6 +71,11 @@ protected:
         GL::Context::current().resetState(GL::Context::State::EnterExternal);
 
         return true;
+    }
+
+    void onResize(int width, int height) {
+
+        /* TODO: Add your window-resize handling code here */
     }
 
     void onUnrealize() {
