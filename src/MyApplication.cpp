@@ -22,10 +22,10 @@ public:
         set_vexpand();
         set_halign(Gtk::ALIGN_FILL);
         set_valign(Gtk::ALIGN_FILL);
-        set_size_request(1920, 1080);
+        set_size_request(192, 108);
 
         /* Setting desired OpenGL version */
-        set_required_version(3, 3);
+        set_required_version(4, 5);
 
         /* Connecting signals to their respective handlers */
         signal_realize().connect(sigc::mem_fun(this, &MagnumWidget::onRealize));
@@ -37,6 +37,8 @@ public:
 protected:
 
     void onRealize() {
+        make_current();
+
         /* FIXME: This fails with the message "unsupported OpenGL version (0, 0)" */
         _context.create();
 
