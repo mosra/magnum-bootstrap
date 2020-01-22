@@ -32,11 +32,12 @@ protected:
 
     bool onRender(const Glib::RefPtr<Gdk::GLContext>& context) {
 
+
         GL::Context::current().resetState(GL::Context::State::ExitExternal);
         {
 
-            auto gtkmmDefaultFramebuffer = GL::Framebuffer::wrap(0 /* How do I get the ID? */ , {{}, {get_width(), get_height()}});
-
+            // FIXME How do I get the default framebuffer ID?
+            auto gtkmmDefaultFramebuffer = GL::Framebuffer::wrap(0, {{}, {get_width(), get_height()}});
 
 
             gtkmmDefaultFramebuffer.clearColor(0, Color4{0, 0.5, 1, 1});
