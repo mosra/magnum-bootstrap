@@ -1,12 +1,12 @@
+
+#include <Magnum/Platform/GLContext.h>
 #include <Magnum/GL/Framebuffer.h>
 #include <Magnum/GL/Renderer.h>
-#include <Magnum/Platform/GLContext.h>
 #include <Magnum/Math/Color.h>
 
 #include <gtkmm/application.h>
-#include <gtkmm/glarea.h>
 #include <gtkmm/window.h>
-
+#include <gtkmm/glarea.h>
 
 using namespace Magnum;
 
@@ -94,13 +94,17 @@ int main(int argc, char **argv) {
 
     Platform::GLContext context{NoCreate, argc, argv};
 
+    /* Create an application with a reasonable application ID */
     auto app = Gtk::Application::create(argc, argv, "graphics.magnum.bootstrap.base-gtkmm");
 
-    auto widget = MagnumWidget(context);
+    /* The application will have one window */
     auto window = Gtk::Window();
+
+    /* The window will contain the scene */
+    auto widget = MagnumWidget(context);
     window.add(widget);
+    widget.show();
 
-    window.show_all_children();
-
+    /* We hand over control to Gtk */
     return app->run(window);
 }
