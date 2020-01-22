@@ -98,10 +98,10 @@ int main(int argc, char **argv) {
     auto app = Gtk::Application::create(argc, argv, "graphics.magnum.bootstrap.base-gtkmm");
 
     /* The application will have one window */
-    auto window = Gtk::Window();
+    Gtk::Window window{};
 
     /* The window will contain the scene */
-    auto widget = MagnumWidget(context);
+    MagnumWidget widget{context};
     window.add(widget);
     widget.show();
 
