@@ -22,10 +22,10 @@ public:
         set_vexpand();
         set_halign(Gtk::ALIGN_FILL);
         set_valign(Gtk::ALIGN_FILL);
-        set_size_request(1024, 1024);
+        set_size_request(1920, 1080);
 
         /* Setting desired OpenGL version */
-        set_required_version(4, 6);
+        set_required_version(3, 3);
 
         /* Connecting signals to their respective handlers */
         signal_realize().connect(sigc::mem_fun(this, &MagnumWidget::onRealize));
@@ -37,6 +37,7 @@ public:
 protected:
 
     void onRealize() {
+        /* FIXME: This fails with the message "unsupported OpenGL version (0, 0)" */
         _context.create();
 
         /* TODO: Add your initialization code here */
@@ -51,6 +52,7 @@ protected:
         /* FIXME: How do I get the default framebuffer ID? */
         auto gtkmmDefaultFramebuffer = GL::Framebuffer::wrap(0, {{}, {get_width(), get_height()}});
 
+        /* Clears the frame */
         gtkmmDefaultFramebuffer.clear(GL::FramebufferClear::Color);
 
         /* TODO: Add your drawing code here */
@@ -63,7 +65,7 @@ protected:
 
     void onUnrealize() {
 
-        /* TODO Clean up here */
+        /* TODO: Add your clean-up code here */
     }
 
 private:
@@ -82,6 +84,8 @@ int main(int argc, char **argv) {
     auto widget = MagnumWidget(context);
     auto window = Gtk::Window();
     window.add(widget);
+
+    window.show_all_children();
 
     return app->run(window);
 }
