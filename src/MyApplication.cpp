@@ -1,4 +1,5 @@
 #include <Magnum/GL/Framebuffer.h>
+#include <Magnum/GL/Renderer.h>
 #include <Magnum/Platform/GLContext.h>
 #include <Magnum/Math/Color.h>
 
@@ -55,12 +56,14 @@ protected:
         auto gtkmmDefaultFramebuffer = GL::Framebuffer::wrap(0, {{}, {get_width(), get_height()}});
 
         /* Clears the frame */
+        GL::Renderer::setClearColor(Color4{1, 0, 0, 1});
         gtkmmDefaultFramebuffer.clear(GL::FramebufferClear::Color);
 
         /* TODO: Add your drawing code here */
 
         /* Clean up Magnum state and back to Gtkmm */
         GL::Context::current().resetState(GL::Context::State::EnterExternal);
+
 
         return true;
     }
