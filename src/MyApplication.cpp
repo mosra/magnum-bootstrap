@@ -7,6 +7,7 @@
 #include <gtkmm/glarea.h>
 #include <gtkmm/window.h>
 
+
 using namespace Magnum;
 
 class MagnumWidget : public Gtk::GLArea {
@@ -23,7 +24,7 @@ public:
         set_vexpand();
         set_halign(Gtk::ALIGN_FILL);
         set_valign(Gtk::ALIGN_FILL);
-        set_size_request(192, 108);
+        set_size_request(500, 500);
 
         /* Setting desired OpenGL version */
         set_required_version(4, 5);
@@ -53,7 +54,9 @@ protected:
         GL::Context::current().resetState(GL::Context::State::ExitExternal);
 
         /* FIXME: How do I get the default framebuffer ID? */
-        auto gtkmmDefaultFramebuffer = GL::Framebuffer::wrap(0, {{}, {get_width(), get_height()}});
+        GLint frameBufferID;
+        glGetIntegerv(GL_FRAMEBUFFER_BINDING, &frameBufferID);
+        auto gtkmmDefaultFramebuffer = GL::Framebuffer::wrap(frameBufferID, {{}, {get_width(), get_height()}});
 
         /* Clears the frame */
         GL::Renderer::setClearColor(Color4{1, 0, 0, 1});
@@ -63,7 +66,6 @@ protected:
 
         /* Clean up Magnum state and back to Gtkmm */
         GL::Context::current().resetState(GL::Context::State::EnterExternal);
-
 
         return true;
     }
