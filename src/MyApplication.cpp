@@ -68,7 +68,6 @@ bool MagnumWidget::onRender(const Glib::RefPtr<Gdk::GLContext> &context) {
     GL::Context::current().resetState(GL::Context::State::ExitExternal);
 
     /* Clear the frame */
-    GL::Renderer::setClearColor(Color4{0.5, 0, 0, 1});
     gtkmmDefaultFramebuffer.clear(GL::FramebufferClear::Color);
 
     /* TODO: Add your drawing code here */
