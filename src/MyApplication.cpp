@@ -8,7 +8,7 @@
 
 using namespace Magnum;
 
-class MagnumWidget : public Gtk::GLArea {
+class MagnumWidget: public Gtk::GLArea {
     public:
         explicit MagnumWidget(Platform::GLContext &context);
 
@@ -21,7 +21,7 @@ class MagnumWidget : public Gtk::GLArea {
         Platform::GLContext &_context;
 };
 
-MagnumWidget::MagnumWidget(Platform::GLContext &context) : Gtk::GLArea(), _context(context) {
+MagnumWidget::MagnumWidget(Platform::GLContext &context): Gtk::GLArea(), _context(context) {
     /* Automatically re-render everything every time it needs to be drawn */
     set_auto_render();
 
