@@ -25,20 +25,20 @@ private:
 
 MagnumWidget::MagnumWidget(Platform::GLContext &context) : Gtk::GLArea(), _context(context) {
 
-    /* This widget will re-render everything every time it needs to be drawn */
+    /* Automatically re-render everything every time it needs to be drawn */
     set_auto_render();
 
-    /* Setting size requests and scaling behavior */
+    /* Set size requests and scaling behavior */
     set_hexpand();
     set_vexpand();
     set_halign(Gtk::ALIGN_FILL);
     set_valign(Gtk::ALIGN_FILL);
     set_size_request(500, 500);
 
-    /* Setting desired OpenGL version */
+    /* Set desired OpenGL version */
     set_required_version(4, 5);
 
-    /* Connecting signals to their respective handlers */
+    /* Connect signals to their respective handlers */
     signal_realize().connect(sigc::mem_fun(this, &MagnumWidget::onRealize));
     signal_render().connect(sigc::mem_fun(this, &MagnumWidget::onRender));
     signal_resize().connect(sigc::mem_fun(this, &MagnumWidget::onResize));
@@ -47,7 +47,7 @@ MagnumWidget::MagnumWidget(Platform::GLContext &context) : Gtk::GLArea(), _conte
 
 void MagnumWidget::onRealize() {
 
-    /* Makes sure the OpenGL context is current before configuring it */
+    /* Make sure the OpenGL context is current then configure it */
     make_current();
     _context.create();
 
@@ -57,17 +57,17 @@ void MagnumWidget::onRealize() {
 
 bool MagnumWidget::onRender(const Glib::RefPtr<Gdk::GLContext> &context) {
 
-    /* Retrieves the ID of the relevant framebuffer */
+    /* Retrieve the ID of the relevant framebuffer */
     GLint framebufferID;
     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &framebufferID);
 
-    /* Attaches Magnum's framebuffer manager to the framebuffer provided by Gtkmm */
+    /* Attache Magnum's framebuffer manager to the framebuffer provided by Gtkmm */
     auto gtkmmDefaultFramebuffer = GL::Framebuffer::wrap(framebufferID, {{}, {get_width(), get_height()}});
 
     /* Reset state to avoid Gtkmm affecting Magnum */
     GL::Context::current().resetState(GL::Context::State::ExitExternal);
 
-    /* Clears the frame */
+    /* Clear the frame */
     GL::Renderer::setClearColor(Color4{0.5, 0, 0, 1});
     gtkmmDefaultFramebuffer.clear(GL::FramebufferClear::Color);
 
