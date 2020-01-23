@@ -1,6 +1,5 @@
 find_package(Magnum REQUIRED GL)
 
-
 if(MAGNUM_TARGET_GLES AND NOT MAGNUM_TARGET_DESKTOP_GLES)
     find_package(Magnum REQUIRED EglContext)
 elseif(CORRADE_TARGET_WINDOWS)

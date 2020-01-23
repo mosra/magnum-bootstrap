@@ -48,19 +48,18 @@ void MagnumWidget::onRealize() {
     _context.create();
 
     /* TODO: Add your initialization code here */
-
 }
 
 bool MagnumWidget::onRender(const Glib::RefPtr<Gdk::GLContext>& context) {
+    /* Reset state to avoid Gtkmm affecting Magnum */
+    GL::Context::current().resetState(GL::Context::State::ExitExternal);
+
     /* Retrieve the ID of the relevant framebuffer */
     GLint framebufferID;
     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &framebufferID);
 
-    /* Attache Magnum's framebuffer manager to the framebuffer provided by Gtkmm */
+    /* Attach Magnum's framebuffer manager to the framebuffer provided by Gtkmm */
     auto gtkmmDefaultFramebuffer = GL::Framebuffer::wrap(framebufferID, {{}, {get_width(), get_height()}});
-
-    /* Reset state to avoid Gtkmm affecting Magnum */
-    GL::Context::current().resetState(GL::Context::State::ExitExternal);
 
     /* Clear the frame */
     gtkmmDefaultFramebuffer.clear(GL::FramebufferClear::Color);
@@ -69,7 +68,6 @@ bool MagnumWidget::onRender(const Glib::RefPtr<Gdk::GLContext>& context) {
 
     /* Clean up Magnum state and back to Gtkmm */
     GL::Context::current().resetState(GL::Context::State::EnterExternal);
-
     return true;
 }
 
