@@ -97,14 +97,14 @@ int main(int argc, char **argv) {
     /* Create an application with a reasonable application ID */
     auto app = Gtk::Application::create(argc, argv, "graphics.magnum.bootstrap.base-gtkmm");
 
-    /* The application will have one window */
+    /* Create a window for the application */
     Gtk::Window window{};
 
-    /* The window will contain the scene */
+    /* Create a graphics widget and add it to the window */
     MagnumWidget widget{context};
     window.add(widget);
     widget.show();
 
-    /* We hand over control to Gtk */
+    /* Hand over control to Gtk */
     return app->run(window);
 }
