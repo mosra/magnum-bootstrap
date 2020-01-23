@@ -22,7 +22,6 @@ class MagnumWidget : public Gtk::GLArea {
 };
 
 MagnumWidget::MagnumWidget(Platform::GLContext &context) : Gtk::GLArea(), _context(context) {
-
     /* Automatically re-render everything every time it needs to be drawn */
     set_auto_render();
 
@@ -44,7 +43,6 @@ MagnumWidget::MagnumWidget(Platform::GLContext &context) : Gtk::GLArea(), _conte
 }
 
 void MagnumWidget::onRealize() {
-
     /* Make sure the OpenGL context is current then configure it */
     make_current();
     _context.create();
@@ -54,7 +52,6 @@ void MagnumWidget::onRealize() {
 }
 
 bool MagnumWidget::onRender(const Glib::RefPtr<Gdk::GLContext> &context) {
-
     /* Retrieve the ID of the relevant framebuffer */
     GLint framebufferID;
     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &framebufferID);
@@ -77,17 +74,14 @@ bool MagnumWidget::onRender(const Glib::RefPtr<Gdk::GLContext> &context) {
 }
 
 void MagnumWidget::onResize(int width, int height) {
-
     /* TODO: Add your window-resize handling code here */
 }
 
 void MagnumWidget::onUnrealize() {
-
     /* TODO: Add your clean-up code here */
 }
 
 int main(int argc, char **argv) {
-
     Platform::GLContext context{NoCreate, argc, argv};
 
     /* Create an application with a reasonable application ID */
