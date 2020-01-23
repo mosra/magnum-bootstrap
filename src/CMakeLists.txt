@@ -13,10 +13,11 @@ else()
     message(FATAL_ERROR "Magnum context creation is not supported on this platform")
 endif()
 
+set_directory_properties(PROPERTIES CORRADE_USE_PEDANTIC_FLAGS ON)
 
-#set_directory_properties(PROPERTIES CORRADE_USE_PEDANTIC_FLAGS ON)
-
-include_directories(${GTKMM_INCLUDE_DIRS})
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(GTKMM gtkmm-3.0)
+include_directories(SYSTEM ${GTKMM_INCLUDE_DIRS})
 
 add_executable(MyApplication MyApplication.cpp)
 target_link_libraries(MyApplication PRIVATE
