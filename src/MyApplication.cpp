@@ -10,18 +10,18 @@ using namespace Magnum;
 
 class MagnumWidget: public Gtk::GLArea {
     public:
-        explicit MagnumWidget(Platform::GLContext &context);
+        explicit MagnumWidget(Platform::GLContext& context);
 
     private:
         void onRealize();
-        bool onRender(const Glib::RefPtr<Gdk::GLContext> &context);
+        bool onRender(const Glib::RefPtr<Gdk::GLContext>& context);
         void onResize(int width, int height);
         void onUnrealize();
 
-        Platform::GLContext &_context;
+        Platform::GLContext& _context;
 };
 
-MagnumWidget::MagnumWidget(Platform::GLContext &context): _context(context) {
+MagnumWidget::MagnumWidget(Platform::GLContext& context): _context(context) {
     /* Automatically re-render everything every time it needs to be drawn */
     set_auto_render();
 
@@ -51,7 +51,7 @@ void MagnumWidget::onRealize() {
 
 }
 
-bool MagnumWidget::onRender(const Glib::RefPtr<Gdk::GLContext> &context) {
+bool MagnumWidget::onRender(const Glib::RefPtr<Gdk::GLContext>& context) {
     /* Retrieve the ID of the relevant framebuffer */
     GLint framebufferID;
     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &framebufferID);
@@ -81,7 +81,7 @@ void MagnumWidget::onUnrealize() {
     /* TODO: Add your clean-up code here */
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
     Platform::GLContext context{NoCreate, argc, argv};
 
     /* Create an application with a reasonable application ID */
