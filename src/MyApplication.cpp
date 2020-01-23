@@ -1,8 +1,6 @@
-
 #include <Magnum/Platform/GLContext.h>
 #include <Magnum/GL/Framebuffer.h>
 #include <Magnum/GL/Renderer.h>
-#include <Magnum/Math/Color.h>
 
 #include <gtkmm/application.h>
 #include <gtkmm/window.h>
@@ -87,7 +85,6 @@ void MagnumWidget::onUnrealize() {
 
     /* TODO: Add your clean-up code here */
 }
-
 
 int main(int argc, char **argv) {
 
