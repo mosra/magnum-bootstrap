@@ -85,6 +85,16 @@ branch is similar to `base` one, except that it uses `Platform::GlfwApplication`
 instead of `Platform::Sdl2Application`. You need Magnum built with
 `WITH_GLFWAPPLICATION` enabled.
 
+### Base application using gtkmm
+
+The [`base-gtkmm`](https://github.com/mosra/magnum-bootstrap/tree/base-gtkmm)
+branch does not use any of the application wrappers provided in `Platform`
+namespace, but uses gtkmm window and context creation directly and manually
+initializes Magnum on top of that using EGL on embedded devices, WGL on
+Windows, CGL on macOS and GLX on Unix/Linux. You need Magnum built with
+`WITH_EGLCONTEXT`, `WITH_WGLCONTEXT`, `WITH_CGLCONTEXT` or `WITH_GLXCONTEXT`
+enabled, depending on the platform of your choice.
+
 ### Base application using Qt
 
 The [`base-qt`](https://github.com/mosra/magnum-bootstrap/tree/base-qt)
