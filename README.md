@@ -84,13 +84,6 @@ branch is similar to `base` one, except that it uses `Platform::GlfwApplication`
 instead of `Platform::Sdl2Application`. You need Magnum built with
 `WITH_GLFWAPPLICATION` enabled.
 
-### Base application using GLUT
-
-The [`base-glut`](https://github.com/mosra/magnum-bootstrap/tree/base-glut)
-branch is similar to `base` one, except that it uses `Platform::GlutApplication`
-instead of `Platform::Sdl2Application`. You need Magnum built with
-`WITH_GLUTAPPLICATION` enabled.
-
 ### Base application using Qt
 
 The [`base-qt`](https://github.com/mosra/magnum-bootstrap/tree/base-qt)
