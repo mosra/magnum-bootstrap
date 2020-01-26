@@ -27,8 +27,9 @@ Minimal dependencies
 
 *   C++ compiler with good C++11 support. Compilers which are tested to have
     everything needed are **GCC** >= 4.8.1, **Clang** >= 3.3 and
-    **MSVC** >= 2015. On Windows you can also use **MinGW-w64**.
-*   **CMake** >= 3.1
+    **MSVC** >= 2015. On Windows you can also use **clang-cl** and
+    **MinGW-w64**.
+*   **CMake** >= 3.4
 *   **Corrade**, **Magnum** — The engine itself
 
 Note that each bootstrap project has additional dependency requirements, listed
