@@ -1,7 +1,19 @@
 #include <Corrade/Containers/Optional.h>
-/* Magnum GL headers must always be included before Qt ones */
+/* Magnum GL headers always have to be included before Qt ones */
 #include <Magnum/GL/Framebuffer.h>
 #include <Magnum/Platform/GLContext.h>
+
+/* If your application is using anything from QtGui, you might get warnings
+   about GLEW and errors regarding GLclampf. If that's the case, uncomment the
+   following and place it as early as possible (but again *after* including
+   Magnum GL headers) */
+#if 0
+typedef GLfloat GLclampf;
+#undef __glew_h__ /* shh, Qt, shh */
+#undef __GLEW_H__
+#include <QtGui/qopenglfunctions.h>
+#endif
+
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QOpenGLWidget>
 
@@ -49,9 +61,15 @@ int main(int argc, char** argv) {
 
     MyApplication w{context};
 
-    #ifdef CORRADE_TARGET_APPLE
     /* On macOS, this is needed in order to use GL 4.1 instead of GL 2.1. Qt
-       doesn't do that on its own, sorry. */
+       doesn't do that on its own, sorry. If you get only GL 3.0 on Mesa, try
+       uncommenting this as well -- however be aware that with the below code,
+       AMD and NVidia GPUs will get stuck at the version that's specified in
+       setVersion() (such as 4.1) instead of using the latest available (4.6).
+       To fix that, you'd need to detect the driver used and then either set
+       the version or not depending on what the particular driver likes best.
+       It's a total mess, right? */
+    #ifdef CORRADE_TARGET_APPLE
     QSurfaceFormat format;
     format.setDepthBufferSize(24);
     format.setStencilBufferSize(8);
