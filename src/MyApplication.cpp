@@ -38,6 +38,9 @@ void MyApplication::initializeGL() {
     _context.create();
 
     /* TODO: Add your initialization code here */
+
+    /* Clean up Magnum state when giving control back to Qt */
+    GL::Context::current().resetState(GL::Context::State::EnterExternal);
 }
 
 void MyApplication::paintGL() {
@@ -51,7 +54,7 @@ void MyApplication::paintGL() {
 
     /* TODO: Add your drawing code here */
 
-    /* Clean up Magnum state and back to Qt */
+    /* Clean up Magnum state when giving control back to Qt */
     GL::Context::current().resetState(GL::Context::State::EnterExternal);
 }
 
