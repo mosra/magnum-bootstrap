@@ -19,8 +19,8 @@
 #
 #   This file is part of Magnum.
 #
-#   Copyright © 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019
-#             Vladimír Vondruš <mosra@centrum.cz>
+#   Copyright © 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019,
+#               2020 Vladimír Vondruš <mosra@centrum.cz>
 #   Copyright © 2018 Jonathan Hale <squareys@googlemail.com>
 #
 #   Permission is hereby granted, free of charge, to any person obtaining a
@@ -117,17 +117,33 @@ if(CORRADE_TARGET_WINDOWS)
         PATH_SUFFIXES ${_SDL2_RUNTIME_PATH_SUFFIX} ${_SDL2_LIBRARY_PATH_SUFFIX})
 endif()
 
-# iOS dependencies
-if(CORRADE_TARGET_IOS)
-    set(_SDL2_FRAMEWORKS
-        AudioToolbox
-        AVFoundation
-        CoreGraphics
-        CoreMotion
-        Foundation
-        GameController
-        QuartzCore
-        UIKit)
+# (Static) macOS / iOS dependencies
+if(CORRADE_TARGET_APPLE AND SDL2_LIBRARY MATCHES ".*libSDL2.a$")
+    if(CORRADE_TARGET_IOS)
+        set(_SDL2_FRAMEWORKS
+            AudioToolbox
+            AVFoundation
+            CoreGraphics
+            CoreMotion
+            Foundation
+            GameController
+            Metal # needed since 2.0.8
+            QuartzCore
+            UIKit)
+    else()
+        # Those are needed when building SDL statically using its CMake project
+        set(_SDL2_FRAMEWORKS
+            iconv # should be in the system
+            AudioToolbox
+            AVFoundation
+            Carbon
+            Cocoa
+            CoreAudio
+            CoreVideo
+            ForceFeedback
+            Foundation
+            IOKit)
+    endif()
     set(_SDL2_FRAMEWORK_LIBRARIES )
     foreach(framework ${_SDL2_FRAMEWORKS})
         find_library(_SDL2_${framework}_LIBRARY ${framework})
@@ -167,17 +183,40 @@ if(NOT TARGET SDL2::SDL2)
         # Link additional `dl` and `pthread` libraries required by a static
         # build of SDL on Unixy platforms (except Apple, where it is most
         # probably some frameworks instead)
-        if(CORRADE_TARGET_UNIX AND NOT CORRADE_TARGET_APPLE AND SDL2_LIBRARY MATCHES "${CMAKE_STATIC_LIBRARY_SUFFIX}$")
-            find_package(Threads)
+        if(CORRADE_TARGET_UNIX AND NOT CORRADE_TARGET_APPLE AND (SDL2_LIBRARY_DEBUG MATCHES "${CMAKE_STATIC_LIBRARY_SUFFIX}$" OR SDL2_LIBRARY_RELEASE MATCHES "${CMAKE_STATIC_LIBRARY_SUFFIX}$"))
+            find_package(Threads REQUIRED)
             set_property(TARGET SDL2::SDL2 APPEND PROPERTY
-                INTERFACE_LINK_LIBRARIES ${CMAKE_THREAD_LIBS_INIT} ${CMAKE_DL_LIBS})
+                INTERFACE_LINK_LIBRARIES Threads::Threads ${CMAKE_DL_LIBS})
         endif()
 
-        # Link frameworks on iOS
-        if(CORRADE_TARGET_IOS)
+        # Link frameworks on macOS / iOS if we have a static SDL
+        if(CORRADE_TARGET_APPLE AND SDL2_LIBRARY MATCHES ".*libSDL2.a$")
             set_property(TARGET SDL2::SDL2 APPEND PROPERTY
                 INTERFACE_LINK_LIBRARIES ${_SDL2_FRAMEWORK_LIBRARIES})
         endif()
+
+        # Windows dependencies for a static library. Unfortunately there's no
+        # easy way to figure out if a *.lib is static or dynamic, so we're
+        # adding only if a DLL is not found.
+        if(CORRADE_TARGET_WINDOWS AND NOT CORRADE_TARGET_WINDOWS_RT AND NOT SDL2_DLL_RELEASE AND NOT SDL2_DLL_DEBUG)
+            set_property(TARGET SDL2::SDL2 APPEND PROPERTY INTERFACE_LINK_LIBRARIES
+                # https://github.com/SDL-mirror/SDL/blob/release-2.0.10/CMakeLists.txt#L1338
+                user32 gdi32 winmm imm32 ole32 oleaut32 version uuid advapi32 setupapi shell32
+                # https://github.com/SDL-mirror/SDL/blob/release-2.0.10/CMakeLists.txt#L1384
+                dinput8)
+            # https://github.com/SDL-mirror/SDL/blob/release-2.0.10/CMakeLists.txt#L1422
+            # additionally has dxerr for MSVC if DirectX SDK is not used, but
+            # according to https://walbourn.github.io/wheres-dxerr-lib/ this
+            # thing is long deprecated.
+            if(MINGW)
+                set_property(TARGET SDL2::SDL2 APPEND PROPERTY INTERFACE_LINK_LIBRARIES
+                    # https://github.com/SDL-mirror/SDL/blob/release-2.0.10/CMakeLists.txt#L1386
+                    dxerr8
+                    # https://github.com/SDL-mirror/SDL/blob/release-2.0.10/CMakeLists.txt#L1388
+                    mingw32)
+            endif()
+        endif()
+
     else()
         add_library(SDL2::SDL2 INTERFACE IMPORTED)
     endif()
