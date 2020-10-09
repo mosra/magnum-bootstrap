@@ -1,4 +1,4 @@
-find_package(Qt5Widgets REQUIRED)
+find_package(CopperSpice REQUIRED)
 find_package(Magnum REQUIRED GL)
 
 if(MAGNUM_TARGET_GLES AND NOT MAGNUM_TARGET_DESKTOP_GLES)
@@ -20,7 +20,12 @@ target_link_libraries(MyApplication PRIVATE
     Magnum::GLContext
     Magnum::GL
     Magnum::Magnum
-    Qt5::Widgets)
+    CopperSpice::CsGui)
+
+cs_copy_library(CsCore)
+cs_copy_library(CsGui)
+ 
+cs_copy_plugins(CsGui)
 
 # Make the executable a default target to build & run in Visual Studio
 set_property(DIRECTORY ${PROJECT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT MyApplication)
