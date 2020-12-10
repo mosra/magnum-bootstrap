@@ -1,0 +1,275 @@
+version: 2.1
+
+notify:
+  webhooks:
+    # Unfortunately Gitter messages are too verbose (one five-line message per
+    # each job in the build matrix) and thus not wanted
+    #- url: https://webhooks.gitter.im/e/cfbadbd34d28708a57c6
+
+executors:
+  ubuntu-16_04:
+    docker:
+    - image: ubuntu:xenial-20201014
+  xcode-9_4:
+    macos:
+      xcode: 9.4.0
+  emscripten:
+    docker:
+    # 1.39.0 is the oldest on Docker. Anything before 1.39.2 is useless as emar
+    # randomly asserts: https://github.com/emscripten-core/emscripten/pull/9742
+    # Then, anything before 1.39.6 is useless as well because emar has a
+    # filesystem race and randomly complains that a file doesn't exist:
+    # https://github.com/mosra/magnum/issues/413,
+    # https://github.com/emscripten-core/emscripten/pull/10161
+    - image: emscripten/emsdk:1.39.6-upstream
+
+commands:
+  install-base-linux:
+    parameters:
+      extra:
+        type: string
+        default: ""
+    steps:
+    - run:
+        name: Update apt and install base packages
+        # Git is needed always for cloning everything
+        command: |
+          apt update
+          apt install -y git ninja-build $LCOV_PACKAGES << parameters.extra >>
+
+  install-base-macos:
+    parameters:
+      extra:
+        type: string
+        default: ""
+    steps:
+    - run:
+        name: Install base packages
+        # As usual, homebrew takes five minutes to update and then explodes in
+        # a spectacular way. How is this acceptable?!
+        command: |
+          HOMEBREW_NO_AUTO_UPDATE=1 brew install cmake ninja << parameters.extra >>
+
+  install-gcc-4_8:
+    steps:
+    - run:
+        name: Install GCC 4.8
+        # For some reason, CMake needs a working C compiler, so provice CC as
+        # well for the case when default gcc isn't installed.
+        command: |
+          apt install -y g++-4.8
+          echo 'export CC=gcc-4.8' >> $BASH_ENV
+          echo 'export CXX=g++-4.8' >> $BASH_ENV
+
+  install-cmake-3_4:
+    steps:
+    - run:
+        name: Install CMake 3.4
+        command: |
+          apt install -y wget
+          mkdir -p $HOME/cmake && cd $HOME/cmake
+          wget -nc --no-check-certificate https://cmake.org/files/v3.4/cmake-3.4.3-Linux-x86_64.tar.gz
+          tar --strip-components=1 -xzf cmake-3.4.3-Linux-x86_64.tar.gz
+          echo 'export PATH=$HOME/cmake/bin:$PATH' >> $BASH_ENV
+          source $BASH_ENV && cmake --version | grep 3.4
+
+  build:
+    parameters:
+      script:
+        type: string
+    steps:
+    - checkout
+    - run:
+        name: Checkout, build & test
+        command: |
+          ./package/ci/<< parameters.script >>
+
+
+jobs:
+  base-linux:
+    executor: ubuntu-16_04
+    environment:
+      BRANCH: base
+      EXTRA: "-DWITH_SDL2APPLICATION=ON"
+    steps:
+    - install-base-linux:
+        extra: libgl1-mesa-dev libsdl2-dev
+    - install-gcc-4_8
+    - install-cmake-3_4
+    - build:
+        script: unix-desktop.sh
+
+  base-macos:
+    executor: xcode-9_4
+    environment:
+      BRANCH: base
+      EXTRA: "-DWITH_SDL2APPLICATION=ON"
+    steps:
+    - install-base-macos:
+        extra: sdl2
+    - build:
+        script: unix-desktop.sh
+
+  base-glfw-linux:
+    executor: ubuntu-16_04
+    environment:
+      BRANCH: base-glfw
+      EXTRA: "-DWITH_GLFWAPPLICATION=ON"
+    steps:
+    - install-base-linux:
+        extra: libgl1-mesa-dev libglfw3-dev
+    - install-gcc-4_8
+    - install-cmake-3_4
+    - build:
+        script: unix-desktop.sh
+
+  base-gtkmm-linux:
+    executor: ubuntu-16_04
+    environment:
+      BRANCH: base-gtkmm
+      EXTRA: "-DWITH_GLXCONTEXT=ON"
+    steps:
+    - install-base-linux:
+        extra: libgl1-mesa-dev libgtkmm-3.0-dev
+    - install-gcc-4_8
+    - install-cmake-3_4
+    - build:
+        script: unix-desktop.sh
+
+  base-wxwidgets-linux:
+    executor: ubuntu-16_04
+    environment:
+      BRANCH: base-wxwidgets
+      EXTRA: "-DWITH_GLXCONTEXT=ON"
+    steps:
+    - install-base-linux:
+        extra: libgl1-mesa-dev libwxgtk3.0-dev
+    - install-gcc-4_8
+    - install-cmake-3_4
+    - build:
+        script: unix-desktop.sh
+
+  base-qt-linux:
+    executor: ubuntu-16_04
+    environment:
+      BRANCH: base-qt
+      EXTRA: "-DWITH_GLXCONTEXT=ON"
+    steps:
+    - install-base-linux:
+        extra: qt5-default
+    - install-gcc-4_8
+    - install-cmake-3_4
+    - build:
+        script: unix-desktop.sh
+
+  windowless-linux:
+    executor: ubuntu-16_04
+    environment:
+      BRANCH: windowless
+      EXTRA: "-DWITH_WINDOWLESSGLXAPPLICATION=ON"
+    steps:
+    - install-base-linux:
+        extra: libgl1-mesa-dev
+    - install-gcc-4_8
+    - install-cmake-3_4
+    - build:
+        script: unix-desktop.sh
+
+  windowless-macos:
+    executor: xcode-9_4
+    environment:
+      BRANCH: windowless
+      EXTRA: "-DWITH_WINDOWLESSCGLAPPLICATION=ON"
+    steps:
+    - install-base-macos
+    - build:
+        script: unix-desktop.sh
+
+  scenegraph2D-linux:
+    executor: ubuntu-16_04
+    environment:
+      BRANCH: scenegraph2D
+      EXTRA: "-DWITH_SDL2APPLICATION=ON -DWITH_SCENEGRAPH=ON"
+    steps:
+    - install-base-linux:
+        extra: libgl1-mesa-dev libsdl2-dev
+    - install-gcc-4_8
+    - install-cmake-3_4
+    - build:
+        script: unix-desktop.sh
+
+  scenegraph3D-linux:
+    executor: ubuntu-16_04
+    environment:
+      BRANCH: scenegraph3D
+      EXTRA: "-DWITH_SDL2APPLICATION=ON -DWITH_SCENEGRAPH=ON"
+    steps:
+    - install-base-linux:
+        extra: libgl1-mesa-dev libsdl2-dev
+    - install-gcc-4_8
+    - install-cmake-3_4
+    - build:
+        script: unix-desktop.sh
+
+  base-emscripten-webgl1:
+    executor: emscripten
+    environment:
+      BRANCH: base-emscripten
+      # STUPID yml interprets unquoted ON as a boolean
+      TARGET_GLES2: "ON"
+    steps:
+    - install-base-linux
+    - build:
+        script: emscripten.sh
+
+  base-emscripten-webgl2:
+    executor: emscripten
+    environment:
+      BRANCH: base-emscripten
+      # STUPID yml interprets unquoted ON as a boolean
+      TARGET_GLES2: "OFF"
+    steps:
+    - install-base-linux
+    - build:
+        script: emscripten.sh
+
+  windowless-emscripten-webgl1:
+    executor: emscripten
+    environment:
+      BRANCH: windowless-emscripten
+      # STUPID yml interprets unquoted ON as a boolean
+      TARGET_GLES2: "ON"
+    steps:
+    - install-base-linux
+    - build:
+        script: emscripten.sh
+
+  windowless-emscripten-webgl2:
+    executor: emscripten
+    environment:
+      BRANCH: windowless-emscripten
+      # STUPID yml interprets unquoted ON as a boolean
+      TARGET_GLES2: "OFF"
+    steps:
+    - install-base-linux
+    - build:
+        script: emscripten.sh
+
+workflows:
+  version: 2
+  build:
+    jobs:
+    - base-linux
+    - base-macos
+    - base-glfw-linux
+    - base-gtkmm-linux
+    - base-wxwidgets-linux
+    - base-qt-linux
+    - windowless-linux
+    - windowless-macos
+    - scenegraph2D-linux
+    - scenegraph3D-linux
+    - base-emscripten-webgl1
+    - base-emscripten-webgl2
+    - windowless-emscripten-webgl1
+    - windowless-emscripten-webgl2

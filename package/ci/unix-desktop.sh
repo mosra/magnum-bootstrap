@@ -45,7 +45,7 @@ git clone --depth 1 --branch $BRANCH git://github.com/mosra/magnum-bootstrap.git
 cd magnum-bootstrap
 mkdir build && cd build
 cmake .. \
-    -DCMAKE_PREFIX_PATH="$HOME/deps;$HOME/sdl2;$HOME/glfw;/usr/local/opt/qt" \
+    -DCMAKE_PREFIX_PATH="$HOME/deps;/usr/local/opt/qt" \
     -DCMAKE_INSTALL_PREFIX=$HOME/deps \
     -DCMAKE_INSTALL_RPATH=$HOME/deps/lib \
     -DCMAKE_BUILD_TYPE=Release \

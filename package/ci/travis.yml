@@ -1,125 +1,123 @@
-# kate: indent-width 2;
-
 matrix:
   include:
-  - language: cpp
-    os: linux
-    dist: xenial
-    compiler: gcc
-    env:
-    - JOBID=base-linux
-    - BRANCH=base
-    - EXTRA="-DWITH_SDL2APPLICATION=ON"
-    addons:
-      apt:
-        packages:
-        - libgl1-mesa-dev
-        - libsdl2-dev
-        - ninja-build
-  - language: cpp
-    os: osx
-    compiler: clang
-    env:
-    - JOBID=base-macos
-    - BRANCH=base
-    - EXTRA="-DWITH_SDL2APPLICATION=ON"
-  - language: cpp
-    os: linux
-    dist: xenial
-    compiler: gcc
-    env:
-    - JOBID=base-glfw-linux
-    - BRANCH=base-glfw
-    - EXTRA="-DWITH_GLFWAPPLICATION=ON"
-    addons:
-      apt:
-        packages:
-        - libgl1-mesa-dev
-        - ninja-build
-        - libglfw3-dev
-  - language: cpp
-    os: linux
-    dist: xenial
-    compiler: gcc
-    env:
-    - JOBID=base-gtkmm-linux
-    - BRANCH=base-gtkmm
-    - EXTRA="-DWITH_GLXCONTEXT=ON"
-    addons:
-      apt:
-        packages:
-        - libgl1-mesa-dev
-        - ninja-build
-        - libgtkmm-3.0-dev
-  - language: cpp
-    os: linux
-    dist: xenial
-    compiler: gcc
-    env:
-    - JOBID=base-wxwidgets-linux
-    - BRANCH=base-wxwidgets
-    - EXTRA="-DWITH_GLXCONTEXT=ON"
-    addons:
-      apt:
-        packages:
-        - libgl1-mesa-dev
-        - ninja-build
-        - libwxgtk3.0-dev
-  - language: cpp
-    os: osx
-    compiler: clang
-    env:
-    - JOBID=base-qt-macos
-    - BRANCH=base-qt
-    - EXTRA="-DWITH_CGLCONTEXT=ON"
-  - language: cpp
-    os: linux
-    dist: xenial
-    compiler: gcc
-    env:
-    - JOBID=windowless-linux
-    - BRANCH=windowless
-    - EXTRA="-DWITH_WINDOWLESSGLXAPPLICATION=ON"
-    addons:
-      apt:
-        packages:
-        - libgl1-mesa-dev
-        - ninja-build
-  - language: cpp
-    os: osx
-    compiler: clang
-    env:
-    - JOBID=windowless-macos
-    - BRANCH=windowless
-    - EXTRA="-DWITH_WINDOWLESSCGLAPPLICATION=ON"
-  - language: cpp
-    os: linux
-    dist: xenial
-    compiler: gcc
-    env:
-    - JOBID=scenegraph2D-linux
-    - BRANCH=scenegraph2D
-    - EXTRA="-DWITH_SDL2APPLICATION=ON -DWITH_SCENEGRAPH=ON"
-    addons:
-      apt:
-        packages:
-        - libgl1-mesa-dev
-        - libsdl2-dev
-        - ninja-build
-  - language: cpp
-    os: linux
-    dist: xenial
-    compiler: gcc
-    env:
-    - JOBID=scenegraph3D-linux
-    - BRANCH=scenegraph3D
-    - EXTRA="-DWITH_SDL2APPLICATION=ON -DWITH_SCENEGRAPH=ON"
-    addons:
-      apt:
-        packages:
-        - libgl1-mesa-dev
-        - libsdl2-dev
-        - ninja-build
+  #- language: cpp
+    #os: linux
+    #dist: xenial
+    #compiler: gcc
+    #env:
+    #- JOBID=base-linux
+    #- BRANCH=base
+    #- EXTRA="-DWITH_SDL2APPLICATION=ON"
+    #addons:
+      #apt:
+        #packages:
+        #- libgl1-mesa-dev
+        #- libsdl2-dev
+        #- ninja-build
+  #- language: cpp
+    #os: osx
+    #compiler: clang
+    #env:
+    #- JOBID=base-macos
+    #- BRANCH=base
+    #- EXTRA="-DWITH_SDL2APPLICATION=ON"
+  #- language: cpp
+    #os: linux
+    #dist: xenial
+    #compiler: gcc
+    #env:
+    #- JOBID=base-glfw-linux
+    #- BRANCH=base-glfw
+    #- EXTRA="-DWITH_GLFWAPPLICATION=ON"
+    #addons:
+      #apt:
+        #packages:
+        #- libgl1-mesa-dev
+        #- ninja-build
+        #- libglfw3-dev
+  #- language: cpp
+    #os: linux
+    #dist: xenial
+    #compiler: gcc
+    #env:
+    #- JOBID=base-gtkmm-linux
+    #- BRANCH=base-gtkmm
+    #- EXTRA="-DWITH_GLXCONTEXT=ON"
+    #addons:
+      #apt:
+        #packages:
+        #- libgl1-mesa-dev
+        #- ninja-build
+        #- libgtkmm-3.0-dev
+  #- language: cpp
+    #os: linux
+    #dist: xenial
+    #compiler: gcc
+    #env:
+    #- JOBID=base-wxwidgets-linux
+    #- BRANCH=base-wxwidgets
+    #- EXTRA="-DWITH_GLXCONTEXT=ON"
+    #addons:
+      #apt:
+        #packages:
+        #- libgl1-mesa-dev
+        #- ninja-build
+        #- libwxgtk3.0-dev
+  #- language: cpp
+    #os: osx
+    #compiler: clang
+    #env:
+    #- JOBID=base-qt-macos
+    #- BRANCH=base-qt
+    #- EXTRA="-DWITH_CGLCONTEXT=ON"
+  #- language: cpp
+    #os: linux
+    #dist: xenial
+    #compiler: gcc
+    #env:
+    #- JOBID=windowless-linux
+    #- BRANCH=windowless
+    #- EXTRA="-DWITH_WINDOWLESSGLXAPPLICATION=ON"
+    #addons:
+      #apt:
+        #packages:
+        #- libgl1-mesa-dev
+        #- ninja-build
+  #- language: cpp
+    #os: osx
+    #compiler: clang
+    #env:
+    #- JOBID=windowless-macos
+    #- BRANCH=windowless
+    #- EXTRA="-DWITH_WINDOWLESSCGLAPPLICATION=ON"
+  #- language: cpp
+    #os: linux
+    #dist: xenial
+    #compiler: gcc
+    #env:
+    #- JOBID=scenegraph2D-linux
+    #- BRANCH=scenegraph2D
+    #- EXTRA="-DWITH_SDL2APPLICATION=ON -DWITH_SCENEGRAPH=ON"
+    #addons:
+      #apt:
+        #packages:
+        #- libgl1-mesa-dev
+        #- libsdl2-dev
+        #- ninja-build
+  #- language: cpp
+    #os: linux
+    #dist: xenial
+    #compiler: gcc
+    #env:
+    #- JOBID=scenegraph3D-linux
+    #- BRANCH=scenegraph3D
+    #- EXTRA="-DWITH_SDL2APPLICATION=ON -DWITH_SCENEGRAPH=ON"
+    #addons:
+      #apt:
+        #packages:
+        #- libgl1-mesa-dev
+        #- libsdl2-dev
+        #- ninja-build
   - language: cpp
     os: osx
     osx_image: xcode7.3
@@ -134,34 +132,34 @@ matrix:
     - JOBID=base-ios-gles3
     - BRANCH=base-ios
     - TARGET_GLES2=OFF
-  - language: cpp
-    os: osx
-    osx_image: xcode9.3
-    env:
-    - JOBID=base-emscripten-webgl1
-    - BRANCH=base-emscripten
-    - TARGET_GLES2=ON
-  - language: cpp
-    os: osx
-    osx_image: xcode9.3
-    env:
-    - JOBID=base-emscripten-webgl2
-    - BRANCH=base-emscripten
-    - TARGET_GLES2=OFF
-  - language: cpp
-    os: osx
-    osx_image: xcode9.3
-    env:
-    - JOBID=windowless-emscripten-webgl1
-    - BRANCH=windowless-emscripten
-    - TARGET_GLES2=ON
-  - language: cpp
-    os: osx
-    osx_image: xcode9.3
-    env:
-    - JOBID=windowless-emscripten-webgl2
-    - BRANCH=windowless-emscripten
-    - TARGET_GLES2=OFF
+  #- language: cpp
+    #os: osx
+    #osx_image: xcode9.3
+    #env:
+    #- JOBID=base-emscripten-webgl1
+    #- BRANCH=base-emscripten
+    #- TARGET_GLES2=ON
+  #- language: cpp
+    #os: osx
+    #osx_image: xcode9.3
+    #env:
+    #- JOBID=base-emscripten-webgl2
+    #- BRANCH=base-emscripten
+    #- TARGET_GLES2=OFF
+  #- language: cpp
+    #os: osx
+    #osx_image: xcode9.3
+    #env:
+    #- JOBID=windowless-emscripten-webgl1
+    #- BRANCH=windowless-emscripten
+    #- TARGET_GLES2=ON
+  #- language: cpp
+    #os: osx
+    #osx_image: xcode9.3
+    #env:
+    #- JOBID=windowless-emscripten-webgl2
+    #- BRANCH=windowless-emscripten
+    #- TARGET_GLES2=OFF
   - language: android
     os: linux
     # Setting xenial here will cause it to use 12.04, with GCC 4.6 and other
@@ -214,16 +212,15 @@ install:
 - if [ "$BRANCH" == "base-ios" ]; then gem install xcpretty; fi
 - if [ "$TRAVIS_OS_NAME" == "osx" ]; then HOMEBREW_NO_AUTO_UPDATE=1 brew install ninja; fi
 - if [ "$TRAVIS_OS_NAME" == "osx" ] && [ "$BRANCH" == "base-qt" ]; then HOMEBREW_NO_AUTO_UPDATE=1 brew install qt; fi
-- if [ "$BRANCH" == "base-emscripten" ] || [ "$BRANCH" == "windowless-emscripten" ]; then HOMEBREW_NO_AUTO_UPDATE=1 brew install emscripten && export LLVM=/usr/local/opt/emscripten/libexec/llvm/bin && emcc; fi
 
 # SDL (cached)
 - if [ "$TRAVIS_OS_NAME" == "osx" ] && [ "$BRANCH" == "base" ]; then HOMEBREW_NO_AUTO_UPDATE=1 brew install sdl2; fi
 - if [ "$BRANCH" == "base-ios" ] && [ ! -e "$HOME/sdl2/include" ]; then curl -O https://www.libsdl.org/release/SDL2-2.0.4.tar.gz && tar -xzvf SDL2-2.0.4.tar.gz && cd SDL2-2.0.4/Xcode-iOS/SDL && xcodebuild -sdk iphonesimulator9.3 | xcpretty && mkdir -p ../../../sdl2/lib && cp build/Release-iphonesimulator/libSDL2.a ../../../sdl2/lib && mkdir -p ../../../sdl2/include/SDL2 && cp -R ../../include/* ../../../sdl2/include/SDL2 && cd ../../..; fi
 
 script:
-- if [ "$BRANCH" == "base" ] || [ "$BRANCH" == "base-glfw" ] || [ "$BRANCH" == "base-gtkmm" ] || [ "$BRANCH" == "base-qt" ] || [ "$BRANCH" == "base-wxwidgets" ] || [ "$BRANCH" == "windowless" ] || [ "$BRANCH" == "scenegraph2D" ] || [ "$BRANCH" == "scenegraph3D" ]; then ./package/ci/travis-desktop.sh; fi
+- if [ "$BRANCH" == "base" ] || [ "$BRANCH" == "base-glfw" ] || [ "$BRANCH" == "base-gtkmm" ] || [ "$BRANCH" == "base-qt" ] || [ "$BRANCH" == "base-wxwidgets" ] || [ "$BRANCH" == "windowless" ] || [ "$BRANCH" == "scenegraph2D" ] || [ "$BRANCH" == "scenegraph3D" ]; then ./package/ci/unix-desktop.sh; fi
 - if [ "$BRANCH" == "base-android" ]; then ./package/ci/travis-android-arm.sh; fi
 - if [ "$BRANCH" == "base-ios" ]; then ./package/ci/travis-ios-simulator.sh; fi
-- if [ "$BRANCH" == "base-emscripten" ] || [ "$BRANCH" == "windowless-emscripten" ]; then ./package/ci/travis-emscripten.sh; fi
+- if [ "$BRANCH" == "base-emscripten" ] || [ "$BRANCH" == "windowless-emscripten" ]; then ./package/ci/emscripten.sh; fi
 # Travis somehow is not able to gather all output, try to force it using this
 - sync
