@@ -15,6 +15,15 @@ else()
     message(FATAL_ERROR "No context available on this platform")
 endif()
 
+# Supply additional names for the wx-config tool that CMake's FindwxWidgets
+# doesn't recognize. If you get
+#   Could NOT find wxWidgets (missing: wxWidgets_LIBRARIES
+#     wxWidgets_INCLUDE_DIRS)
+# and your wx-config isn't listed in find_program(wxWidgets_CONFIG_EXECUTABLE)
+# of CMake's FindwxWidgets.cmake module, add it here and please open an issue
+# on the magnum-bootstrap repo as well. Thank you!
+set(ENV{WX_CONFIG} wx-config-gtk3)
+
 find_package(wxWidgets REQUIRED base core gl)
 include(${wxWidgets_USE_FILE})
 
