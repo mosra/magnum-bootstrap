@@ -61,6 +61,7 @@ MainFrame::MainFrame(int argc, char** argv): wxFrame{nullptr, wxID_ANY, "Magnum 
     #endif
 
     _wxGlContext = new wxGLContext{_wxGlCanvas};
+    Show();
     _wxGlCanvas->SetCurrent(*_wxGlContext);
     _glContext.create();
 
