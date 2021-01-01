@@ -12,6 +12,11 @@ typedef GLfloat GLclampf;
 #undef __glew_h__ /* shh, Qt, shh */
 #undef __GLEW_H__
 #include <QtGui/qopenglfunctions.h>
+/* This header is new since Qt 5.6 and gets transitively included by QtGui
+   headers in recent Qt versions. This seems to be the only way to make the
+   code keep compiling, but there's possibly a better solution. */
+#define QOPENGLEXTRAFUNCTIONS_H
+#include <QtGui/qopenglextrafunctions.h>
 #endif
 
 #include <QtWidgets/QApplication>
