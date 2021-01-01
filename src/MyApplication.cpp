@@ -26,7 +26,7 @@ using namespace Magnum;
 
 class MyApplication: public QOpenGLWidget {
     public:
-        explicit MyApplication(Platform::GLContext& context, QWidget* parent = nullptr, Qt::WindowFlags f = nullptr);
+        explicit MyApplication(Platform::GLContext& context, QWidget* parent = nullptr, Qt::WindowFlags f = {});
 
     private:
         void initializeGL() override;
