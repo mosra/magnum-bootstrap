@@ -30,6 +30,8 @@ include(${wxWidgets_USE_FILE})
 set_directory_properties(PROPERTIES CORRADE_USE_PEDANTIC_FLAGS ON)
 
 add_executable(MyApplication MyApplication.cpp)
+target_include_directories(MyApplication PRIVATE
+    ${wxWidgets_INCLUDE_DIRS})
 target_link_libraries(MyApplication PRIVATE
     Magnum::GLContext
     Magnum::GL
