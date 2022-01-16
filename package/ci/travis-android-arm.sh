@@ -1,7 +1,7 @@
 #!/bin/bash
 set -ev
 
-git clone --depth 1 git://github.com/mosra/corrade.git
+git clone --depth 1 https://github.com/mosra/corrade.git
 cd corrade
 
 # Build native corrade-rc
@@ -38,7 +38,7 @@ make -j install
 cd ../..
 
 # Crosscompile Magnum
-git clone --depth 1 git://github.com/mosra/magnum.git
+git clone --depth 1 https://github.com/mosra/magnum.git
 cd magnum
 git submodule update --init
 mkdir build-android-arm && cd build-android-arm
@@ -72,7 +72,7 @@ make -j install
 cd ../..
 
 # Crosscompile bootstrap project
-git clone --depth 1 --branch $BRANCH git://github.com/mosra/magnum-bootstrap.git
+git clone --depth 1 --branch $BRANCH https://github.com/mosra/magnum-bootstrap.git
 cd magnum-bootstrap
 
 export ANDROID_NDK_HOME=$TRAVIS_BUILD_DIR/android-ndk-r16b

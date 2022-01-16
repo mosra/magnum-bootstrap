@@ -2,7 +2,7 @@
 set -ev
 
 # Corrade
-git clone --depth 1 git://github.com/mosra/corrade.git
+git clone --depth 1 https://github.com/mosra/corrade.git
 cd corrade
 git submodule update --init
 
@@ -38,7 +38,7 @@ set -o pipefail && cmake --build . --config Release --target install | xcpretty
 cd ../..
 
 # Crosscompile Magnum
-git clone --depth 1 git://github.com/mosra/magnum.git
+git clone --depth 1 https://github.com/mosra/magnum.git
 cd magnum
 git submodule update --init
 mkdir build-ios && cd build-ios
@@ -69,7 +69,7 @@ set -o pipefail && cmake --build . --config Release --target install | xcpretty
 cd ../..
 
 # Crosscompile bootstrap project
-git clone --depth 1 --branch $BRANCH git://github.com/mosra/magnum-bootstrap.git
+git clone --depth 1 --branch $BRANCH https://github.com/mosra/magnum-bootstrap.git
 cd magnum-bootstrap
 git submodule update --init
 mkdir build-ios && cd build-ios

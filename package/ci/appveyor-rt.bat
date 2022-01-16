@@ -5,7 +5,7 @@ if "%APPVEYOR_BUILD_WORKER_IMAGE%" == "Visual Studio 2017" set GENERATOR=Visual 
 set PATH=%APPVEYOR_BUILD_FOLDER%\deps-native\bin;%PATH%
 
 rem Build ANGLE
-git clone --depth 1 git://github.com/MSOpenTech/angle.git || exit /b
+git clone --depth 1 https://github.com/MSOpenTech/angle.git || exit /b
 cd angle\winrt\10\src || exit /b
 msbuild angle.sln /p:Configuration=Release || exit /b
 cd ..\..\..\.. || exit /b
@@ -32,7 +32,7 @@ copy SDL\VisualC-WinRT\UWP_VS2015\X64\Release\SDL-UWP\SDL2.lib deps\lib || exit 
 copy SDL\VisualC-WinRT\UWP_VS2015\X64\Release\SDL-UWP\SDL2.dll deps\bin || exit /b
 xcopy /e SDL\include\* deps\include\SDL2\ || exit /b
 
-git clone --depth 1 git://github.com/mosra/corrade.git || exit /b
+git clone --depth 1 https://github.com/mosra/corrade.git || exit /b
 cd corrade || exit /b
 
 rem Build native corrade-rc
@@ -65,7 +65,7 @@ cmake --build . --config Release --target install -- /m /v:m || exit /b
 cd .. && cd ..
 
 rem Crosscompile Magnum
-git clone --depth 1 git://github.com/mosra/magnum.git || exit /b
+git clone --depth 1 https://github.com/mosra/magnum.git || exit /b
 cd magnum || exit /b
 mkdir build-rt && cd build-rt || exit /b
 cmake .. ^
@@ -94,7 +94,7 @@ cmake --build . --config Release --target install -- /m /v:m || exit /b
 cd .. && cd ..
 
 rem Crosscompile bootstrap project
-git clone --depth 1 --branch %BRANCH% git://github.com/mosra/magnum-bootstrap.git
+git clone --depth 1 --branch %BRANCH% https://github.com/mosra/magnum-bootstrap.git
 cd magnum-bootstrap
 mkdir build && cd build || exit /b
 cmake .. ^
