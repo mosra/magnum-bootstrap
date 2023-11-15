@@ -20,7 +20,7 @@
 #   This file is part of Magnum.
 #
 #   Copyright © 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019,
-#               2020 Vladimír Vondruš <mosra@centrum.cz>
+#               2020, 2021, 2022, 2023 Vladimír Vondruš <mosra@centrum.cz>
 #   Copyright © 2018 Jonathan Hale <squareys@googlemail.com>
 #
 #   Permission is hereby granted, free of charge, to any person obtaining a
@@ -41,6 +41,63 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 #   DEALINGS IN THE SOFTWARE.
 #
+
+# If we have a CMake subproject, use the targets directly. I'd prefer the
+# static variant, however SDL2 defines its own SDL2::SDL2 alias for only the
+# dynamic variant since https://github.com/libsdl-org/SDL/pull/4074 and so I'm
+# forced to use that, if available.
+if(TARGET SDL2)
+    # In case we don't have https://github.com/libsdl-org/SDL/pull/4074 yet,
+    # do the alias ourselves.
+    if(NOT TARGET SDL2::SDL2)
+        # Aliases of (global) targets are only supported in CMake 3.11, so we
+        # work around it by this. This is easier than fetching all possible
+        # properties (which are impossible to track of) and then attempting to
+        # rebuild them into a new target.
+        add_library(SDL2::SDL2 INTERFACE IMPORTED)
+        set_target_properties(SDL2::SDL2 PROPERTIES INTERFACE_LINK_LIBRARIES SDL2)
+    endif()
+
+    # Just to make FPHSA print some meaningful location, nothing else. Not
+    # using the INTERFACE_INCLUDE_DIRECTORIES as that contains
+    # $<BUILD_INTERFACE and looks ugly in the output. Funnily enough, the
+    # BUILD_INTERFACE thing works here without having to override it with
+    # custom-found paths like I do in FindAssimp and elsewhere. Needs further
+    # investigation.
+    get_target_property(_SDL2_SOURCE_DIR SDL2 SOURCE_DIR)
+    include(FindPackageHandleStandardArgs)
+    find_package_handle_standard_args("SDL2" DEFAULT_MSG _SDL2_SOURCE_DIR)
+
+    if(CORRADE_TARGET_WINDOWS)
+        # .dll is in LOCATION, .lib is in IMPLIB. Yay, useful!
+        get_target_property(SDL2_DLL_DEBUG SDL2 IMPORTED_LOCATION_DEBUG)
+        get_target_property(SDL2_DLL_RELEASE SDL2 IMPORTED_LOCATION_RELEASE)
+    endif()
+
+    return()
+
+# The static build is a separate target for some reason. I wonder HOW that
+# makes more sense than just having a build-time option for static/shared and
+# use the same name for both. Are all depending projects supposed to branch on
+# it like this?!
+elseif(TARGET SDL2-static)
+    # The target should not be defined by SDL itself. If it is, that's from us.
+    if(NOT TARGET SDL2::SDL2)
+        # Aliases of (global) targets are only supported in CMake 3.11, so we
+        # work around it by this. This is easier than fetching all possible
+        # properties (which are impossible to track of) and then attempting to
+        # rebuild them into a new target.
+        add_library(SDL2::SDL2 INTERFACE IMPORTED)
+        set_target_properties(SDL2::SDL2 PROPERTIES INTERFACE_LINK_LIBRARIES SDL2-static)
+    endif()
+
+    # Just to make FPHSA print some meaningful location, nothing else
+    get_target_property(_SDL2_SOURCE_DIR SDL2-static SOURCE_DIR)
+    include(FindPackageHandleStandardArgs)
+    find_package_handle_standard_args("SDL2" DEFAULT_MSG _SDL2_SOURCE_DIR)
+
+    return()
+endif()
 
 # In Emscripten SDL is linked automatically, thus no need to find the library.
 # Also the includes are in SDL subdirectory, not SDL2.
@@ -81,10 +138,10 @@ else()
         # which CMake somehow prefers before the SDL2-2.0.dylib file. Making
         # the dylib first so it is preferred. Not sure how this maps to debug
         # config though :/
-        NAMES SDL2-2.0 SDL2
+        NAMES SDL2-2.0 SDL2 SDL2-static
         PATH_SUFFIXES ${_SDL2_LIBRARY_PATH_SUFFIX})
     find_library(SDL2_LIBRARY_DEBUG
-        NAMES SDL2d
+        NAMES SDL2d SDL2-staticd
         PATH_SUFFIXES ${_SDL2_LIBRARY_PATH_SUFFIX})
     # FPHSA needs one of the _DEBUG/_RELEASE variables to check that the
     # library was found -- using SDL_LIBRARY, which will get populated by
@@ -111,37 +168,38 @@ find_path(SDL2_INCLUDE_DIR
 if(CORRADE_TARGET_WINDOWS)
     find_file(SDL2_DLL_RELEASE
         NAMES SDL2.dll
-        PATH_SUFFIXES ${_SDL2_RUNTIME_PATH_SUFFIX} ${_SDL2_LIBRARY_PATH_SUFFIX})
+        PATH_SUFFIXES bin ${_SDL2_RUNTIME_PATH_SUFFIX} ${_SDL2_LIBRARY_PATH_SUFFIX})
     find_file(SDL2_DLL_DEBUG
         NAMES SDL2d.dll # not sure?
-        PATH_SUFFIXES ${_SDL2_RUNTIME_PATH_SUFFIX} ${_SDL2_LIBRARY_PATH_SUFFIX})
+        PATH_SUFFIXES bin ${_SDL2_RUNTIME_PATH_SUFFIX} ${_SDL2_LIBRARY_PATH_SUFFIX})
 endif()
 
-# (Static) macOS / iOS dependencies
-if(CORRADE_TARGET_APPLE AND SDL2_LIBRARY MATCHES ".*libSDL2.a$")
+# (Static) macOS / iOS dependencies. On macOS these were mainly needed when
+# building SDL statically using its CMake project, on iOS always.
+if(CORRADE_TARGET_APPLE AND (SDL2_LIBRARY_DEBUG MATCHES "${CMAKE_STATIC_LIBRARY_SUFFIX}$" OR SDL2_LIBRARY_RELEASE MATCHES "${CMAKE_STATIC_LIBRARY_SUFFIX}$"))
+    set(_SDL2_FRAMEWORKS
+        iconv # should be in the system, needed by iOS as well now
+        AudioToolbox
+        AVFoundation
+        CoreHaptics # needed since 2.0.18(?) on iOS and macOS
+        Foundation
+        Metal # needed since 2.0.8 on iOS, since 2.0.14 on macOS
+        GameController) # needed since 2.0.18(?) on macOS as well
     if(CORRADE_TARGET_IOS)
-        set(_SDL2_FRAMEWORKS
-            AudioToolbox
-            AVFoundation
+        list(APPEND _SDL2_FRAMEWORKS
+            CoreBluetooth # needed since 2.0.10
             CoreGraphics
             CoreMotion
             Foundation
-            GameController
-            Metal # needed since 2.0.8
             QuartzCore
             UIKit)
     else()
-        # Those are needed when building SDL statically using its CMake project
-        set(_SDL2_FRAMEWORKS
-            iconv # should be in the system
-            AudioToolbox
-            AVFoundation
+        list(APPEND _SDL2_FRAMEWORKS
             Carbon
             Cocoa
             CoreAudio
             CoreVideo
             ForceFeedback
-            Foundation
             IOKit)
     endif()
     set(_SDL2_FRAMEWORK_LIBRARIES )
@@ -190,7 +248,7 @@ if(NOT TARGET SDL2::SDL2)
         endif()
 
         # Link frameworks on macOS / iOS if we have a static SDL
-        if(CORRADE_TARGET_APPLE AND SDL2_LIBRARY MATCHES ".*libSDL2.a$")
+        if(CORRADE_TARGET_APPLE AND (SDL2_LIBRARY_DEBUG MATCHES "${CMAKE_STATIC_LIBRARY_SUFFIX}$" OR SDL2_LIBRARY_RELEASE MATCHES "${CMAKE_STATIC_LIBRARY_SUFFIX}$"))
             set_property(TARGET SDL2::SDL2 APPEND PROPERTY
                 INTERFACE_LINK_LIBRARIES ${_SDL2_FRAMEWORK_LIBRARIES})
         endif()
