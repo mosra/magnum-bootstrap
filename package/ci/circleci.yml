@@ -1,12 +1,13 @@
 version: 2.1
 
 executors:
-  ubuntu-16_04:
+  ubuntu-18_04:
     docker:
-    - image: ubuntu:xenial-20201014
-  xcode-9_4:
+    - image: ubuntu:bionic-20220427
+  # Anything below 12.5.1 is deprecated as of August 2023
+  xcode-12_5:
     macos:
-      xcode: 9.4.0
+      xcode: 12.5.1
   emscripten:
     docker:
     # 1.39.0 is the oldest on Docker. Anything before 1.39.2 is useless as emar
@@ -29,7 +30,7 @@ commands:
         # Git is needed always for cloning everything
         command: |
           apt update
-          apt install -y git ninja-build $LCOV_PACKAGES << parameters.extra >>
+          apt install -y git ninja-build libidn11 << parameters.extra >>
 
   install-base-macos:
     parameters:
@@ -55,17 +56,27 @@ commands:
           echo 'export CC=gcc-4.8' >> $BASH_ENV
           echo 'export CXX=g++-4.8' >> $BASH_ENV
 
-  install-cmake-3_4:
+  install-cmake:
+    parameters:
+      version:
+        type: string
+      sudo:
+        type: string
+        default: ""
     steps:
     - run:
-        name: Install CMake 3.4
+        name: Install CMake << parameters.version >>
         command: |
-          apt install -y wget
+          version_short=<< parameters.version >>
+          version_short="${version_short%.*}"
+          << parameters.sudo >> apt install -y wget
           mkdir -p $HOME/cmake && cd $HOME/cmake
-          wget -nc --no-check-certificate https://cmake.org/files/v3.4/cmake-3.4.3-Linux-x86_64.tar.gz
-          tar --strip-components=1 -xzf cmake-3.4.3-Linux-x86_64.tar.gz
+          wget -nc --no-check-certificate https://cmake.org/files/v$version_short/cmake-<< parameters.version >>-Linux-x86_64.tar.gz
+          tar --strip-components=1 -xzf cmake-<< parameters.version >>-Linux-x86_64.tar.gz
           echo 'export PATH=$HOME/cmake/bin:$PATH' >> $BASH_ENV
-          source $BASH_ENV && cmake --version | grep 3.4
+          source $BASH_ENV
+          cmake --version | grep << parameters.version >>
+          ctest --version | grep << parameters.version >>
 
   build:
     parameters:
@@ -78,26 +89,28 @@ commands:
         command: |
           ./package/ci/<< parameters.script >>
 
-
 jobs:
   base-linux:
-    executor: ubuntu-16_04
+    executor: ubuntu-18_04
     environment:
       BRANCH: base
-      EXTRA: "-DWITH_SDL2APPLICATION=ON"
+      EXTRA: >
+        -DMAGNUM_WITH_SDL2APPLICATION=ON
     steps:
     - install-base-linux:
         extra: libgl1-mesa-dev libsdl2-dev
     - install-gcc-4_8
-    - install-cmake-3_4
+    - install-cmake:
+        version: "3.5.2"
     - build:
         script: unix-desktop.sh
 
   base-macos:
-    executor: xcode-9_4
+    executor: xcode-12_5
     environment:
       BRANCH: base
-      EXTRA: "-DWITH_SDL2APPLICATION=ON"
+      EXTRA: >
+        -DMAGNUM_WITH_SDL2APPLICATION=ON
     steps:
     - install-base-macos:
         extra: sdl2
@@ -105,103 +118,120 @@ jobs:
         script: unix-desktop.sh
 
   base-glfw-linux:
-    executor: ubuntu-16_04
+    executor: ubuntu-18_04
     environment:
       BRANCH: base-glfw
-      EXTRA: "-DWITH_GLFWAPPLICATION=ON"
+      EXTRA: >
+        -DMAGNUM_WITH_GLFWAPPLICATION=ON
     steps:
     - install-base-linux:
         extra: libgl1-mesa-dev libglfw3-dev
     - install-gcc-4_8
-    - install-cmake-3_4
+    - install-cmake:
+        version: "3.5.2"
     - build:
         script: unix-desktop.sh
 
   base-gtkmm-linux:
-    executor: ubuntu-16_04
+    executor: ubuntu-18_04
     environment:
       BRANCH: base-gtkmm
-      EXTRA: "-DWITH_GLXCONTEXT=ON"
+      EXTRA: >
+        -DMAGNUM_WITH_GLXCONTEXT=ON
     steps:
     - install-base-linux:
         extra: libgl1-mesa-dev libgtkmm-3.0-dev
     - install-gcc-4_8
-    - install-cmake-3_4
+    - install-cmake:
+        version: "3.5.2"
     - build:
         script: unix-desktop.sh
 
   base-wxwidgets-linux:
-    executor: ubuntu-16_04
+    executor: ubuntu-18_04
     environment:
       BRANCH: base-wxwidgets
-      EXTRA: "-DWITH_GLXCONTEXT=ON"
+      EXTRA: >
+        -DMAGNUM_WITH_GLXCONTEXT=ON
     steps:
     - install-base-linux:
         extra: libgl1-mesa-dev libwxgtk3.0-dev
     - install-gcc-4_8
-    - install-cmake-3_4
+    - install-cmake:
+        version: "3.5.2"
     - build:
         script: unix-desktop.sh
 
   base-qt-linux:
-    executor: ubuntu-16_04
+    executor: ubuntu-18_04
     environment:
       BRANCH: base-qt
-      EXTRA: "-DWITH_GLXCONTEXT=ON"
+      EXTRA: >
+        -DMAGNUM_WITH_GLXCONTEXT=ON
     steps:
     - install-base-linux:
         extra: qt5-default
     - install-gcc-4_8
-    - install-cmake-3_4
+    - install-cmake:
+        version: "3.5.2"
     - build:
         script: unix-desktop.sh
 
   windowless-linux:
-    executor: ubuntu-16_04
+    executor: ubuntu-18_04
     environment:
       BRANCH: windowless
-      EXTRA: "-DWITH_WINDOWLESSGLXAPPLICATION=ON"
+      EXTRA: >
+        -DMAGNUM_WITH_WINDOWLESSGLXAPPLICATION=ON
     steps:
     - install-base-linux:
         extra: libgl1-mesa-dev
     - install-gcc-4_8
-    - install-cmake-3_4
+    - install-cmake:
+        version: "3.5.2"
     - build:
         script: unix-desktop.sh
 
   windowless-macos:
-    executor: xcode-9_4
+    executor: xcode-12_5
     environment:
       BRANCH: windowless
-      EXTRA: "-DWITH_WINDOWLESSCGLAPPLICATION=ON"
+      EXTRA:
+        -DMAGNUM_WITH_WINDOWLESSCGLAPPLICATION=ON
     steps:
     - install-base-macos
     - build:
         script: unix-desktop.sh
 
   scenegraph2D-linux:
-    executor: ubuntu-16_04
+    executor: ubuntu-18_04
     environment:
       BRANCH: scenegraph2D
-      EXTRA: "-DWITH_SDL2APPLICATION=ON -DWITH_SCENEGRAPH=ON"
+      EXTRA: >
+        -DMAGNUM_WITH_SDL2APPLICATION=ON
+        -DMAGNUM_WITH_SCENEGRAPH=ON
     steps:
     - install-base-linux:
         extra: libgl1-mesa-dev libsdl2-dev
     - install-gcc-4_8
-    - install-cmake-3_4
+    - install-cmake:
+        version: "3.5.2"
     - build:
         script: unix-desktop.sh
 
   scenegraph3D-linux:
-    executor: ubuntu-16_04
+    executor: ubuntu-18_04
     environment:
       BRANCH: scenegraph3D
-      EXTRA: "-DWITH_SDL2APPLICATION=ON -DWITH_SCENEGRAPH=ON"
+      EXTRA: >
+        -DMAGNUM_WITH_SDL2APPLICATION=ON
+        -DMAGNUM_WITH_SCENEGRAPH=ON
     steps:
     - install-base-linux:
         extra: libgl1-mesa-dev libsdl2-dev
     - install-gcc-4_8
-    - install-cmake-3_4
+    - install-cmake:
+        version: "3.5.2"
     - build:
         script: unix-desktop.sh
 
