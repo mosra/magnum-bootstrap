@@ -1,23 +1,15 @@
 #include <Magnum/Magnum.h>
 
-#ifdef MAGNUM_TARGET_HEADLESS
+#ifdef MAGNUM_TARGET_EGL
 #include <Magnum/Platform/WindowlessEglApplication.h>
 #elif defined(CORRADE_TARGET_IOS)
 #include <Magnum/Platform/WindowlessIosApplication.h>
 #elif defined(CORRADE_TARGET_APPLE)
 #include <Magnum/Platform/WindowlessCglApplication.h>
 #elif defined(CORRADE_TARGET_UNIX)
-#if !defined(MAGNUM_TARGET_GLES) || defined(MAGNUM_TARGET_DESKTOP_GLES)
 #include <Magnum/Platform/WindowlessGlxApplication.h>
-#else
-#include <Magnum/Platform/WindowlessEglApplication.h>
-#endif
 #elif defined(CORRADE_TARGET_WINDOWS)
-#if !defined(MAGNUM_TARGET_GLES) || defined(MAGNUM_TARGET_DESKTOP_GLES)
 #include <Magnum/Platform/WindowlessWglApplication.h>
-#else
-#include <Magnum/Platform/WindowlessWindowsEglApplication.h>
-#endif
 #else
 #error no windowless application available on this platform
 #endif
