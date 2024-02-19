@@ -2,6 +2,15 @@
 #include <Magnum/GL/Framebuffer.h>
 #include <Magnum/Platform/GLContext.h>
 
+/* The OpenGL ES build of Magnum includes GL headers that contain include
+   guards that match <GLES2/gl2ext.h> and <GLES3/gl3ext.h>. Qt's headers are
+   however always exposing the desktop GL, thus the following has to be
+   additionally defined to make them work together. */
+#ifdef MAGNUM_TARGET_GLES
+#define __glext_h_
+typedef double GLdouble;
+#endif
+
 /* If your application is using anything from QtGui, you might get warnings
    about GLEW and errors regarding GLclampf. If that's the case, uncomment the
    following and place it as early as possible (but again *after* including
@@ -68,6 +77,10 @@ int main(int argc, char** argv) {
 
     MyApplication w{context};
 
+    QSurfaceFormat format;
+    /* Make sure Qt uses GLES as well if Magnum is compiled for it */
+    #ifdef MAGNUM_TARGET_GLES
+    format.setRenderableType(QSurfaceFormat::OpenGLES);
     /* On macOS, this is needed in order to use GL 4.1 instead of GL 2.1. Qt
        doesn't do that on its own, sorry. If you get only GL 3.0 on Mesa, try
        uncommenting this as well -- however be aware that with the below code,
@@ -76,15 +89,14 @@ int main(int argc, char** argv) {
        To fix that, you'd need to detect the driver used and then either set
        the version or not depending on what the particular driver likes best.
        It's a total mess, right? */
-    #ifdef CORRADE_TARGET_APPLE
-    QSurfaceFormat format;
+    #elif defined(CORRADE_TARGET_APPLE)
     format.setDepthBufferSize(24);
     format.setStencilBufferSize(8);
     format.setVersion(4, 1);
     format.setProfile(QSurfaceFormat::CoreProfile);
+    #endif
     QSurfaceFormat::setDefaultFormat(format);
     w.setFormat(format);
-    #endif
 
     w.show();
 
