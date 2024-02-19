@@ -1,4 +1,3 @@
-#include <Corrade/Containers/Optional.h>
 /* Magnum GL headers always have to be included before Qt ones */
 #include <Magnum/GL/Framebuffer.h>
 #include <Magnum/Platform/GLContext.h>
