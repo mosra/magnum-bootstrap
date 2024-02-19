@@ -28,7 +28,7 @@ typedef GLfloat GLclampf;
 #endif
 
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QOpenGLWidget>
+#include <QtOpenGLWidgets/QOpenGLWidget>
 
 using namespace Magnum;
 
