@@ -1,28 +1,12 @@
 #!/bin/bash
 set -ev
 
+# Crosscompile Corrade
 git clone --depth 1 https://github.com/mosra/corrade.git
 cd corrade
 git submodule update --init
-
-# Build native corrade-rc
-mkdir build && cd build || exit /b
-cmake .. \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX=$HOME/deps-native \
-    -DCMAKE_INSTALL_RPATH=$HOME/deps-native/lib \
-    -DCORRADE_WITH_INTERCONNECT=OFF \
-    -DCORRADE_WITH_PLUGINMANAGER=OFF \
-    -DCORRADE_WITH_TESTSUITE=OFF \
-    -DCORRADE_BUILD_DEPRECATED=OFF \
-    -G Ninja
-ninja install
-cd ..
-
-# Crosscompile Corrade
 mkdir build-emscripten && cd build-emscripten
 cmake .. \
-    -DCORRADE_RC_EXECUTABLE=$HOME/deps-native/bin/corrade-rc \
     -DCMAKE_TOOLCHAIN_FILE=../toolchains/generic/Emscripten-wasm.cmake \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_CXX_FLAGS_RELEASE="-DNDEBUG -O1" \
@@ -42,7 +26,6 @@ cd magnum
 git submodule update --init
 mkdir build-emscripten && cd build-emscripten
 cmake .. \
-    -DCORRADE_RC_EXECUTABLE=$HOME/deps-native/bin/corrade-rc \
     -DCMAKE_TOOLCHAIN_FILE=../toolchains/generic/Emscripten-wasm.cmake \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_CXX_FLAGS_RELEASE="-DNDEBUG -O1" \
@@ -75,7 +58,6 @@ cd magnum-bootstrap
 git submodule update --init
 mkdir build-emscripten && cd build-emscripten
 cmake .. \
-    -DCORRADE_RC_EXECUTABLE=$HOME/deps-native/bin/corrade-rc \
     -DCMAKE_TOOLCHAIN_FILE=../toolchains/generic/Emscripten-wasm.cmake \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_CXX_FLAGS_RELEASE="-DNDEBUG -O1" \
