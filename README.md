@@ -30,7 +30,7 @@ Minimal dependencies
     everything needed are **GCC** >= 4.8.1, **Clang** >= 3.3 and
     **MSVC** >= 2015. On Windows you can also use **clang-cl** and
     **MinGW-w64**.
-*   **CMake** >= 3.4
+*   **CMake** >= 3.5
 *   **Corrade**, **Magnum** — The engine itself
 
 Note that each bootstrap project has additional dependency requirements, listed
