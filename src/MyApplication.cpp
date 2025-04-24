@@ -83,7 +83,7 @@ MainFrame::~MainFrame() {
     _wxGlCanvas->Disconnect(wxEVT_PAINT, wxPaintEventHandler(MainFrame::OnPaint), nullptr, this);
 }
 
-void MainFrame::OnPaint(wxPaintEvent& event) {
+void MainFrame::OnPaint(wxPaintEvent&) {
     GL::defaultFramebuffer.clear(GL::FramebufferClear::Color);
 
     /* TODO: Add your drawing code here */
