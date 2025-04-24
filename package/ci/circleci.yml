@@ -4,6 +4,9 @@ executors:
   ubuntu-18_04:
     docker:
     - image: ubuntu:bionic-20220427
+  ubuntu-22_04:
+    docker:
+    - image: ubuntu:jammy-20250404
   # Anything below 13.4.1 (and all x86 variants) are deprecated as of June 28th
   # 2024
   xcode-13_4:
@@ -32,7 +35,7 @@ commands:
         # Git is needed always for cloning everything
         command: |
           apt update
-          apt install -y git ninja-build libidn11 << parameters.extra >>
+          apt install -y git ninja-build << parameters.extra >>
 
   install-base-macos:
     parameters:
@@ -100,7 +103,8 @@ jobs:
         -DMAGNUM_WITH_SDL2APPLICATION=ON
     steps:
     - install-base-linux:
-        extra: libgl1-mesa-dev libsdl2-dev
+        # libidn11 needed by CMake 3.5
+        extra: libidn11 libgl1-mesa-dev libsdl2-dev
     - install-gcc-4_8
     - install-cmake:
         version: "3.5.2"
@@ -127,7 +131,8 @@ jobs:
         -DMAGNUM_WITH_GLFWAPPLICATION=ON
     steps:
     - install-base-linux:
-        extra: libgl1-mesa-dev libglfw3-dev
+        # libidn11 needed by CMake 3.5
+        extra: libidn11 libgl1-mesa-dev libglfw3-dev
     - install-gcc-4_8
     - install-cmake:
         version: "3.5.2"
@@ -142,7 +147,8 @@ jobs:
         -DMAGNUM_WITH_GLXCONTEXT=ON
     steps:
     - install-base-linux:
-        extra: libgl1-mesa-dev libgtkmm-3.0-dev
+        # libidn11 needed by CMake 3.5
+        extra: libidn11 libgl1-mesa-dev libgtkmm-3.0-dev
     - install-gcc-4_8
     - install-cmake:
         version: "3.5.2"
@@ -157,25 +163,39 @@ jobs:
         -DMAGNUM_WITH_GLXCONTEXT=ON
     steps:
     - install-base-linux:
-        extra: libgl1-mesa-dev libwxgtk3.0-dev
+        # libidn11 needed by CMake 3.5
+        extra: libidn11 libgl1-mesa-dev libwxgtk3.0-dev
     - install-gcc-4_8
     - install-cmake:
         version: "3.5.2"
     - build:
         script: unix-desktop.sh
 
-  base-qt-linux:
+  base-qt5-linux:
     executor: ubuntu-18_04
     environment:
-      BRANCH: base-qt
+      BRANCH: base-qt5
       EXTRA: >
         -DMAGNUM_WITH_GLXCONTEXT=ON
     steps:
     - install-base-linux:
-        extra: qt5-default
+        # libidn11 needed by CMake 3.5
+        extra: libidn11 qt5-default
     - install-gcc-4_8
     - install-cmake:
         version: "3.5.2"
+    - build:
+        script: unix-desktop.sh
+
+  base-qt6-linux:
+    executor: ubuntu-22_04
+    environment:
+      BRANCH: base-qt6
+      EXTRA: >
+        -DMAGNUM_WITH_GLXCONTEXT=ON
+    steps:
+    - install-base-linux:
+        extra: qt6-base-dev libgl1-mesa-dev g++ cmake
     - build:
         script: unix-desktop.sh
 
@@ -187,7 +207,8 @@ jobs:
         -DMAGNUM_WITH_WINDOWLESSGLXAPPLICATION=ON
     steps:
     - install-base-linux:
-        extra: libgl1-mesa-dev
+        # libidn11 needed by CMake 3.5
+        extra: libidn11 libgl1-mesa-dev
     - install-gcc-4_8
     - install-cmake:
         version: "3.5.2"
@@ -214,7 +235,8 @@ jobs:
         -DMAGNUM_WITH_SCENEGRAPH=ON
     steps:
     - install-base-linux:
-        extra: libgl1-mesa-dev libsdl2-dev
+        # libidn11 needed by CMake 3.5
+        extra: libidn11 libgl1-mesa-dev libsdl2-dev
     - install-gcc-4_8
     - install-cmake:
         version: "3.5.2"
@@ -230,7 +252,8 @@ jobs:
         -DMAGNUM_WITH_SCENEGRAPH=ON
     steps:
     - install-base-linux:
-        extra: libgl1-mesa-dev libsdl2-dev
+        # libidn11 needed by CMake 3.5
+        extra: libidn11 libgl1-mesa-dev libsdl2-dev
     - install-gcc-4_8
     - install-cmake:
         version: "3.5.2"
@@ -290,7 +313,8 @@ workflows:
     - base-glfw-linux
     - base-gtkmm-linux
     - base-wxwidgets-linux
-    - base-qt-linux
+    - base-qt5-linux
+    - base-qt6-linux
     - windowless-linux
     - windowless-macos
     - scenegraph2D-linux

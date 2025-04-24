@@ -96,13 +96,14 @@ Windows, CGL on macOS and GLX on Unix/Linux. You need Magnum built with
 `WITH_EGLCONTEXT`, `WITH_WGLCONTEXT`, `WITH_CGLCONTEXT` or `WITH_GLXCONTEXT`
 enabled, depending on the platform of your choice.
 
-### Base application using Qt
+### Base application using Qt5 / Qt6
 
-The [`base-qt`](https://github.com/mosra/magnum-bootstrap/tree/base-qt)
-branch does not use any of the application wrappers provided in `Platform`
-namespace, but uses Qt5 window and context creation directly and manually
-initializes Magnum on top of that using EGL on embedded devices, WGL on
-Windows, CGL on macOS and GLX on Unix/Linux. You need Magnum built with
+The [`base-qt5`](https://github.com/mosra/magnum-bootstrap/tree/base-qt) /
+[`base-qt6`](https://github.com/mosra/magnum-bootstrap/tree/base-qt) branches
+do not use any of the application wrappers provided in `Platform` namespace,
+but use a Qt5 / Qt6 window and context creation directly and manually
+initialize Magnum on top of that using EGL on embedded devices, WGL on Windows,
+CGL on macOS and GLX on Unix/Linux. You need Magnum built with
 `WITH_EGLCONTEXT`, `WITH_WGLCONTEXT`, `WITH_CGLCONTEXT` or `WITH_GLXCONTEXT`
 enabled, depending on the platform of your choice.
 
