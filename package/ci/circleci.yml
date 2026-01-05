@@ -7,12 +7,11 @@ executors:
   ubuntu-22_04:
     docker:
     - image: ubuntu:jammy-20250404
-  # Anything below 13.4.1 (and all x86 variants) are deprecated as of June 28th
-  # 2024
-  xcode-13_4:
+  # As of November 7, 2025, M4 is the default, and the oldest version there is
+  # 14.3.1.
+  xcode-14_3:
     macos:
-      xcode: 13.4.1
-    resource_class: macos.m1.medium.gen1
+      xcode: 14.3.1
   emscripten:
     docker:
     # 1.39.0 is the oldest on Docker. Anything before 1.39.2 is useless as emar
@@ -112,7 +111,7 @@ jobs:
         script: unix-desktop.sh
 
   base-macos:
-    executor: xcode-13_4
+    executor: xcode-14_3
     environment:
       BRANCH: base
       EXTRA: >
@@ -216,7 +215,7 @@ jobs:
         script: unix-desktop.sh
 
   windowless-macos:
-    executor: xcode-13_4
+    executor: xcode-14_3
     environment:
       BRANCH: windowless
       EXTRA:
