@@ -12,7 +12,7 @@ cmake .. ^
     -DCORRADE_WITH_INTERCONNECT=OFF ^
     -DCORRADE_WITH_PLUGINMANAGER=OFF ^
     -DCORRADE_WITH_TESTSUITE=OFF ^
-    -DCORRADE_BUILD_DEPRECATED=OFF ^
+    -DCORRADE_BUILD_DEPRECATED=OFF %EXTRA_CORRADE% ^
     -G Ninja || exit /b
 cmake --build . || exit /b
 cmake --build . --target install || exit /b
@@ -37,12 +37,26 @@ cmake .. ^
     -DMAGNUM_WITH_SHADERTOOLS=OFF ^
     -DMAGNUM_WITH_TEXT=OFF ^
     -DMAGNUM_WITH_TEXTURETOOLS=OFF ^
-    -DMAGNUM_WITH_TRADE=OFF %EXTRA% ^
-    -DMAGNUM_BUILD_DEPRECATED=OFF ^
+    -DMAGNUM_WITH_TRADE=OFF ^
+    -DMAGNUM_BUILD_DEPRECATED=OFF %EXTRA% ^
     -G Ninja || exit /b
 cmake --build . || exit /b
 cmake --build . --target install || exit /b
 cd .. && cd ..
+
+rem Magnum Extras
+if NOT ["%EXTRA_EXTRAS%"] == [""] (
+    git clone --depth 1 https://github.com/mosra/magnum-extras.git || exit /b
+    cd magnum-extras || exit /b
+    mkdir build && cd build || exit /b
+    cmake .. ^
+        -DCMAKE_BUILD_TYPE=Release ^
+        -DCMAKE_INSTALL_PREFIX=%APPVEYOR_BUILD_FOLDER%/deps %EXTRA_EXTRAS% ^
+        -G Ninja || exit /b
+    cmake --build . || exit /b
+    cmake --build . --target install || exit /b
+    cd .. && cd ..
+)
 
 rem Build bootstrap project
 git clone --depth 1 --branch %BRANCH% https://github.com/mosra/magnum-bootstrap.git

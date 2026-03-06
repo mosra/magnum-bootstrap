@@ -12,7 +12,7 @@ cmake .. \
     -DCORRADE_WITH_INTERCONNECT=OFF \
     -DCORRADE_WITH_PLUGINMANAGER=OFF \
     -DCORRADE_WITH_TESTSUITE=OFF \
-    -DCORRADE_BUILD_DEPRECATED=OFF \
+    -DCORRADE_BUILD_DEPRECATED=OFF $EXTRA_CORRADE \
     -G Ninja
 ninja install
 cd ../..
@@ -41,6 +41,20 @@ cmake .. \
     -G Ninja
 ninja install
 cd ../..
+
+# Magnum Extras
+if [ "$EXTRA_EXTRAS" != "" ]; then
+    git clone --depth 1 https://github.com/mosra/magnum-extras.git
+    cd magnum-extras
+    mkdir build && cd build
+    cmake .. \
+        -DCMAKE_INSTALL_PREFIX=$HOME/deps \
+        -DCMAKE_INSTALL_RPATH=$HOME/deps/lib \
+        -DCMAKE_BUILD_TYPE=Release $EXTRA_EXTRAS \
+        -G Ninja
+    ninja install
+    cd ../..
+fi
 
 # Bootstrap project
 git clone --depth 1 --branch $BRANCH https://github.com/mosra/magnum-bootstrap.git

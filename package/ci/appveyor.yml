@@ -39,6 +39,27 @@ environment:
     EXTRA: -DMAGNUM_WITH_WINDOWLESSWGLAPPLICATION=ON
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
     APPVEYOR_JOB_NAME: windowless-windows-msvc2019
+  - BRANCH: ui
+    COMPILER: msvc
+    EXTRA_CORRADE: -DCORRADE_WITH_PLUGINMANAGER=ON
+    EXTRA: -DMAGNUM_WITH_SDL2APPLICATION=ON -DMAGNUM_WITH_TEXT=ON -DMAGNUM_WITH_TRADE=ON
+    EXTRA_EXTRAS: -DMAGNUM_WITH_UI=ON
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    APPVEYOR_JOB_NAME: ui-windows-msvc2017
+  - BRANCH: ui
+    COMPILER: mingw
+    EXTRA_CORRADE: -DCORRADE_WITH_PLUGINMANAGER=ON
+    EXTRA: -DMAGNUM_WITH_SDL2APPLICATION=ON -DMAGNUM_WITH_TEXT=ON -DMAGNUM_WITH_TRADE=ON
+    EXTRA_EXTRAS: -DMAGNUM_WITH_UI=ON
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    APPVEYOR_JOB_NAME: ui-windows-mingw
+  - BRANCH: ui
+    COMPILER: msvc
+    EXTRA_CORRADE: -DCORRADE_WITH_PLUGINMANAGER=ON
+    EXTRA: -DMAGNUM_WITH_SDL2APPLICATION=ON -DMAGNUM_WITH_TEXT=ON -DMAGNUM_WITH_TRADE=ON
+    EXTRA_EXTRAS: -DMAGNUM_WITH_UI=ON
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    APPVEYOR_JOB_NAME: ui-windows-msvc2019
   - BRANCH: scenegraph2D
     COMPILER: msvc
     EXTRA: -DMAGNUM_WITH_SDL2APPLICATION=ON -DMAGNUM_WITH_SCENEGRAPH=ON
@@ -87,6 +108,7 @@ install:
 
 # SDL2
 - IF "%BRANCH%" == "base" set DOWNLOAD_SDL=yes
+- IF "%BRANCH%" == "ui" set DOWNLOAD_SDL=yes
 - IF "%BRANCH%" == "scenegraph2D" set DOWNLOAD_SDL=yes
 - IF "%BRANCH%" == "scenegraph3D" set DOWNLOAD_SDL=yes
 - IF "%DOWNLOAD_SDL%" == "yes" IF "%COMPILER%" == "msvc" IF NOT EXIST %APPVEYOR_BUILD_FOLDER%\SDL2-devel-2.0.9-VC.zip appveyor DownloadFile http://www.libsdl.org/release/SDL2-devel-2.0.9-VC.zip
@@ -101,6 +123,7 @@ install:
 build_script:
 - IF "%BRANCH%" == "base" set TARGET=desktop
 - IF "%BRANCH%" == "base-glfw" set TARGET=desktop
+- IF "%BRANCH%" == "ui" set TARGET=desktop
 - IF "%BRANCH%" == "scenegraph2D" set TARGET=desktop
 - IF "%BRANCH%" == "scenegraph3D" set TARGET=desktop
 - IF "%BRANCH%" == "windowless" set TARGET=desktop
