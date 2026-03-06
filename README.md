@@ -76,15 +76,15 @@ projects are in various other branches, each covering some particular use case.
 
 The [`base`](https://github.com/mosra/magnum-bootstrap/tree/base) branch
 contains barebones windowed application using `Platform::Sdl2Application` with
-only the essential files. You need Magnum built with `WITH_SDL2APPLICATION`
-enabled.
+only the essential files. You need Magnum built with
+`MAGNUM_WITH_SDL2APPLICATION` enabled.
 
 ### Base application using GLFW
 
 The [`base-glfw`](https://github.com/mosra/magnum-bootstrap/tree/base-glfw)
 branch is similar to `base` one, except that it uses `Platform::GlfwApplication`
 instead of `Platform::Sdl2Application`. You need Magnum built with
-`WITH_GLFWAPPLICATION` enabled.
+`MAGNUM_WITH_GLFWAPPLICATION` enabled.
 
 ### Base application using gtkmm
 
@@ -93,8 +93,8 @@ branch does not use any of the application wrappers provided in `Platform`
 namespace, but uses gtkmm window and context creation directly and manually
 initializes Magnum on top of that using EGL on embedded devices, WGL on
 Windows, CGL on macOS and GLX on Unix/Linux. You need Magnum built with
-`WITH_EGLCONTEXT`, `WITH_WGLCONTEXT`, `WITH_CGLCONTEXT` or `WITH_GLXCONTEXT`
-enabled, depending on the platform of your choice.
+`MAGNUM_WITH_EGLCONTEXT`, `MAGNUM_WITH_WGLCONTEXT`, `MAGNUM_WITH_CGLCONTEXT` or
+`MAGNUM_WITH_GLXCONTEXT` enabled, depending on the platform of your choice.
 
 ### Base application using Qt5 / Qt6
 
@@ -104,8 +104,8 @@ do not use any of the application wrappers provided in `Platform` namespace,
 but use a Qt5 / Qt6 window and context creation directly and manually
 initialize Magnum on top of that using EGL on embedded devices, WGL on Windows,
 CGL on macOS and GLX on Unix/Linux. You need Magnum built with
-`WITH_EGLCONTEXT`, `WITH_WGLCONTEXT`, `WITH_CGLCONTEXT` or `WITH_GLXCONTEXT`
-enabled, depending on the platform of your choice.
+`MAGNUM_WITH_EGLCONTEXT`, `MAGNUM_WITH_WGLCONTEXT`, `MAGNUM_WITH_CGLCONTEXT` or
+`MAGNUM_WITH_GLXCONTEXT` enabled, depending on the platform of your choice.
 
 ### Base application using wxWidgets
 
@@ -114,8 +114,8 @@ branch does not use any of the application wrappers provided in `Platform`
 namespace, but uses wxWidgets window and context creation directly and
 manually initializes Magnum on top of that using EGL on embedded devices, WGL
 on Windows, CGL on macOS and GLX on Unix/Linux. You need Magnum built with
-`WITH_EGLCONTEXT`, `WITH_WGLCONTEXT`, `WITH_CGLCONTEXT` or `WITH_GLXCONTEXT`
-enabled, depending on the platform of your choice.
+`MAGNUM_WITH_EGLCONTEXT`, `MAGNUM_WITH_WGLCONTEXT`, `MAGNUM_WITH_CGLCONTEXT` or
+`MAGNUM_WITH_GLXCONTEXT` enabled, depending on the platform of your choice.
 
 ### Windowless application
 
@@ -126,7 +126,7 @@ on X11-based Unix, `Platform::WindowlessCglApplication` on macOS,
 on Windows GLES or ANGLE, `Platform::WindowlessEglApplication` on headless
 systems supporting EGL and `Platform::WindowlessIosApplication` on iOS. Useful
 for querying information about the renderer, offscreen rendering, image
-processing etc. You need Magnum built with `WITH_WINDOWLESS*APPLICATION`
+processing etc. You need Magnum built with `MAGNUM_WITH_WINDOWLESS*APPLICATION`
 enabled, depending on the platform of your choice.
 
 ### Scene graph
@@ -134,29 +134,29 @@ enabled, depending on the platform of your choice.
 The [`scenegraph2D`](https://github.com/mosra/magnum-bootstrap/tree/scenegraph2D)
 and [`scenegraph3D`](https://github.com/mosra/magnum-bootstrap/tree/scenegraph3D)
 branches contain application prepared for using 2D/3D `SceneGraph`. You need
-Magnum built with `WITH_SDL2APPLICATION` and `WITH_SCENEGRAPH` enabled.
+Magnum built with `MAGNUM_WITH_SDL2APPLICATION` and `MAGNUM_WITH_SCENEGRAPH`
+enabled.
 
 ### Base application with port to Emscripten
 
 The [`base-emscripten`](https://github.com/mosra/magnum-bootstrap/tree/base-emscripten)
 branch contains application using `Platform::Sdl2Application` for desktop and
 and `Platform::EmscriptenApplication` for Emscripten build. For desktop build
-you need Magnum built with `WITH_SDL2APPLICATION` enabled and you can use the
-commands above to build it.
+you need Magnum built with `MAGNUM_WITH_SDL2APPLICATION` enabled and you can
+use the commands above to build it.
 
 For Emscripten build you need to have Emscripten installed with Corrade and
 Magnum crosscompiled for Emscripten, don't forget to build Magnum with
-`WITH_EMSCRIPTENAPPLICATION` enabled. See
+`MAGNUM_WITH_EMSCRIPTENAPPLICATION` enabled. See
 [Corrade's](https://doc.magnum.graphics/corrade/building-corrade.html#building-corrade-cross-emscripten)
 and [Magnum's](https://doc.magnum.graphics/magnum/building.html#building-cross-emscripten)
 building documentation for more information.
 
-In the `toolchains/` submodule there are two toolchain files. The
-`generic/Emscripten.cmake` is for the classical (asm.js) build, the
-`generic/Emscripten-wasm.cmake` is for WebAssembly build. Don't forget to adapt
-`EMSCRIPTEN_PREFIX` variable in `generic/Emscripten*.cmake` to path where
-Emscripten is installed; you can also pass it explicitly on command-line using
-`-DEMSCRIPTEN_PREFIX`. Default is `/usr/lib/emscripten`.
+In the `toolchains/` submodule there is `generic/Emscripten-wasm.cmake` for
+an Emscripten WebAssembly build. Don't forget to adapt `EMSCRIPTEN_PREFIX`
+variable in `generic/Emscripten*.cmake` to path where Emscripten is installed;
+you can also pass it explicitly on command-line using `-DEMSCRIPTEN_PREFIX`.
+Default is `/usr/lib/emscripten`.
 
 Then create build directory and run `cmake` and build/install commands in it.
 Set `CMAKE_PREFIX_PATH` to where you have all the dependencies installed, set
@@ -218,12 +218,12 @@ You can then open `MyApplication.html` in your browser (through webserver, e.g.
 The [`base-android`](https://github.com/mosra/magnum-bootstrap/tree/base-android)
 branch contains application using `Platform::Sdl2Application` for desktop build
 and `Platform::AndroidApplication` for Android build. For desktop build you
-need Magnum built with `WITH_SDL2APPLICATION` enabled and you can use the
-commands above to build it.
+need Magnum built with `MAGNUM_WITH_SDL2APPLICATION` enabled and you can use
+the commands above to build it.
 
 For Android build you need to have Android NDK installed with Corrade and
-Magnum crosscompiled for Android, Magnum built with `WITH_ANDROIDAPPLICATION`
-enabled. See [Corrade's](https://doc.magnum.graphics/corrade/building-corrade.html#building-corrade-cross-android)
+Magnum crosscompiled for Android, Magnum built with
+`MAGNUM_WITH_ANDROIDAPPLICATION` enabled. See [Corrade's](https://doc.magnum.graphics/corrade/building-corrade.html#building-corrade-cross-android)
 and [Magnum's](https://doc.magnum.graphics/magnum/building.html#building-cross-android)
 building documentation for more information.
 
@@ -236,12 +236,12 @@ In order to build the application and install it on your device, use Gradle:
 
 The [`base-ios`](https://github.com/mosra/magnum-bootstrap/tree/base-ios)
 branch contains application using `Platform::Sdl2Application` for both desktop
-and iOS build. You need Magnum built with `WITH_SDL2APPLICATION` enabled and
-you can use the commands above to build the desktop version.
+and iOS build. You need Magnum built with `MAGNUM_WITH_SDL2APPLICATION` enabled
+and you can use the commands above to build the desktop version.
 
 For iOS you need macOS and XCode installed with Corrade and Magnum
-crosscompiled for iOS, don't forget to build Magnum with `WITH_SDL2APPLICATION`
-enabled. See [Corrade's](https://doc.magnum.graphics/corrade/building-corrade.html#building-corrade-cross-ios)
+crosscompiled for iOS, don't forget to build Magnum with
+`MAGNUM_WITH_SDL2APPLICATION` enabled. See [Corrade's](https://doc.magnum.graphics/corrade/building-corrade.html#building-corrade-cross-ios)
 and [Magnum's](https://doc.magnum.graphics/magnum/building.html#building-cross-ios)
 building documentation for more information.
 
@@ -265,13 +265,13 @@ there.
 
 The [`base-winrt`](https://github.com/mosra/magnum-bootstrap/tree/base-winrt)
 branch contains application using `Platform::Sdl2Application` for both desktop
-and Windows RT build. You need Magnum built with `WITH_SDL2APPLICATION` enabled
-and you can use the commands above to build the desktop version.
+and Windows RT build. You need Magnum built with `MAGNUM_WITH_SDL2APPLICATION`
+enabled and you can use the commands above to build the desktop version.
 
 For Windows RT build you need to have at least Windows 8.1, Visual Studio 2013
 and Windows 8.1 Store/Phone SDK installed with Corrade and Magnum crosscompiled
-for Windows RT, don't forget to build Magnum with `WITH_SDL2APPLICATION` enabled.
-See [Corrade's](https://doc.magnum.graphics/corrade/building-corrade.html#building-corrade-cross-winrt)
+for Windows RT, don't forget to build Magnum with `MAGNUM_WITH_SDL2APPLICATION`
+enabled. See [Corrade's](https://doc.magnum.graphics/corrade/building-corrade.html#building-corrade-cross-winrt)
 and [Magnum's](https://doc.magnum.graphics/magnum/building.html#building-cross-winrt)
 building documentation for more information.
 
