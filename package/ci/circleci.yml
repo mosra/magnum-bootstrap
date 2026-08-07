@@ -233,7 +233,6 @@ jobs:
       EXTRA: >
         -DMAGNUM_WITH_SDL2APPLICATION=ON
         -DMAGNUM_WITH_TEXT=ON
-        -DMAGNUM_WITH_TRADE=ON
       EXTRA_EXTRAS: >
         -DMAGNUM_WITH_UI=ON
     steps:
@@ -255,7 +254,6 @@ jobs:
       EXTRA: >
         -DMAGNUM_WITH_SDL2APPLICATION=ON
         -DMAGNUM_WITH_TEXT=ON
-        -DMAGNUM_WITH_TRADE=ON
       EXTRA_EXTRAS: >
         -DMAGNUM_WITH_UI=ON
     steps:
