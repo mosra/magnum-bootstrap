@@ -10,18 +10,22 @@
 # following:
 #
 #  Corrade_FOUND                  - Whether the base library was found
-#  CORRADE_LIB_SUFFIX_MODULE      - Path to CorradeLibSuffix.cmake module
 #
 # This command will try to find only the base library, not the optional
 # components, which are:
 #
 #  Containers                   - Containers library
-#  Interconnect                 - Interconnect library
 #  Main                         - Main library
 #  PluginManager                - PluginManager library
 #  TestSuite                    - TestSuite library
 #  Utility                      - Utility library
 #  rc                           - corrade-rc executable
+#
+# If Corrade is built with CORRADE_BUILD_DEPRECATED enabled, these additional
+# variables and libraries are available for backwards compatibility purposes:
+#
+#  CORRADE_LIB_SUFFIX_MODULE    - Path to the CorradeLibSuffix.cmake module
+#  Interconnect                 - Interconnect library
 #
 # Example usage with specifying additional components is::
 #
@@ -316,6 +320,9 @@ if(NOT CORRADE_INCLUDE_DIR)
     include(FindPackageHandleStandardArgs)
     find_package_handle_standard_args(Corrade
         REQUIRED_VARS CORRADE_INCLUDE_DIR _CORRADE_CONFIGURE_FILE)
+    # FPHSA may continue if find_package(Corrade) wasn't called with REQUIRED,
+    # exit here to avoid another error right at file(READ) below.
+    return()
 endif()
 
 # Read flags from configuration
@@ -368,12 +375,14 @@ if(CORRADE_TARGET_EMSCRIPTEN)
 endif()
 
 set(CORRADE_USE_MODULE ${_CORRADE_MODULE_DIR}/UseCorrade.cmake)
-set(CORRADE_LIB_SUFFIX_MODULE ${_CORRADE_MODULE_DIR}/CorradeLibSuffix.cmake)
+if(CORRADE_BUILD_DEPRECATED)
+    set(CORRADE_LIB_SUFFIX_MODULE ${_CORRADE_MODULE_DIR}/CorradeLibSuffix.cmake)
+endif()
 
 # Component distinction (listing them explicitly to avoid mistakes with finding
 # unknown components)
 set(_CORRADE_LIBRARY_COMPONENTS
-    Containers Interconnect Main PluginManager TestSuite Utility)
+    Containers Main PluginManager TestSuite Utility)
 # These libraries are excluded from DLL detection if Corrade is built as shared
 set(_CORRADE_LIBRARY_COMPONENTS_ALWAYS_STATIC
     Main)
@@ -386,14 +395,20 @@ set(_CORRADE_EXECUTABLE_COMPONENTS rc)
 # Currently everything is enabled implicitly. Keep in sync with Corrade's root
 # CMakeLists.txt.
 set(_CORRADE_IMPLICITLY_ENABLED_COMPONENTS
-    Containers Interconnect Main PluginManager TestSuite Utility rc)
+    Containers Main PluginManager TestSuite Utility rc)
 
 # Inter-component dependencies
 set(_CORRADE_Containers_DEPENDENCIES Utility)
-set(_CORRADE_Interconnect_DEPENDENCIES Containers Utility)
 set(_CORRADE_PluginManager_DEPENDENCIES Containers Utility rc)
 set(_CORRADE_TestSuite_DEPENDENCIES Containers Utility Main) # see below
 set(_CORRADE_Utility_DEPENDENCIES Containers rc)
+
+# Interconnect available only on a deprecated build
+if(CORRADE_BUILD_DEPRECATED)
+    list(APPEND _CORRADE_LIBRARY_COMPONENTS Interconnect)
+    list(APPEND _CORRADE_IMPLICITLY_ENABLED_COMPONENTS Interconnect)
+    set(_CORRADE_Interconnect_DEPENDENCIES Containers Utility)
+endif()
 
 # Ensure that all inter-component dependencies are specified as well
 foreach(_component ${Corrade_FIND_COMPONENTS})
@@ -612,6 +627,7 @@ foreach(_component ${Corrade_FIND_COMPONENTS})
         # No special setup for Containers library
 
         # Interconnect library
+        # TODO: drop once Interconnect is not a thing anymore
         if(_component STREQUAL Interconnect)
             # Disable /OPT:ICF on MSVC, which merges functions with identical
             # contents and thus breaks signal comparison. Same case is for
