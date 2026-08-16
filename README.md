@@ -121,8 +121,10 @@ on Windows, CGL on macOS and GLX on Unix/Linux. You need Magnum built with
 The [`ui`](https://github.com/mosra/magnum-bootstrap/tree/ui) branch contains a
 setup for an application using the [`Ui`](https://doc.magnum.graphics/magnum/ui.html)
 library. You need Magnum with `MAGNUM_WITH_SDL2APPLICATION` enabled, Magnum
-Extras with `MAGNUM_WITH_UI` enabled, a font plugin and an image loading
-plugin.
+Extras with `MAGNUM_WITH_UI` enabled, and a font plugin, i.e. Magnum Plugins
+with either `MAGNUM_WITH_STBTRUETYPEFONT` or `MAGNUM_WITH_FREETYPEFONT`
+enabled. A [step-by-step tutorial for getting started with the Ui library](https://doc.magnum.graphics/magnum/ui.html)
+is also available.
 
 ### Windowless application
 
