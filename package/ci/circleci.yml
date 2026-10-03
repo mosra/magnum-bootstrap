@@ -7,11 +7,10 @@ executors:
   ubuntu-22_04:
     docker:
     - image: ubuntu:jammy-20250404
-  # As of November 7, 2025, M4 is the default, and the oldest version there is
-  # 14.3.1.
-  xcode-14_3:
+  # As of October 2026 the oldest version there is 15.4.0
+  xcode-15_4:
     macos:
-      xcode: 14.3.1
+      xcode: 15.4.0
   emscripten:
     docker:
     # 2.0.16 is the oldest on Docker that isn't based on Debian Buster which
@@ -110,7 +109,7 @@ jobs:
         script: unix-desktop.sh
 
   base-macos:
-    executor: xcode-14_3
+    executor: xcode-15_4
     environment:
       BRANCH: base
       EXTRA: >
@@ -214,7 +213,7 @@ jobs:
         script: unix-desktop.sh
 
   windowless-macos:
-    executor: xcode-14_3
+    executor: xcode-15_4
     environment:
       BRANCH: windowless
       EXTRA:
@@ -246,7 +245,7 @@ jobs:
         script: unix-desktop.sh
 
   ui-macos:
-    executor: xcode-14_3
+    executor: xcode-15_4
     environment:
       BRANCH: ui
       EXTRA_CORRADE: >
