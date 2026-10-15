@@ -34,7 +34,7 @@ Nanoseconds now() {
 
 MyApplication::MyApplication(const Arguments& arguments):
     Platform::Application{arguments, Configuration{}
-        .addWindowFlags(Configuration::WindowFlag::Resizable)},
+        .addWindowFlags(WindowFlag::Resizable)},
     _ui{*this, Ui::DarkTheme{Ui::DarkTheme::Feature::Animations}}
 {
     /* UI requires premultiplied alpha */
